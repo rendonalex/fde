@@ -3,11 +3,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
 from functools import lru_cache
 
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
+
+    model_config = ConfigDict(env_file=".env", case_sensitive=False, extra='ignore')
 
     database_url: str = "postgresql://postgres:postgres@localhost:5432/prior_auth_db"
     app_name: str = "Prior-Authorization Check Agent"
@@ -24,9 +27,11 @@ class Settings(BaseSettings):
     prior_auth_db_api_url: str = "http://localhost:8002/mock/prior-auth-db"
     insurance_requirements_api_url: str = "http://localhost:8003/mock/insurance-requirements"
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
+    # Optional fields from environment
+    athenahealth_client_id: str = "mock_client_id"
+    athenahealth_client_secret: str = "mock_client_secret"
+    prior_auth_db_api_key: str = "mock_api_key"
+    audit_log_retention_days: int = 2555
 
 
 @lru_cache()

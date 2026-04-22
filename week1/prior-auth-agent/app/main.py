@@ -15,10 +15,6 @@ logger = logging.getLogger(__name__)
 
 settings = get_settings()
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
-logger.info("Database tables created")
-
 # Create FastAPI app
 app = FastAPI(
     title=settings.app_name,
@@ -61,6 +57,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Startup event to create database tables
+@app.on_event("startup")
+async def startup_event():
+    """Create database tables on startup."""
+    try:
+        Base.metadata.create_all(bind=engine)
+        logger.info("✅ Database tables created")
+    except Exception as e:
+        logger.error(f"❌ Failed to create database tables: {e}")
 
 # Include routers
 app.include_router(prior_auth_check_router)
