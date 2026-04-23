@@ -103,7 +103,7 @@ class PriorAuthCheck(Base):
     # Valid state transitions [per Claude.md Section 2]
     VALID_TRANSITIONS = {
         CheckStatus.PENDING_CHECK: [CheckStatus.CHECKING],
-        CheckStatus.CHECKING: [CheckStatus.AWAITING_HUMAN_REVIEW, CheckStatus.ESCALATED, CheckStatus.FAILED],
+        CheckStatus.CHECKING: [CheckStatus.AWAITING_HUMAN_REVIEW, CheckStatus.ESCALATED, CheckStatus.FAILED, CheckStatus.COMPLETED],
         CheckStatus.AWAITING_HUMAN_REVIEW: [CheckStatus.APPROVED, CheckStatus.RESCHEDULED, CheckStatus.ESCALATED],
         CheckStatus.ESCALATED: [CheckStatus.AWAITING_HUMAN_REVIEW, CheckStatus.COMPLETED],
         CheckStatus.APPROVED: [CheckStatus.COMPLETED],

@@ -63,6 +63,17 @@ class AthenaHealthAdapter:
                 "insurance_policy_id": "INS-POL-22222",
                 "appointment_status": "SCHEDULED",
             },
+            "APT-2024-005": {
+                "appointment_id": "APT-2024-005",
+                "patient_id": "PAT-99999",
+                "scheduled_date": (datetime.now() + timedelta(days=4)).isoformat(),
+                "scheduled_time": "11:00:00",
+                "appointment_type": "office_visit",
+                "procedure_codes": ["99213"],  # Office visit (doesn't need prior-auth)
+                "procedure_descriptions": ["Office Visit Level 3"],
+                "insurance_policy_id": "INS-POL-22222",
+                "appointment_status": "SCHEDULED",
+            },
         }
 
         return mock_appointments.get(appointment_id)

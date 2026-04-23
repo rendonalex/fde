@@ -8,6 +8,9 @@
 **📚 DETAILED DOCUMENTATION**
 
 This is the main specification. For implementation details, see:
+- **[Core Decision Logic](specs/decision-logic.md)** - 5-step prior-auth verification process
+- **[Ambiguity and Escalation](specs/ambiguity-and-escalation.md)** - When to escalate, escalation protocol
+- **[Assumptions](specs/assumptions.md)** - All assumptions, validation requirements, criticality
 - **[API Specifications](specs/api-specifications.md)** - REST APIs, database schemas, algorithms
 - **[Requirements](specs/requirements.md)** - Functional & non-functional requirements  
 - **[Edge Cases & Testing](specs/edge-cases-and-testing.md)** - Test scenarios & validation  
@@ -160,6 +163,10 @@ Valid Transitions:
     Trigger: System error (database unavailable, API timeout, EHR write failure)  
     Condition: Technical failure prevents AI from completing analysis  
       
+  - CHECKING → COMPLETED  
+    Trigger: Prior-auth check determined not required for procedure  
+    Condition: Procedure code does not require prior-authorization per insurance policy, or no procedures scheduled  
+      
   - AWAITING_HUMAN_REVIEW → APPROVED  
     Trigger: Human reviews AI output and approves "Proceed" recommendation  
     Condition: Human agrees with AI assessment, appointment proceeds as scheduled  
@@ -294,319 +301,22 @@ Invalid Transitions (system must prevent):
 ---  
   
 ## 3. Core Decision Logic  
-  
-### Step 1: Determine if Prior-Authorization is Required  
-  
-**Trigger**: Appointment scheduled with procedure code(s) OR patient checks in 48 hours before appointment [per A11]  
-  
-**Logic**:  
-```  
-IF appointment.procedure_codes is empty OR null:  
-  → prior_auth_required = false  
-  → Set status = COMPLETED  
-  → Document "No procedures scheduled, prior-auth not applicable"  
-  → EXIT  
-  
-ELSE:  
-  FOR EACH procedure_code in appointment.procedure_codes:  
-    Query insurance_requirements_database:  
-      WHERE insurance_policy_id = appointment.insurance_policy_id  
-      AND procedure_code = procedure_code  
-      
-    IF query returns "prior_auth_required = true":  
-      → prior_auth_required = true  
-      → PROCEED to Step 2  
-      
-    IF query returns "prior_auth_required = false":  
-      → prior_auth_required = false (for this specific code)  
-      → Continue to next procedure_code  
-      
-    IF query returns no data OR error:  
-      → confidence_score = LOW  
-      → escalation_reason = "Cannot determine if prior-auth required for CPT {procedure_code}"  
-      → Set status = ESCALATED  
-      → EXIT (human must investigate)  
-  
-IF all procedure_codes checked AND none require prior-auth:  
-  → prior_auth_required = false  
-  → Set status = COMPLETED  
-  → Document "Procedures do not require prior-authorization per insurance policy"  
-  → EXIT  
-```  
-  
-**Data Sources**:  
-- `appointment.procedure_codes` from athenahealth EHR  
-- `insurance_requirements_database` (internal or insurance tool API) - maps insurance policies to procedures requiring prior-auth  
-  
-**Decision**:  
-- **Requires prior-auth** → Proceed to Step 2  
-- **Does not require prior-auth** → Mark check as COMPLETED, document in EHR, exit  
-- **Cannot determine** → Escalate to human (confidence = LOW)  
-  
-**Assumptions Referenced**:  
-- **A11**: Check is triggered 48 hours before appointment to allow time for resolution if issues found  
-- **A13**: Assumes insurance requirements database exists and is accessible [per A38, if no API exists, use hardcoded rules fallback]  
-  
----  
-  
-### Step 2: Locate Prior-Authorization Documentation  
-  
-**Logic**:  
-```  
-Query prior_auth_database:  
-  WHERE patient_id = appointment.patient_id  
-  AND insurance_policy_id = appointment.insurance_policy_id  
-  AND approval_status = "ACTIVE"  
-  AND expiration_date >= appointment.scheduled_date  
-  
-Store results in prior_auth_records_found[]  
-  
-IF prior_auth_records_found.length == 0:  
-  → prior_auth_status = MISSING  
-  → ai_recommendation = ESCALATE  
-  → confidence_score = HIGH (high confidence that prior-auth is missing)  
-  → escalation_reason = "No active prior-auth found for patient {patient_id}, procedure {procedure_code}"  
-  → Set status = AWAITING_HUMAN_REVIEW  
-  → EXIT (human decides whether to reschedule or investigate further)  
-  
-IF prior_auth_records_found.length == 1:  
-  → matched_prior_auth_id = prior_auth_records_found[0].prior_auth_id  
-  → PROCEED to Step 3 (validate match)  
-  
-IF prior_auth_records_found.length > 1:  
-  → PROCEED to Step 3 (attempt to match, may escalate if ambiguous)  
-```  
-  
-**Data Sources**:  
-- `prior_auth_database` (internal database or insurance portal API) [per A1, assumes structured data]  
-  
-**Decision**:  
-- **Prior-auth found (single record)** → Proceed to Step 3 with matched record  
-- **Multiple prior-auths found** → Proceed to Step 3, attempt matching logic  
-- **No prior-auth found** → Escalate to human (recommend reschedule or investigate)  
-  
-**Error Handling**:  
-```  
-IF prior_auth_database query fails (timeout, API error, database unavailable):  
-  → Set status = FAILED  
-  → escalation_reason = "Prior-auth database unavailable, manual check required"  
-  → Notify front-desk staff: "System error - perform manual prior-auth check"  
-  → EXIT (manual fallback)  
-```  
-  
-**Assumptions Referenced**:  
-- **A1**: Prior-auth database has structured data (approval number, CPT codes, date ranges)  
-- **A12**: Prior-auth database response time <2 seconds per query  
-- **U4**: Assumes prior-auth database is accessible via API (if not, this step cannot be automated)  
-  
----  
-  
-### Step 3: Validate Prior-Authorization Matches Scheduled Procedure  
-  
-**Logic** (handles single or multiple prior-auth records):  
-  
-```  
-IF prior_auth_records_found.length == 1:  
-  prior_auth = prior_auth_records_found[0]  
-    
-  // Exact CPT code match  
-  IF appointment.procedure_codes[0] IN prior_auth.approved_cpt_codes:  
-    → Match confirmed (exact match)  
-    → matched_prior_auth_id = prior_auth.prior_auth_id  
-    → confidence_score = HIGH  
-    → PROCEED to Step 4  
-    
-  // Fuzzy match on service description  
-  ELSE IF fuzzy_match(appointment.procedure_description, prior_auth.approved_service_description) > 0.8:  
-    → Match possible but not exact  
-    → matched_prior_auth_id = prior_auth.prior_auth_id  
-    → confidence_score = MEDIUM  
-    → escalation_reason = "Prior-auth CPT codes don't exactly match procedure, but service description similar"  
-    → PROCEED to Step 4 (will escalate if other issues found)  
-    
-  // No match  
-  ELSE:  
-    → prior_auth_status = AMBIGUOUS  
-    → ai_recommendation = ESCALATE  
-    → confidence_score = LOW  
-    → escalation_reason = "Prior-auth found but CPT code mismatch: prior-auth covers {prior_auth.approved_cpt_codes}, appointment scheduled for {appointment.procedure_codes}"  
-    → Set status = AWAITING_HUMAN_REVIEW  
-    → EXIT  
-  
-IF prior_auth_records_found.length > 1:  
-  matched_records = []  
-    
-  FOR EACH prior_auth in prior_auth_records_found:  
-    IF appointment.procedure_codes[0] IN prior_auth.approved_cpt_codes:  
-      → Add prior_auth to matched_records[]  
-    
-  IF matched_records.length == 1:  
-    → matched_prior_auth_id = matched_records[0].prior_auth_id  
-    → confidence_score = HIGH  
-    → PROCEED to Step 4  
-    
-  IF matched_records.length > 1:  
-    → prior_auth_status = AMBIGUOUS  
-    → ai_recommendation = ESCALATE  
-    → confidence_score = LOW  
-    → escalation_reason = "Multiple prior-auths found that match procedure: {list approval numbers}"  
-    → Set status = AWAITING_HUMAN_REVIEW  
-    → EXIT  
-    
-  IF matched_records.length == 0:  
-    → prior_auth_status = AMBIGUOUS  
-    → ai_recommendation = ESCALATE  
-    → confidence_score = LOW  
-    → escalation_reason = "Multiple prior-auths found but none match scheduled procedure CPT code"  
-    → Set status = AWAITING_HUMAN_REVIEW  
-    → EXIT  
-```  
-  
-**Matching Criteria**:  
-1. **Exact CPT code match** (highest confidence): `appointment.procedure_code` exactly matches one of `prior_auth.approved_cpt_codes`  
-2. **Fuzzy service description match** (medium confidence): If CPT codes don't match but service descriptions are similar (e.g., "MRI of brain" vs "Brain MRI with contrast")  
-3. **No match** (escalate): CPT codes don't match and service descriptions are dissimilar  
-  
-**Decision**:  
-- **Match confirmed (exact CPT match, single prior-auth)** → Proceed to Step 4 with HIGH confidence  
-- **Match possible (fuzzy match)** → Proceed to Step 4 with MEDIUM confidence (may escalate later)  
-- **Mismatch or multiple matches** → Escalate to human (confidence = LOW)  
-  
-**Assumptions Referenced**:  
-- **A5**: Assumes CPT codes in EHR and prior-auth database use consistent formatting (5-digit codes)  
-- **A14**: Fuzzy matching threshold of 0.8 similarity score balances false positives vs false negatives  
-  
----  
-  
-### Step 4: Check Prior-Authorization Expiration Status  
-  
-**Logic**:  
-```  
-prior_auth = get_prior_auth_by_id(matched_prior_auth_id)  
-  
-days_until_expiration = (prior_auth.expiration_date - appointment.scheduled_date).days  
-  
-IF days_until_expiration < 0:  
-  → prior_auth_status = EXPIRED  
-  → ai_recommendation = RESCHEDULE  
-  → confidence_score = HIGH  
-  → confidence_rationale = "Prior-auth expired on {prior_auth.expiration_date}, appointment scheduled for {appointment.scheduled_date}"  
-  → Set status = AWAITING_HUMAN_REVIEW  
-  → EXIT  
-  
-IF days_until_expiration == 0:  
-  → prior_auth_status = EXPIRING_SOON  
-  → ai_recommendation = ESCALATE  
-  → confidence_score = MEDIUM  
-  → confidence_rationale = "Prior-auth expires on appointment date, recommend human review to assess risk"  
-  → escalation_reason = "Prior-auth expires same day as appointment"  
-  → Set status = AWAITING_HUMAN_REVIEW  
-  → EXIT  
-  
-IF 0 < days_until_expiration <= 7:  
-  → prior_auth_status = EXPIRING_SOON  
-  → ai_recommendation = ESCALATE  
-  → confidence_score = MEDIUM  
-  → confidence_rationale = "Prior-auth expires in {days_until_expiration} days, within warning threshold"  
-  → escalation_reason = "Prior-auth expires within 7 days of appointment"  
-  → Set status = AWAITING_HUMAN_REVIEW  
-  → EXIT  
-  
-IF days_until_expiration > 7:  
-  → prior_auth_status = VALID  
-  → ai_recommendation = PROCEED  
-  → confidence_score = (HIGH if exact CPT match, MEDIUM if fuzzy match from Step 3)  
-  → confidence_rationale = "Prior-auth valid until {prior_auth.expiration_date}, {days_until_expiration} days after appointment"  
-  → Set status = AWAITING_HUMAN_REVIEW  
-  → EXIT  
-```  
-  
-**Date Logic**:  
-- **Expired** (expiration_date < appointment_date): Recommend RESCHEDULE  
-- **Expires on appointment date** (expiration_date == appointment_date): Escalate for human judgment [per A43]  
-- **Expiring soon** (0 < days_until_expiration ≤ 7): Escalate for human judgment [per A11]  
-- **Valid** (days_until_expiration > 7): Recommend PROCEED  
-  
-**Decision**:  
-- **Valid** → Recommend PROCEED (confidence = HIGH or MEDIUM based on Step 3 match quality)  
-- **Expired** → Recommend RESCHEDULE (confidence = HIGH)  
-- **Expiring soon** → Escalate to human (confidence = MEDIUM)  
-  
-**Assumptions Referenced**:  
-- **A11**: 7-day expiration warning threshold (practice has time to obtain new prior-auth if needed)  
-- **Q1**: Practice policy for same-day expiration is unknown; AI escalates for human judgment  
-  
----  
-  
-### Step 5: Generate Recommendation and Confidence Score  
-  
-**Logic** (synthesizes Steps 1-4):  
-  
-```  
-// Confidence score determination  
-IF prior_auth_status == VALID   
-   AND exact_cpt_match == true   
-   AND days_until_expiration > 7  
-   AND no_data_quality_issues:  
-  → confidence_score = HIGH  
-  → ai_recommendation = PROCEED  
-  
-IF prior_auth_status == VALID   
-   AND (fuzzy_match == true OR days_until_expiration <= 7):  
-  → confidence_score = MEDIUM  
-  → ai_recommendation = ESCALATE (for human review)  
-  
-IF prior_auth_status == EXPIRED:  
-  → confidence_score = HIGH  
-  → ai_recommendation = RESCHEDULE  
-  
-IF prior_auth_status == MISSING OR AMBIGUOUS:  
-  → confidence_score = LOW  
-  → ai_recommendation = ESCALATE  
-  
-IF any_system_errors OR missing_required_data:  
-  → confidence_score = LOW  
-  → ai_recommendation = ESCALATE  
-  
-// Generate human-readable summary  
-confidence_rationale = generate_summary({  
-  prior_auth_status: prior_auth_status,  
-  match_quality: (exact_cpt_match ? "Exact CPT match" : "Fuzzy match"),  
-  days_until_expiration: days_until_expiration,  
-  approval_number: prior_auth.approval_number,  
-  approved_services: prior_auth.approved_service_description,  
-  data_sources_checked: ["prior_auth_database", "insurance_requirements_db"]  
-})  
-  
-Set status = AWAITING_HUMAN_REVIEW  
-```  
-  
-**Confidence Criteria**:  
-  
-**HIGH Confidence** (AI recommendation is reliable, human can approve quickly):  
-- All required data present and unambiguous  
-- Exact CPT code match between prior-auth and procedure  
-- Expiration date >7 days after appointment  
-- No conflicting information across data sources  
-- Single prior-auth record found  
-  
-**MEDIUM Confidence** (human should review carefully before approving):  
-- Fuzzy match on service description (not exact CPT match)  
-- Expiration date ≤7 days after appointment (expiring soon)  
-- Minor data quality issues (e.g., missing service description but CPT match exists)  
-  
-**LOW Confidence** (human must investigate further, AI cannot make reliable recommendation):  
-- Missing required data (no prior-auth found, no expiration date)  
-- Multiple prior-auths with no clear match  
-- Conflicting information (database says active, portal says expired)  
-- System errors (database unavailable, API timeout)  
-  
-**Output**: PriorAuthCheck entity with all fields populated, status = AWAITING_HUMAN_REVIEW  
-  
-**Assumptions Referenced**:  
-- **A4**: Assumes human can review HIGH confidence cases in <30 seconds  
-- **A15**: Confidence thresholds tuned to achieve <20% escalation rate while maintaining >95% accuracy  
-  
+
+**For complete decision logic details, see: [Core Decision Logic](specs/decision-logic.md)**
+
+This section describes the 5-step decision process:
+1. **Determine if Prior-Authorization is Required** - Check if procedure requires prior-auth
+2. **Locate Prior-Authorization Documentation** - Query prior-auth database
+3. **Validate Prior-Authorization Matches Scheduled Procedure** - CPT code matching (exact and fuzzy)
+4. **Check Prior-Authorization Expiration Status** - Date validation and expiration warnings
+5. **Generate Recommendation and Confidence Score** - Synthesize results into HIGH/MEDIUM/LOW confidence
+
+**Key Decision Points**:
+- No prior-auth required → COMPLETED (bypass remaining steps)
+- Prior-auth expired → RESCHEDULE (HIGH confidence)
+- Prior-auth valid & exact match → PROCEED (HIGH confidence)
+- Ambiguous or missing data → ESCALATE (LOW confidence)
+
 ---  
   
 ## 4. What the Agent Should NOT Do  
@@ -687,585 +397,54 @@ These boundaries exist to:
 ---  
   
 ## 5. Handling Ambiguity and Escalation  
-  
-### Recognizing Ambiguity  
-  
-The agent has encountered ambiguity when any of the following signals are present:  
-  
-**Data Ambiguity**:  
-- Multiple prior-auth records found; matching logic cannot determine which applies to scheduled procedure  
-- Prior-auth approval language is vague (e.g., "approved for imaging" but unclear if MRI, CT, X-ray)  
-- Conflicting information between prior-auth database and insurance portal (e.g., database says "active," portal says "expired")  
-- Missing required data fields (approval number missing, expiration date missing, CPT codes missing)  
-  
-**Temporal Ambiguity**:  
-- Prior-auth expiration date is within 7 days of appointment [per A11] (unclear if practice policy is to proceed or reschedule)  
-- Prior-auth expires on the same day as appointment (edge case requiring human judgment [per A43])  
-  
-**Matching Ambiguity**:  
-- Fuzzy match on service description but no exact CPT code match (e.g., prior-auth says "brain imaging," appointment is "MRI brain with contrast")  
-- Procedure code in EHR doesn't match any prior-auth on file, but similar codes exist (e.g., prior-auth for CPT 70551, appointment for CPT 70553)  
-  
-**System Ambiguity**:  
-- Prior-auth database returns partial data (some fields populated, others null)  
-- Insurance requirements database cannot confirm whether procedure requires prior-auth (no data for this insurance/procedure combination)  
-  
-**Policy Ambiguity**:  
-- Practice policy for edge cases is unknown (e.g., Q1: what to do when prior-auth expires on appointment day?)  
-  
----  
-  
-### When to Ask vs. When to Decide  
-  
-**The agent should DECIDE (proceed with recommendation) when**:  
-  
-✅ **All required data is present and unambiguous**:  
-- Prior-auth record found with complete fields (approval number, expiration date, CPT codes)  
-- Single prior-auth record matches scheduled procedure  
-- No conflicting information across data sources  
-  
-✅ **Prior-auth clearly matches procedure**:  
-- Exact CPT code match between `prior_auth.approved_cpt_codes` and `appointment.procedure_codes`  
-- Service description confirms match (e.g., both say "MRI brain")  
-  
-✅ **Expiration date is >7 days after scheduled appointment** [per A11]:  
-- Sufficient time buffer; no risk of expiration before appointment  
-- Example: Appointment on Jan 15, prior-auth expires Jan 30 → DECIDE (recommend PROCEED)  
-  
-✅ **Confidence score = HIGH**:  
-- All criteria above met  
-- No data quality issues  
-- No system errors  
-  
-✅ **No conflicting information across data sources**:  
-- Prior-auth database and insurance portal agree on status  
-- EHR appointment details match prior-auth records  
-  
-**Example scenarios where agent should DECIDE**:  
-1. Prior-auth found, exact CPT match, expires in 30 days → **DECIDE: Recommend PROCEED (HIGH confidence)**  
-2. Prior-auth expired 10 days ago, clear expiration date → **DECIDE: Recommend RESCHEDULE (HIGH confidence)**  
-3. No prior-auth found in database, procedure typically requires prior-auth → **DECIDE: Recommend ESCALATE (HIGH confidence that prior-auth is missing)**  
-  
----  
-  
-**The agent should ASK (escalate to human) when**:  
-  
-⚠️ **Any required data field is missing or unclear**:  
-- Prior-auth found but expiration date is null  
-- Prior-auth found but approved CPT codes field is empty  
-- Cannot determine if procedure requires prior-auth (insurance requirements database has no data)  
-  
-⚠️ **Prior-auth approval language doesn't exactly match procedure description**:  
-- Prior-auth says "approved for imaging," appointment is "MRI brain with contrast"  
-- Prior-auth CPT code is 70551 (MRI without contrast), appointment CPT is 70553 (MRI with contrast)  
-- Fuzzy match score <0.8 (service descriptions are dissimilar)  
-  
-⚠️ **Multiple prior-auths found; matching logic cannot determine which applies**:  
-- Patient has 3 active prior-auths for different imaging procedures  
-- Two prior-auths both cover CPT 70553 (unclear which to use)  
-  
-⚠️ **Expiration date is ≤7 days from appointment** [per A11]:  
-- Prior-auth expires in 5 days, appointment in 5 days (edge case)  
-- Prior-auth expires on same day as appointment (policy resolved [per A43]: escalate to human for judgment)  
-  
-⚠️ **Confidence score = MEDIUM or LOW**:  
-- Some ambiguity present (fuzzy match, expiring soon, minor data issues)  
-- Agent uncertain about recommendation  
-  
-⚠️ **Conflicting information detected**:  
-- Prior-auth database says "active," insurance portal says "expired"  
-- EHR shows procedure CPT 70553, prior-auth database shows approval for CPT 70551  
-- Approval date is after expiration date (data quality issue)  
-  
-⚠️ **System errors**:  
-- Prior-auth database unavailable (timeout, API error)  
-- Insurance requirements database returns error  
-- EHR write fails (cannot document verification result)  
-  
-**Example scenarios where agent should ASK**:  
-1. Prior-auth expires in 3 days, appointment in 5 days → **ASK: Escalate for human judgment (MEDIUM confidence)**  
-2. Two prior-auths found, both cover "imaging" but unclear which applies → **ASK: Escalate for human to select correct prior-auth (LOW confidence)**  
-3. Prior-auth says "approved for imaging," appointment is "MRI brain with contrast" → **ASK: Escalate for human to confirm match (MEDIUM confidence)**  
-4. Prior-auth database unavailable → **ASK: Escalate for manual fallback (system error)**  
-  
----  
-  
-### Escalation Protocol  
-  
-**When the agent escalates, it must provide the following information to the human reviewer**:  
-  
-**Escalation Output Structure**:  
-```  
-=== PRIOR-AUTH CHECK ESCALATION ===  
-  
-Patient: {patient_name} (ID: {patient_id})  
-Appointment: {scheduled_date} at {scheduled_time}  
-Procedure: {procedure_description} (CPT: {procedure_code})  
-  
-ESCALATION REASON:  
-{specific_reason_for_escalation}  
-  
-DATA GATHERED:  
-  Prior-Auth Records Found: {count}  
-    
-  [For each prior-auth record:]  
-  - Approval Number: {approval_number}  
-  - Approved Services: {approved_service_description}  
-  - Approved CPT Codes: {approved_cpt_codes}  
-  - Expiration Date: {expiration_date}  
-  - Days Until Expiration: {days_until_expiration}  
-  - Status: {approval_status}  
-    
-  Scheduled Procedure:  
-  - CPT Code: {procedure_code}  
-  - Description: {procedure_description}  
-  - Date: {scheduled_date}  
-    
-  Ambiguity Detected:  
-  {specific_description_of_what_is_unclear}  
-    
-  Data Sources Checked:  
-  - Prior-auth database: {status}  
-  - Insurance requirements database: {status}  
-  - Insurance portal: {status if queried}  
-  
-AI RECOMMENDATION (LOW/MEDIUM CONFIDENCE):  
-{ai_recommendation: PROCEED | RESCHEDULE | ESCALATE}  
-  
-Confidence Score: {confidence_score}  
-Confidence Rationale: {confidence_rationale}  
-  
-HUMAN ACTIONS AVAILABLE:  
-[ ] Approve Proceed - Override ambiguity, accept risk, proceed with appointment  
-[ ] Reschedule - Wait for clarification or new prior-auth  
-[ ] Investigate Further - Contact insurance, review additional documentation  
-[ ] Request Physician Input - Clinical judgment needed  
-  
-NOTES:  
-{any_additional_context}  
-```  
-  
-**Human Review Interface** (front-desk staff sees):  
-- Clear summary of issue (why escalated)  
-- All data gathered by AI (prior-auth records, appointment details)  
-- AI's best assessment (even if low confidence)  
-- Action buttons: Approve / Reschedule / Investigate / Request Physician Input  
-- Free-text field for human to document decision rationale  
-  
-**Human Actions**:  
-  
-1. **Approve Proceed**: Human decides to proceed with appointment despite ambiguity  
-   - Use case: Prior-auth expires in 6 days, human judges risk is acceptable  
-   - System records: `human_decision = APPROVED`, `human_decision_notes = "Proceeding despite expiring soon, patient needs procedure urgently"`  
-  
-2. **Reschedule**: Human decides to reschedule appointment  
-   - Use case: Prior-auth expired, human will obtain new prior-auth before rescheduling  
-   - System records: `human_decision = RESCHEDULED`, `human_decision_notes = "Prior-auth expired, rescheduling after new prior-auth obtained"`  
-  
-3. **Investigate Further**: Human needs more information before deciding  
-   - Use case: Multiple prior-auths found, human will call insurance to clarify which applies  
-   - System records: `human_decision = ESCALATED`, `escalation_reason = "Contacting insurance to clarify which prior-auth applies"`  
-   - Workflow: Case remains in ESCALATED state until investigation complete, then returns to AWAITING_HUMAN_REVIEW  
-  
-4. **Request Physician Input**: Human needs physician to weigh in  
-   - Use case: Unclear if procedure is medically necessary, physician should decide  
-   - System records: `human_decision = ESCALATED`, `escalation_reason = "Physician input requested on medical necessity"`  
-   - Workflow: Physician reviews, provides guidance, human makes final decision  
-  
----  
-  
-### Escalation Triggers (Comprehensive List)  
-  
-**Automatic Escalation Conditions** (agent sets status = AWAITING_HUMAN_REVIEW or ESCALATED):  
-  
-1. **No prior-auth found in system AND procedure typically requires prior-auth**  
-   - Confidence: HIGH (high confidence prior-auth is missing)  
-   - Recommendation: ESCALATE  
-   - Human action: Investigate (check if prior-auth was obtained but not entered in system) or Reschedule  
-  
-2. **Prior-auth found but expired** (expiration_date < appointment_date)  
-   - Confidence: HIGH (clear expiration)  
-   - Recommendation: RESCHEDULE  
-   - Human action: Usually reschedule, but can override if urgent  
-  
-3. **Prior-auth expiring within 7 days of appointment** [per A11]  
-   - Confidence: MEDIUM (unclear if practice policy is to proceed or reschedule)  
-   - Recommendation: ESCALATE  
-   - Human action: Assess risk, decide proceed or reschedule  
-  
-4. **Multiple prior-auths on file; cannot determine which applies**  
-   - Confidence: LOW (ambiguous)  
-   - Recommendation: ESCALATE  
-   - Human action: Review prior-auth details, select correct one, or contact insurance  
-  
-5. **Prior-auth CPT code doesn't match scheduled procedure CPT code**  
-   - Confidence: LOW (mismatch)  
-   - Recommendation: ESCALATE  
-   - Human action: Verify procedure code is correct, or determine if prior-auth covers similar procedure  
-  
-6. **Prior-auth approval language is ambiguous** (e.g., "approved for imaging" but unclear which type)  
-   - Confidence: LOW (vague language)  
-   - Recommendation: ESCALATE  
-   - Human action: Contact insurance for clarification, or proceed if confident procedure is covered  
-  
-7. **Data quality issues** (missing approval number, missing expiration date, contradictory dates)  
-   - Confidence: LOW (incomplete data)  
-   - Recommendation: ESCALATE  
-   - Human action: Investigate data source, contact insurance to obtain missing information  
-  
-8. **Prior-auth database unavailable or returns error**  
-   - Confidence: N/A (system error)  
-   - Status: FAILED  
-   - Human action: Perform manual prior-auth check (fallback workflow)  
-  
-9. **Conflicting information between data sources** (database says "active," portal says "expired")  
-   - Confidence: LOW (conflicting data)  
-   - Recommendation: ESCALATE  
-   - Human action: Contact insurance to resolve conflict, use most recent data source  
-  
-10. **Confidence score = LOW** (agent uncertainty exceeds threshold)  
-    - Any scenario where agent cannot make reliable recommendation  
-    - Human action: Review all data, make judgment call  
-  
-**Escalation Rate Target**: <20% of prior-auth checks should escalate [per success criteria]  
-  
-**Tuning**: If escalation rate exceeds 20%, review escalation triggers and adjust thresholds (e.g., reduce expiration warning from 7 days to 5 days) [per A15]  
-  
----  
-  
+
+**For complete escalation details, see: [Ambiguity and Escalation](specs/ambiguity-and-escalation.md)**
+
+This section defines how the system recognizes ambiguity and when to escalate to humans.
+
+**Types of Ambiguity**:
+- **Data Ambiguity**: Multiple prior-auths, vague approval language, missing fields
+- **Temporal Ambiguity**: Expiration date within 7 days or on appointment date
+- **Matching Ambiguity**: Fuzzy matches, similar but non-matching CPT codes
+- **System Ambiguity**: Partial data, database errors
+- **Policy Ambiguity**: Unknown practice policies for edge cases
+
+**When to Decide vs. Escalate**:
+- **DECIDE (HIGH confidence)**: Complete data, exact CPT match, >7 days until expiration
+- **ASK (MEDIUM/LOW confidence)**: Missing data, fuzzy matches, expiring soon, multiple matches, system errors
+
+**Escalation Protocol**:
+- Target escalation rate: <20%
+- Human actions: Approve Proceed / Reschedule / Investigate / Request Physician Input
+- Output includes: all gathered data, AI recommendation, confidence rationale, escalation reason
 
 ---
 
 ## 11. Assumptions and Open Questions  
-  
-### Assumptions (Continued from Delegation Analysis)  
-  
-**From Previous Analysis** (A1-A10):  
-- A1: Prior-auth database has structured data (approval number, CPT codes, date ranges)  
-- A2: Current error rate is 3% (8% overall intake errors, prior-auth is "most common" type)  
-- A3: Manual prior-auth check takes 2.5 min per patient  
-- A4: Front-desk staff can review AI output in <30 seconds for HIGH confidence cases  
-- A5: Front-desk staff hourly cost is $22/hour  
-- A6: Physician hourly cost is $120/hour  
-- A7: Token cost per intake is $0.08 total (allocated across all 6 intake steps)  
-- A8: Human oversight time with AI assistance is 0.5 min per patient  
-- A9: Target error rate is 0.75% (75% reduction from current 3%)  
-- A10: Implementation and maintenance costs (estimated in economic model)  
-  
-**New Assumptions for This Capability** (A11-A35):  
-  
-**A11: Prior-Auth Check Trigger Window**  
-- **Value**: 48 hours before appointment  
-- **Reasoning**: Gives practice time to resolve issues (contact insurance, obtain new prior-auth, reschedule) before patient arrives  
-- **Criticality**: Medium (affects when checks run, but can be tuned)  
-- **Validation Required**: Yes (practice may prefer 24 hours or 72 hours)  
-  
-**A12: System Response Time**  
-- **Value**: Prior-auth database response time <2 seconds, EHR API response time <2 seconds  
-- **Reasoning**: Allows total prior-auth check to complete in <10 seconds (includes all steps: EHR read, database query, matching logic, EHR write)  
-- **Criticality**: High (affects performance requirement feasibility)  
-- **Validation Required**: Yes (must test actual database and EHR API performance)  
-  
-**A13: Manual Fallback Acceptability**  
-- **Value**: Manual fallback is acceptable when system errors occur  
-- **Reasoning**: Practice already performs manual prior-auth checks today; manual fallback preserves workflow continuity  
-- **Criticality**: Medium (affects error handling design)  
-- **Validation Required**: No (reasonable assumption given current state)  
-  
-**A14: Fuzzy Matching Threshold**  
-- **Value**: 0.8 similarity score (Levenshtein distance or cosine similarity)  
-- **Reasoning**: Balances false positives (matching dissimilar procedures) vs false negatives (missing valid matches)  
-- **Criticality**: Medium (affects matching accuracy, but can be tuned)  
-- **Validation Required**: Yes (must test with real prior-auth data to optimize threshold)  
-  
-**A15: Confidence Score Thresholds**  
-- **Value**: HIGH confidence when exact CPT match + valid expiration + complete data; MEDIUM when fuzzy match or expiring soon; LOW when missing data or ambiguous  
-- **Reasoning**: Tuned to achieve <20% escalation rate while maintaining >95% accuracy  
-- **Criticality**: High (affects escalation rate and human workload)  
-- **Validation Required**: Yes (must tune thresholds based on production data)  
-  
-**A16: Audit Log Retention Period**  
-- **Value**: 7 years  
-- **Reasoning**: Aligns with medical records retention requirements (HIPAA and state regulations)  
-- **Criticality**: High (regulatory compliance requirement)  
-- **Validation Required**: No (standard healthcare requirement)  
-  
-**A17: Staff Training on Manual Checks**  
-- **Value**: Front-desk staff are trained to perform manual prior-auth checks  
-- **Reasoning**: Existing skill (practice performs manual checks today)  
-- **Criticality**: Medium (affects manual fallback feasibility)  
-- **Validation Required**: Yes (confirm staff can perform manual checks when system fails)  
-  
-**A18: State Machine Enforcement Prevents Data Corruption**  
-- **Value**: Enforcing valid state transitions ensures workflow integrity  
-- **Reasoning**: Invalid transitions (e.g., COMPLETED → CHECKING) indicate bugs or data corruption  
-- **Criticality**: High (affects data integrity and audit trail)  
-- **Validation Required**: No (standard software engineering practice)  
-  
-**A19: Prior-Auth Volume**  
-- **Value**: 50% of patients require prior-auth checks (90 checks/day out of 180 patients)  
-- **Reasoning**: Was unknown [U3], resolved with A47 using 50% as placeholder for economic model  
-- **Criticality**: High (affects throughput requirements and ROI)  
-- **Validation Required**: Yes (must validate during discovery - actual volume may be 30% or 70%)  
-  
-**A20: Uptime Requirement**  
-- **Value**: 99% uptime is acceptable (non-critical administrative workflow)  
-- **Reasoning**: Prior-auth verification is not life-critical; manual fallback exists  
-- **Criticality**: Medium (affects infrastructure design and cost)  
-- **Validation Required**: Yes (practice may require higher uptime)  
-  
-**A21: Existing BAA with athenahealth**  
-- **Value**: Practice has existing Business Associate Agreement with athenahealth (EHR vendor)  
-- **Reasoning**: Required for HIPAA compliance; standard for EHR vendors  
-- **Criticality**: High (legal requirement for patient data access)  
-- **Validation Required**: Yes (must confirm BAA is in place and covers API access)  
-  
-**A22: Cloud Hosting Provider is HIPAA-Compliant**  
-- **Value**: AWS, Azure, or GCP is HIPAA-compliant and has signed BAA  
-- **Reasoning**: Major cloud providers offer HIPAA-compliant infrastructure  
-- **Criticality**: High (regulatory requirement)  
-- **Validation Required**: Yes (must select HIPAA-compliant hosting and sign BAA)  
-  
-**A23: Audit Logs Stored Separately**  
-- **Value**: Audit logs stored in separate database (not same as operational data)  
-- **Reasoning**: Security best practice (prevents tampering with audit trail)  
-- **Criticality**: Medium (affects database architecture)  
-- **Validation Required**: No (standard security practice)  
-  
-**A24: Practice Growth Projection**  
-- **Value**: Practice may grow from 6 to 12 physicians in next 3 years (2× volume)  
-- **Reasoning**: Scalability requirement (system must handle future growth)  
-- **Criticality**: Low (affects long-term architecture, not initial launch)  
-- **Validation Required**: Yes (confirm growth projections with practice manager)  
-  
-**A25: Cloud Infrastructure Scalability**  
-- **Value**: Cloud infrastructure (AWS, Azure, GCP) provides horizontal scaling  
-- **Reasoning**: Standard cloud capability (add more servers to handle increased load)  
-- **Criticality**: Low (affects long-term scalability)  
-- **Validation Required**: No (standard cloud feature)  
-  
-**A26: Multiple Prior-Auths per Patient**  
-- **Value**: Patients may have multiple active prior-auths for different procedures  
-- **Reasoning**: Common for patients with chronic conditions (e.g., cancer patient with prior-auths for chemo, imaging, surgery)  
-- **Criticality**: Medium (affects matching logic complexity)  
-- **Validation Required**: Yes (confirm how often this occurs in practice)  
-  
-**A27: Human Review Time for Multiple Prior-Auths**  
-- **Value**: Human can review multiple prior-auths and select correct one in <2 minutes  
-- **Reasoning**: Front-desk staff are familiar with prior-auth details  
-- **Criticality**: Low (affects escalation handling time)  
-- **Validation Required**: Yes (time-motion study during pilot)  
-  
-**A28: Human Can Contact Insurance for Clarification**  
-- **Value**: Front-desk staff can contact insurance companies to clarify vague approval language  
-- **Reasoning**: Existing practice workflow (staff call insurance when needed)  
-- **Criticality**: Medium (affects escalation resolution process)  
-- **Validation Required**: Yes (confirm staff have access to insurance contact info and authority to call)  
-  
-**A29: Prior-Auth Database Downtime is Rare**  
-- **Value**: <1% of checks affected by database downtime  
-- **Reasoning**: Prior-auth database is critical system, likely has high uptime  
-- **Criticality**: Medium (affects manual fallback frequency)  
-- **Validation Required**: Yes (measure actual database uptime during pilot)  
-  
-**A30: Human Can Assess CPT Code Mismatch**  
-- **Value**: Front-desk staff can determine if CPT code mismatch is acceptable (e.g., both codes covered under same prior-auth)  
-- **Reasoning**: Staff have experience with CPT codes and insurance policies  
-- **Criticality**: Medium (affects escalation resolution)  
-- **Validation Required**: Yes (confirm staff knowledge of CPT codes)  
-  
-**A31: EHR Maintains Accurate Current Insurance**  
-- **Value**: athenahealth EHR maintains accurate current insurance policy for each patient  
-- **Reasoning**: Insurance information is master data in EHR, updated by front-desk staff  
-- **Criticality**: High (affects prior-auth query accuracy)  
-- **Validation Required**: Yes (audit EHR insurance data quality)  
-  
-**A32: Prior-Auth Database Links to Insurance Policies**  
-- **Value**: Prior-auth database links prior-auths to specific insurance policies (not just patient_id)  
-- **Reasoning**: Prior-auths are policy-specific (not transferable between policies)  
-- **Criticality**: High (affects query logic)  
-- **Validation Required**: Yes (confirm prior-auth database schema includes insurance_policy_id)  
-  
-**A33: Human Can Update Prior-Auth Database**  
-- **Value**: Front-desk staff can update prior-auth database when missing data is obtained from insurance  
-- **Reasoning**: Data quality maintenance requires human intervention  
-- **Criticality**: Medium (affects data quality improvement process)  
-- **Validation Required**: Yes (confirm staff have write access to prior-auth database)  
-  
-**A34: Multiple Procedure Codes per Appointment**  
-- **Value**: Appointments may have multiple procedure codes (e.g., MRI Brain + MRI Spine in same visit)  
-- **Reasoning**: Common for imaging studies (multiple body parts scanned in one visit)  
-- **Criticality**: Medium (affects check logic complexity)  
-- **Validation Required**: Yes (confirm how often this occurs, affects scope)  
-  
-**A35: Prior-Auth Database Indicates Covered Procedures**  
-- **Value**: Prior-auth database has `approved_cpt_codes[]` array indicating which procedures are covered  
-- **Reasoning**: Necessary for matching logic (must know what prior-auth covers)  
-- **Criticality**: High (affects matching feasibility)  
-- **Validation Required**: Yes (confirm prior-auth database schema includes CPT codes)  
-  
----  
-  
-### BUILDABLE ASSUMPTIONS (A36-A52)  
-  
-**NOTE**: The following assumptions were added to resolve ambiguities and make the specification buildable. These are marked as ⚠️ **ASSUMPTIONS** and must be validated during discovery. If actual implementation differs, refactoring may be required.  
-  
-**A36: Prior-Auth Database System Type** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: Internal PostgreSQL database with REST API wrapper  
-- **Reasoning**: Most flexible architecture; allows direct SQL queries for initial implementation and REST API for long-term maintainability  
-- **Alternative**: If actual system is third-party (Availity, Change Healthcare), API integration approach remains similar (HTTP/JSON)  
-- **Criticality**: HIGH - Wrong assumption requires integration layer rewrite  
-- **Validation Required**: YES - Must confirm during discovery; if different, see "Fallback Options" below  
-- **Fallback Options**:  
-  - If insurance portal API: Adapt REST client to portal endpoints  
-  - If no API exists: Phase 1 = manual fallback only; automated check deferred to Phase 2  
-  
-**A37: Prior-Auth Database Data Structure** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: Structured data with separate fields (approval_number, expiration_date, approved_cpt_codes[])  
-- **Reasoning**: A1 assumes structured data; this confirms specific schema design  
-- **Alternative**: If unstructured (free-text notes), requires NLP parsing layer (adds complexity and error rate)  
-- **Criticality**: HIGH - Unstructured data reduces matching accuracy to ~70% (vs 95% structured)  
-- **Validation Required**: YES - Inspect actual prior-auth records during discovery  
-- **Fallback Options**:  
-  - If semi-structured: Use structured fields where available, escalate when only free-text  
-  - If fully unstructured: Defer to Phase 2; implement basic keyword matching for MVP  
-  
-**A38: Insurance Requirements Database Implementation** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: Internal mapping table (PostgreSQL) linking insurance_policy_id + procedure_code → prior_auth_required (boolean)  
-- **Reasoning**: Simplest approach for MVP; practice can maintain their own mappings  
-- **Alternative**: Use hardcoded rules for top 80% of procedures (CPT 70000-79999 = imaging = require prior-auth)  
-- **Criticality**: MEDIUM - Fallback to hardcoded rules is acceptable for MVP  
-- **Validation Required**: YES - If no database exists, use hardcoded rules approach  
-- **Fallback Options**:  
-  - If no database: Use hardcoded rules (see A38a below)  
-  - If external API available: Integrate with API instead of internal table  
-  
-**A38a: Hardcoded Prior-Auth Requirement Rules** (if A38 database doesn't exist)  
-```typescript  
-// Default rules if insurance requirements database unavailable  
-function requiresPriorAuth(cptCode: string, insurancePolicyId: string): boolean {  
-  const cptNum = parseInt(cptCode);  
-  
-  // Imaging procedures (CPT 70000-79999): Require prior-auth  
-  if (cptNum >= 70000 && cptNum <= 79999) return true;  
-  
-  // Surgical procedures (CPT 10000-69999): Require prior-auth  
-  if (cptNum >= 10000 && cptNum <= 69999) return true;  
-  
-  // Office visits (CPT 99201-99499): Do NOT require prior-auth  
-  if (cptNum >= 99201 && cptNum <= 99499) return false;  
-  
-  // Unknown: Escalate to human  
-  return null; // null = cannot determine, escalate  
-}  
-```  
-  
-**A39: athenahealth API Specification** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: REST API with OAuth 2.0 authentication, JSON payloads  
-- **Reasoning**: Based on athenahealth's publicly documented API patterns  
-- **Criticality**: MEDIUM - athenahealth API is well-documented; assumptions are safe  
-- **Validation Required**: YES - Review actual API documentation and credentials during setup  
-- **See**: New "API Specifications" section below for detailed endpoint definitions  
-  
-**A40: Fuzzy Matching Algorithm** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: Levenshtein distance with normalization (lowercase, remove punctuation)  
-- **Reasoning**: Simple, deterministic, well-understood; threshold of 0.8 maps to "80% character similarity"  
-- **Alternative**: Cosine similarity with TF-IDF (more complex, similar results)  
-- **Criticality**: LOW - Easy to swap algorithms if needed  
-- **Validation Required**: YES - Tune threshold based on real prior-auth data during pilot  
-- **Implementation**: See algorithm specification in new section below  
-  
-**A41: Human Review Interface Architecture** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: Standalone web dashboard (React SPA) accessed via browser  
-- **Reasoning**: Faster to build, no athenahealth widget SDK required; staff can access via URL  
-- **Alternative**: Embedded EHR widget (Phase 2 enhancement)  
-- **Criticality**: MEDIUM - Architecture differs significantly; plan for potential Phase 2 refactor  
-- **Validation Required**: YES - Confirm with practice staff which approach they prefer  
-- **Tradeoff**: Standalone = context switching (EHR → dashboard); Embedded = seamless but more complex  
-  
-**A42: Authentication and Authorization** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: All front-desk staff can review and override AI recommendations (no RBAC required for MVP)  
-- **Reasoning**: Simplifies implementation; audit trail tracks who made decisions  
-- **Alternative**: Role-based access control (office manager only can override HIGH confidence cases)  
-- **Criticality**: LOW - Can add RBAC in Phase 2 if needed  
-- **Validation Required**: YES - Confirm practice policy on who can override  
-  
-**A43: Same-Day Expiration Policy** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: Escalate to human for judgment (confidence = MEDIUM)  
-- **Reasoning**: Conservative approach; practice policy unknown  
-- **Alternative**: Auto-reschedule (more aggressive) or auto-proceed (more permissive)  
-- **Criticality**: LOW - Business rule, easy to change  
-- **Validation Required**: YES - Ask practice manager for policy  
-  
-**A44: Expiration Warning Threshold** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: 7 days (escalate if prior-auth expires within 7 days of appointment)  
-- **Reasoning**: Gives practice one week to obtain new prior-auth if needed  
-- **Alternative**: 14 days (more conservative) or 3 days (more aggressive)  
-- **Criticality**: LOW - Tunable parameter  
-- **Validation Required**: YES - Tune based on practice feedback during pilot  
-  
-**A45: Multiple Procedures Handling** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: Create separate `PriorAuthCheck` for each procedure code (independent checks)  
-- **Reasoning**: Ensures each procedure is verified; frequency unknown but safe default  
-- **Alternative**: Single check covering all procedures (simpler but less granular)  
-- **Criticality**: LOW - Logic handles both cases  
-- **Validation Required**: YES - Measure frequency during pilot; optimize if >30% of appointments  
-  
-**A46: Re-Verification on Reschedule** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: Create new `PriorAuthCheck` if appointment rescheduled >7 days out (expiration status may change)  
-- **Reasoning**: Expiration date relative to appointment date changes when appointment moves  
-- **Alternative**: Always re-verify OR never re-verify (reuse existing check)  
-- **Criticality**: LOW - Business rule, easy to change  
-- **Validation Required**: YES - Confirm with practice workflow  
-  
-**A47: Prior-Auth Volume** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: 50% of patients require prior-auth checks (90 checks/day out of 180 patients)  
-- **Reasoning**: Unknown [per U3]; 50% is midpoint estimate for economic modeling  
-- **Alternative**: Could be 30% (54 checks/day) or 70% (126 checks/day)  
-- **Criticality**: HIGH - Affects ROI and infrastructure sizing  
-- **Validation Required**: YES - Measure actual volume during first week of pilot  
-- **Impact**: See sensitivity analysis (Section 12); ROI remains positive even at 30% volume  
-  
-**A48: Actual Error Rate** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: 3% current error rate for prior-auth checks  
-- **Reasoning**: Scenario states 8% overall intake errors, prior-auth is "most common" type  
-- **Alternative**: Could be 2% (less severe) or 5% (more severe)  
-- **Criticality**: MEDIUM - Affects ROI but not implementation  
-- **Validation Required**: YES - Measure baseline error rate before deploying AI  
-- **Impact**: See sensitivity analysis; higher error rate = stronger ROI  
-  
-**A49: Date/Time Format Specification** ⚠️ **ASSUMPTION**  
-- **Assumed Value**:  
-  - Dates: ISO 8601 `YYYY-MM-DD` (e.g., "2025-01-15")  
-  - Timestamps: ISO 8601 `YYYY-MM-DDTHH:MM:SSZ` in UTC (e.g., "2025-01-15T14:30:00Z")  
-  - Timezone: All calculations in practice local time (convert UTC to local for display)  
-- **Reasoning**: Industry standard; unambiguous; handles DST correctly  
-- **Criticality**: LOW - Standard approach  
-- **Validation Required**: NO - Safe assumption  
-  
-**A50: Physician Notification** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: No physician notification for escalated cases (front-desk staff handles all escalations)  
-- **Reasoning**: Keeps physicians focused on clinical work; front-desk resolves administrative issues  
-- **Alternative**: Email/EHR message to physician when prior-auth missing (Phase 2 enhancement)  
-- **Criticality**: LOW - Workflow preference  
-- **Validation Required**: YES - Confirm with physicians and practice manager  
-  
-**A51: Database Platform** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: PostgreSQL 14+ for operational database and audit logs  
-- **Reasoning**: HIPAA-compliant, excellent JSON support, mature ecosystem  
-- **Alternative**: MySQL, SQL Server, MongoDB  
-- **Criticality**: LOW - Schema is portable across SQL databases  
-- **Validation Required**: NO - Safe choice; practice may have existing PostgreSQL infrastructure  
-  
-**A52: Cloud Infrastructure** ⚠️ **ASSUMPTION**  
-- **Assumed Value**: AWS (Amazon Web Services) with HIPAA BAA  
-- **Reasoning**: Most popular cloud provider, comprehensive HIPAA compliance, mature services  
-- **Alternative**: Azure (good for Microsoft shops), GCP (good for AI/ML)  
-- **Criticality**: LOW - Architecture is cloud-agnostic  
-- **Validation Required**: YES - Confirm practice has existing cloud provider preference  
-  
----  
-  
+
+**For complete assumptions list, see: [Assumptions and Open Questions](specs/assumptions.md)**
+
+This section catalogs all assumptions made during specification, with validation requirements and criticality levels.
+
+**Assumption Categories**:
+- **A1-A10**: From previous delegation analysis (error rates, costs, performance)
+- **A11-A35**: Capability-specific assumptions (trigger windows, thresholds, policies)
+- **A36-A52**: Buildable assumptions (database types, API specs, architecture decisions)
+
+**Critical Assumptions** (HIGH criticality, require validation):
+- **A1**: Prior-auth database has structured data
+- **A12**: System response time <2 seconds
+- **A15**: Confidence thresholds achieve <20% escalation rate
+- **A19**: 50% of patients require prior-auth checks
+- **A36**: PostgreSQL database with REST API
+- **A37**: Structured prior-auth data (vs. unstructured free-text)
+
+**Tunable Parameters**:
+- **A11**: 48-hour trigger window (can adjust 24-72 hours)
+- **A14**: 0.8 fuzzy matching threshold
+- **A44**: 7-day expiration warning threshold
+
+See [Assumptions](specs/assumptions.md) for complete details including fallback options and validation requirements.
 
 ---
 
@@ -1273,6 +452,25 @@ function requiresPriorAuth(cptCode: string, insurancePolicyId: string): boolean 
 ## DETAILED DOCUMENTATION  
 
 **For implementation details, refer to separate specification documents:**  
+
+📄 **[Core Decision Logic](specs/decision-logic.md)**  
+- Step 1: Determine if Prior-Authorization is Required
+- Step 2: Locate Prior-Authorization Documentation
+- Step 3: Validate Prior-Authorization Matches Scheduled Procedure
+- Step 4: Check Prior-Authorization Expiration Status
+- Step 5: Generate Recommendation and Confidence Score
+
+📄 **[Ambiguity and Escalation](specs/ambiguity-and-escalation.md)**  
+- Recognizing Ambiguity (Data, Temporal, Matching, System, Policy)
+- When to Ask vs. When to Decide
+- Escalation Protocol and Human Review Interface
+- Escalation Triggers (10 comprehensive conditions)
+
+📄 **[Assumptions and Open Questions](specs/assumptions.md)**  
+- Assumptions A1-A10 (from delegation analysis)
+- Assumptions A11-A35 (capability-specific)
+- Buildable Assumptions A36-A52 (architecture decisions)
+- Validation requirements and criticality levels
 
 📄 **[API Specifications](specs/api-specifications.md)**  
 - Prior-Auth Database REST API (endpoints, auth, request/response formats)  
