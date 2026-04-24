@@ -119,16 +119,17 @@ class PriorAuthCheck(Base):
 
         Raises ValueError if transition is invalid.
         """
-        if not hasattr(self, "_sa_instance_state") or self._sa_instance_state.has_identity:
-            # Object exists in DB, check current status
-            current_status = self.status
-            if current_status and new_status != current_status:
-                valid_next_states = self.VALID_TRANSITIONS.get(current_status, [])
-                if new_status not in valid_next_states:
-                    raise ValueError(
-                        f"Invalid state transition from {current_status} to {new_status}. "
-                        f"Valid transitions: {valid_next_states}"
-                    )
+        # FIX: Check if we have a current status (not initial creation)
+        # Use getattr to safely get current status, works for both persisted and transient objects
+        current_status = getattr(self, 'status', None)
+
+        if current_status and new_status != current_status:
+            valid_next_states = self.VALID_TRANSITIONS.get(current_status, [])
+            if new_status not in valid_next_states:
+                raise ValueError(
+                    f"Invalid state transition from {current_status} to {new_status}. "
+                    f"Valid transitions: {valid_next_states}"
+                )
         return new_status
 
     def transition_to(self, new_status: CheckStatus, reason: Optional[str] = None) -> None:
@@ -149,8 +150,10 @@ class PriorAuthCheck(Base):
         if new_status == CheckStatus.COMPLETED and not self.completed_at:
             self.completed_at = datetime.utcnow()
 
-        # Track escalation reason
-        if new_status == CheckStatus.ESCALATED and reason:
+        # Track escalation reason for FAILED, ESCALATED, and AWAITING_HUMAN_REVIEW
+        # FIX Phase 2: AWAITING_HUMAN_REVIEW can have escalation reasons (e.g., missing prior-auth)
+        # FIX Phase 5: FAILED state also needs escalation reason (e.g., database unavailable)
+        if new_status in [CheckStatus.FAILED, CheckStatus.ESCALATED, CheckStatus.AWAITING_HUMAN_REVIEW] and reason:
             self.escalation_reason = reason
 
     def get_prior_auth_records_list(self) -> List[str]:

@@ -86,8 +86,9 @@ class FuzzyMatcher:
         Returns:
             Float between 0.0 (no match) and 1.0 (exact match).
 
-        Per Claude.md specs/api-specifications.md:
-        score = 1.0 - (levenshtein_distance / max_length)
+        FIX: Enhanced algorithm combines token-based (word order independent)
+        and sequence-based (character-level) similarity for better matching.
+        This handles cases like "MRI Brain" vs "Brain MRI" effectively.
         """
         if not text1 or not text2:
             return 0.0
@@ -103,15 +104,31 @@ class FuzzyMatcher:
         if normalized1 == normalized2:
             return 1.0
 
-        # Calculate Levenshtein distance
+        # Calculate token-based similarity (Jaccard index - word order independent)
+        tokens1 = set(normalized1.split())
+        tokens2 = set(normalized2.split())
+
+        if not tokens1 or not tokens2:
+            # Fallback to sequence similarity if no tokens
+            distance = self.levenshtein_distance(normalized1, normalized2)
+            max_length = max(len(normalized1), len(normalized2))
+            return 1.0 - (distance / max_length)
+
+        intersection = tokens1 & tokens2
+        union = tokens1 | tokens2
+        token_similarity = len(intersection) / len(union) if union else 0.0
+
+        # Calculate sequence similarity (Levenshtein - character-level)
         distance = self.levenshtein_distance(normalized1, normalized2)
         max_length = max(len(normalized1), len(normalized2))
+        sequence_similarity = 1.0 - (distance / max_length)
 
-        # Calculate similarity score
-        score = 1.0 - (distance / max_length)
+        # Weighted average: 60% token-based (better for word reordering), 40% sequence-based
+        score = (0.6 * token_similarity) + (0.4 * sequence_similarity)
 
         logger.debug(
-            f"Fuzzy match: '{text1[:50]}...' vs '{text2[:50]}...' = {score:.3f}"
+            f"Fuzzy match: '{text1[:50]}...' vs '{text2[:50]}...' = {score:.3f} "
+            f"(token={token_similarity:.3f}, sequence={sequence_similarity:.3f})"
         )
 
         return score

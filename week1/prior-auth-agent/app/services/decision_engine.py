@@ -298,6 +298,12 @@ class PriorAuthDecisionEngine:
         """
         approved_codes = prior_auth.get("approved_cpt_codes", [])
 
+        # FIX: Defensive handling for None or non-list values (data quality issue)
+        if approved_codes is None:
+            approved_codes = []
+        elif not isinstance(approved_codes, list):
+            approved_codes = []
+
         # Check exact CPT match
         if check.procedure_code in approved_codes:
             return {"exact_match": True, "fuzzy_match": False, "fuzzy_score": 1.0}

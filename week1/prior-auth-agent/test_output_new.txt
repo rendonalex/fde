@@ -1,0 +1,809 @@
+[1m============================= test session starts ==============================[0m
+platform darwin -- Python 3.9.6, pytest-7.4.4, pluggy-1.6.0 -- /Users/Alexandra_Rendon/gh/fde/week1/prior-auth-agent/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/Alexandra_Rendon/gh/fde/week1/prior-auth-agent
+configfile: pytest.ini
+plugins: anyio-4.12.1, asyncio-0.23.3
+asyncio: mode=auto
+[1mcollecting ... [0mcollected 152 items
+
+tests/test_e2e_workflows.py::TestE2EHappyPath::test_complete_workflow_valid_prior_auth [32mPASSED[0m[32m [  0%][0m
+tests/test_e2e_workflows.py::TestE2EExpiredPriorAuth::test_expired_prior_auth_workflow [32mPASSED[0m[32m [  1%][0m
+tests/test_e2e_workflows.py::TestE2EMissingPriorAuth::test_missing_prior_auth_workflow [32mPASSED[0m[32m [  1%][0m
+tests/test_e2e_workflows.py::TestE2EAmbiguousCase::test_multiple_prior_auths_workflow [32mPASSED[0m[32m [  2%][0m
+tests/test_e2e_workflows.py::TestE2ESystemError::test_database_unavailable_workflow [31mFAILED[0m[31m [  3%][0m
+tests/test_e2e_workflows.py::TestE2ENoRequirementWorkflow::test_no_prior_auth_required [32mPASSED[0m[31m [  3%][0m
+tests/test_e2e_workflows.py::TestE2EExpiringSoonWorkflow::test_expiring_soon_escalation [32mPASSED[0m[31m [  4%][0m
+tests/test_e2e_workflows.py::TestE2EPerformance::test_workflow_completes_within_10_seconds [32mPASSED[0m[31m [  5%][0m
+tests/test_edge_cases.py::TestEdgeCase1_SameDayExpiration::test_same_day_expiration_escalates [32mPASSED[0m[31m [  5%][0m
+tests/test_edge_cases.py::TestEdgeCase2_MultiplePriorAuths::test_multiple_prior_auths_single_match [32mPASSED[0m[31m [  6%][0m
+tests/test_edge_cases.py::TestEdgeCase2_MultiplePriorAuths::test_multiple_prior_auths_multiple_matches [31mFAILED[0m[31m [  7%][0m
+tests/test_edge_cases.py::TestEdgeCase2_MultiplePriorAuths::test_multiple_prior_auths_no_match [31mFAILED[0m[31m [  7%][0m
+tests/test_edge_cases.py::TestEdgeCase3_VagueApprovalLanguage::test_vague_approval_language_low_similarity [31mFAILED[0m[31m [  8%][0m
+tests/test_edge_cases.py::TestEdgeCase4_DatabaseUnavailable::test_database_timeout_transitions_to_failed [31mFAILED[0m[31m [  9%][0m
+tests/test_edge_cases.py::TestEdgeCase5_CPTMismatch::test_cpt_mismatch_contrast_difference [31mFAILED[0m[31m [  9%][0m
+tests/test_edge_cases.py::TestEdgeCase6_InactivePolicyworkflow::test_patient_switched_insurance_no_prior_auth_found [32mPASSED[0m[31m [ 10%][0m
+tests/test_edge_cases.py::TestEdgeCase7_MissingExpirationDate::test_missing_expiration_date_causes_error [32mPASSED[0m[31m [ 11%][0m
+tests/test_edge_cases.py::TestEdgeCase8_MultipleProcedures::test_appointment_with_single_procedure_standard_flow [32mPASSED[0m[31m [ 11%][0m
+tests/test_edge_cases.py::TestEdgeCaseDataQuality::test_empty_cpt_code_list [32mPASSED[0m[31m [ 12%][0m
+tests/test_edge_cases.py::TestEdgeCaseDataQuality::test_none_approved_cpt_codes [32mPASSED[0m[31m [ 13%][0m
+tests/test_edge_cases.py::TestEdgeCaseDataQuality::test_malformed_expiration_date [32mPASSED[0m[31m [ 13%][0m
+tests/test_functional_requirements.py::TestREQPA001_AutomaticTrigger::test_check_triggered_for_appointment_with_procedures [32mPASSED[0m[31m [ 14%][0m
+tests/test_functional_requirements.py::TestREQPA001_AutomaticTrigger::test_check_triggered_48_hours_before [32mPASSED[0m[31m [ 15%][0m
+tests/test_functional_requirements.py::TestREQPA002_PriorAuthRetrieval::test_retrieve_prior_auth_within_5_seconds [32mPASSED[0m[31m [ 15%][0m
+tests/test_functional_requirements.py::TestREQPA002_PriorAuthRetrieval::test_retry_on_database_failure [31mFAILED[0m[31m [ 16%][0m
+tests/test_functional_requirements.py::TestREQPA003_CPTMatching::test_exact_cpt_match_high_confidence [32mPASSED[0m[31m [ 17%][0m
+tests/test_functional_requirements.py::TestREQPA003_CPTMatching::test_fuzzy_match_threshold_0_8 [32mPASSED[0m[31m [ 17%][0m
+tests/test_functional_requirements.py::TestREQPA004_ExpirationValidation::test_expired_prior_auth_reschedule [32mPASSED[0m[31m [ 18%][0m
+tests/test_functional_requirements.py::TestREQPA004_ExpirationValidation::test_expiring_within_7_days_escalates [32mPASSED[0m[31m [ 19%][0m
+tests/test_functional_requirements.py::TestREQPA004_ExpirationValidation::test_valid_expiration_proceeds [32mPASSED[0m[31m [ 19%][0m
+tests/test_functional_requirements.py::TestREQPA005_HumanReviewInterface::test_interface_displays_required_fields [32mPASSED[0m[31m [ 20%][0m
+tests/test_functional_requirements.py::TestREQPA005_HumanReviewInterface::test_human_decision_recorded_with_audit_trail [32mPASSED[0m[31m [ 21%][0m
+tests/test_functional_requirements.py::TestREQPA006_EHRDocumentation::test_verification_documented_in_ehr [32mPASSED[0m[31m [ 21%][0m
+tests/test_functional_requirements.py::TestREQPA007_AuditLogging::test_audit_trail_complete [32mPASSED[0m[31m [ 22%][0m
+tests/test_functional_requirements.py::TestREQPA007_AuditLogging::test_state_transitions_logged [32mPASSED[0m[31m [ 23%][0m
+tests/test_functional_requirements.py::TestREQPA007_AuditLogging::test_escalation_reason_logged [32mPASSED[0m[31m [ 23%][0m
+tests/test_functional_requirements.py::TestREQPA008_ManualFallback::test_manual_fallback_on_database_failure [31mFAILED[0m[31m [ 24%][0m
+tests/test_functional_requirements.py::TestREQPA008_ManualFallback::test_manual_entry_recorded [32mPASSED[0m[31m [ 25%][0m
+tests/test_functional_requirements.py::TestREQPA009_ConfidenceScore::test_high_confidence_conditions [32mPASSED[0m[31m [ 25%][0m
+tests/test_functional_requirements.py::TestREQPA009_ConfidenceScore::test_medium_confidence_fuzzy_match [32mPASSED[0m[31m [ 26%][0m
+tests/test_functional_requirements.py::TestREQPA009_ConfidenceScore::test_low_confidence_ambiguous [32mPASSED[0m[31m [ 26%][0m
+tests/test_functional_requirements.py::TestREQPA010_StateMachine::test_valid_transitions_allowed [32mPASSED[0m[31m [ 27%][0m
+tests/test_functional_requirements.py::TestREQPA010_StateMachine::test_invalid_transitions_blocked [32mPASSED[0m[31m [ 28%][0m
+tests/test_functional_requirements.py::TestREQPA010_StateMachine::test_state_transitions_atomic [32mPASSED[0m[31m [ 28%][0m
+tests/test_functional_requirements.py::TestREQPA010_StateMachine::test_completed_timestamp_set [32mPASSED[0m[31m [ 29%][0m
+tests/test_functional_requirements.py::TestNonFunctionalRequirements::test_response_time_target [32mPASSED[0m[31m [ 30%][0m
+tests/test_functional_requirements.py::TestNonFunctionalRequirements::test_escalation_rate_target [32mPASSED[0m[31m [ 30%][0m
+tests/test_functional_requirements.py::TestNonFunctionalRequirements::test_accuracy_target_95_percent [32mPASSED[0m[31m [ 31%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_exact_match [32mPASSED[0m[31m   [ 32%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_case_insensitive [32mPASSED[0m[31m [ 32%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_punctuation_ignored [32mPASSED[0m[31m [ 33%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_similar_strings_high_score [32mPASSED[0m[31m [ 34%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_different_strings_low_score [32mPASSED[0m[31m [ 34%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_empty_strings [32mPASSED[0m[31m [ 35%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_is_match_above_threshold [32mPASSED[0m[31m [ 36%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_is_match_below_threshold [32mPASSED[0m[31m [ 36%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_normalize_text [32mPASSED[0m[31m [ 37%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_levenshtein_distance [32mPASSED[0m[31m [ 38%][0m
+tests/test_integration.py::TestEHRIntegration::test_read_appointment_from_ehr [32mPASSED[0m[31m [ 38%][0m
+tests/test_integration.py::TestEHRIntegration::test_write_verification_note_to_ehr [31mFAILED[0m[31m [ 39%][0m
+tests/test_integration.py::TestEHRIntegration::test_ehr_read_with_timeout [32mPASSED[0m[31m [ 40%][0m
+tests/test_integration.py::TestEHRIntegration::test_ehr_write_with_retry [32mPASSED[0m[31m [ 40%][0m
+tests/test_integration.py::TestPriorAuthDatabaseIntegration::test_query_prior_auths_success [32mPASSED[0m[31m [ 41%][0m
+tests/test_integration.py::TestPriorAuthDatabaseIntegration::test_query_prior_auths_no_results [32mPASSED[0m[31m [ 42%][0m
+tests/test_integration.py::TestPriorAuthDatabaseIntegration::test_query_prior_auths_timeout [32mPASSED[0m[31m [ 42%][0m
+tests/test_integration.py::TestPriorAuthDatabaseIntegration::test_query_with_filters [32mPASSED[0m[31m [ 43%][0m
+tests/test_integration.py::TestErrorHandling::test_database_unavailable_retry_logic [31mFAILED[0m[31m [ 44%][0m
+tests/test_integration.py::TestErrorHandling::test_ehr_write_failure_fallback [31mFAILED[0m[31m [ 44%][0m
+tests/test_integration.py::TestErrorHandling::test_insurance_requirements_db_error [32mPASSED[0m[31m [ 45%][0m
+tests/test_integration.py::TestHumanReviewInterface::test_human_decision_approval [32mPASSED[0m[31m [ 46%][0m
+tests/test_integration.py::TestHumanReviewInterface::test_human_decision_reschedule [32mPASSED[0m[31m [ 46%][0m
+tests/test_integration.py::TestHumanReviewInterface::test_human_decision_escalate_further [32mPASSED[0m[31m [ 47%][0m
+tests/test_integration.py::TestDatabaseOperations::test_save_prior_auth_check_to_database [32mPASSED[0m[31m [ 48%][0m
+tests/test_integration.py::TestDatabaseOperations::test_update_prior_auth_check_status [32mPASSED[0m[31m [ 48%][0m
+tests/test_integration.py::TestDatabaseOperations::test_query_checks_by_status [32mPASSED[0m[31m [ 49%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_high_confidence_exact_match_valid_expiration [32mPASSED[0m[31m [ 50%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_high_confidence_missing_prior_auth [32mPASSED[0m[31m [ 50%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_high_confidence_expired_prior_auth [32mPASSED[0m[31m [ 51%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_medium_confidence_fuzzy_match [32mPASSED[0m[31m [ 51%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_medium_confidence_expiring_soon [32mPASSED[0m[31m [ 52%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_medium_confidence_same_day_expiration [32mPASSED[0m[31m [ 53%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_low_confidence_multiple_prior_auths [32mPASSED[0m[31m [ 53%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_low_confidence_cpt_mismatch [32mPASSED[0m[31m [ 54%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_low_confidence_missing_expiration_date [32mPASSED[0m[31m [ 55%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_rationale_generated [32mPASSED[0m[31m [ 55%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_rationale_default_generation [32mPASSED[0m[31m [ 56%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_high_confidence_no_conflicting_information [32mPASSED[0m[31m [ 57%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_medium_confidence_minor_data_issues [32mPASSED[0m[31m [ 57%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_low_confidence_unknown_requirement [31mFAILED[0m[31m [ 58%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_progression_through_steps [32mPASSED[0m[31m [ 59%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_with_single_prior_auth_exact_match [32mPASSED[0m[31m [ 59%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_escalation_preserves_reason [32mPASSED[0m[31m [ 60%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_exact_cpt_match [32mPASSED[0m[31m [ 61%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_cpt_mismatch [31mFAILED[0m[31m [ 61%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_fuzzy_match_high_similarity [32mPASSED[0m[31m [ 62%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_multiple_cpt_codes_in_prior_auth [32mPASSED[0m[31m [ 63%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_multiple_prior_auths_single_match [32mPASSED[0m[31m [ 63%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_multiple_prior_auths_multiple_matches [31mFAILED[0m[31m [ 64%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_multiple_prior_auths_no_match [31mFAILED[0m[31m [ 65%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_vague_approval_language [31mFAILED[0m[31m [ 65%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_empty_approved_cpt_codes [32mPASSED[0m[31m [ 66%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_case_insensitive_cpt_match [32mPASSED[0m[31m [ 67%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_valid_prior_auth_30_days_future [32mPASSED[0m[31m [ 67%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expired_prior_auth_10_days_past [32mPASSED[0m[31m [ 68%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_same_day_as_appointment [32mPASSED[0m[31m [ 69%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_within_7_days [32mPASSED[0m[31m [ 69%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_exactly_7_days_after [32mPASSED[0m[31m [ 70%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_8_days_after [32mPASSED[0m[31m [ 71%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expired_1_day_ago [32mPASSED[0m[31m [ 71%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_1_day_after_appointment [32mPASSED[0m[31m [ 72%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_6_months_future [32mPASSED[0m[31m [ 73%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_no_prior_auth_provided [32mPASSED[0m[31m [ 73%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_confidence_score_preserved_from_step3 [32mPASSED[0m[31m [ 74%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_days_until_expiration_calculation [32mPASSED[0m[31m [ 75%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_timezone_handling [32mPASSED[0m[31m [ 75%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_procedure_requires_prior_auth [32mPASSED[0m[31m [ 76%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_procedure_does_not_require_prior_auth [31mFAILED[0m[31m [ 76%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_no_procedure_codes [31mFAILED[0m[31m [ 77%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_unknown_procedure_code [31mFAILED[0m[31m [ 78%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_insurance_database_error [31mFAILED[0m[31m [ 78%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_imaging_procedures_require_prior_auth [32mPASSED[0m[31m [ 79%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_office_visits_do_not_require_prior_auth [31mFAILED[0m[31m [ 80%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_surgical_procedures_require_prior_auth [32mPASSED[0m[31m [ 80%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_lab_work_does_not_require_prior_auth [31mFAILED[0m[31m [ 81%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_whitespace_only_procedure_code [31mFAILED[0m[31m [ 82%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_pending_to_checking [32mPASSED[0m[31m [ 82%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_checking_to_awaiting_review [32mPASSED[0m[31m [ 83%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_checking_to_escalated [32mPASSED[0m[31m [ 84%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_checking_to_failed [32mPASSED[0m[31m [ 84%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_checking_to_completed [32mPASSED[0m[31m [ 85%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_awaiting_review_to_approved [32mPASSED[0m[31m [ 86%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_awaiting_review_to_rescheduled [32mPASSED[0m[31m [ 86%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_awaiting_review_to_escalated [32mPASSED[0m[31m [ 87%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_escalated_to_awaiting_review [32mPASSED[0m[31m [ 88%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_escalated_to_completed [32mPASSED[0m[31m [ 88%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_approved_to_completed [32mPASSED[0m[31m [ 89%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_rescheduled_to_completed [32mPASSED[0m[31m [ 90%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_failed_to_completed [32mPASSED[0m[31m [ 90%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_completed_to_checking [32mPASSED[0m[31m [ 91%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_completed_to_any_state [32mPASSED[0m[31m [ 92%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_pending_to_approved [32mPASSED[0m[31m [ 92%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_pending_to_rescheduled [32mPASSED[0m[31m [ 93%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_awaiting_review_to_checking [32mPASSED[0m[31m [ 94%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_failed_to_checking [32mPASSED[0m[31m [ 94%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_completed_at_timestamp_set_on_completion [32mPASSED[0m[31m [ 95%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_last_updated_at_timestamp_updated_on_transition [32mPASSED[0m[31m [ 96%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_escalation_reason_set_on_escalation [32mPASSED[0m[31m [ 96%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_complete_workflow_pending_to_completed [32mPASSED[0m[31m [ 97%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_escalation_workflow [32mPASSED[0m[31m [ 98%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_reschedule_workflow [32mPASSED[0m[31m [ 98%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_failed_workflow [32mPASSED[0m[31m [ 99%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_same_state_transition_allowed [32mPASSED[0m[31m [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m____________ TestE2ESystemError.test_database_unavailable_workflow _____________[0m
+[1m[31mtests/test_e2e_workflows.py[0m:197: in test_database_unavailable_workflow
+    assert "Prior-auth database unavailable" in result.escalation_reason
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424154049-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:197 Prior-auth database query failed: Database timeout
+[31m[1m_ TestEdgeCase2_MultiplePriorAuths.test_multiple_prior_auths_multiple_matches __[0m
+[1m[31mtests/test_edge_cases.py[0m:97: in test_multiple_prior_auths_multiple_matches
+    matched = await decision_engine.step3_validate_match(check, prior_auths, {})
+[1m[31mapp/services/decision_engine.py[0m:271: in step3_validate_match
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_REVIEW. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:266 Multiple prior-auths match procedure: 2
+[31m[1m_____ TestEdgeCase2_MultiplePriorAuths.test_multiple_prior_auths_no_match ______[0m
+[1m[31mtests/test_edge_cases.py[0m:120: in test_multiple_prior_auths_no_match
+    matched = await decision_engine.step3_validate_match(check, prior_auths, {})
+[1m[31mapp/services/decision_engine.py[0m:282: in step3_validate_match
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_REVIEW. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:278 Multiple prior-auths found but none match procedure CPT code
+[31m[1m_ TestEdgeCase3_VagueApprovalLanguage.test_vague_approval_language_low_similarity _[0m
+[1m[31mtests/test_edge_cases.py[0m:145: in test_vague_approval_language_low_similarity
+    matched = await decision_engine.step3_validate_match(check, prior_auths, {})
+[1m[31mapp/services/decision_engine.py[0m:244: in step3_validate_match
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_REVIEW. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:240 Prior-auth found but CPT code mismatch
+[31m[1m_ TestEdgeCase4_DatabaseUnavailable.test_database_timeout_transitions_to_failed _[0m
+[1m[31mtests/test_edge_cases.py[0m:171: in test_database_timeout_transitions_to_failed
+    assert "Prior-auth database unavailable" in result.escalation_reason
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424154050-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:197 Prior-auth database query failed: Connection timeout
+[31m[1m_______ TestEdgeCase5_CPTMismatch.test_cpt_mismatch_contrast_difference ________[0m
+[1m[31mtests/test_edge_cases.py[0m:193: in test_cpt_mismatch_contrast_difference
+    matched = await decision_engine.step3_validate_match(check, prior_auths, {})
+[1m[31mapp/services/decision_engine.py[0m:244: in step3_validate_match
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_REVIEW. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:240 Prior-auth found but CPT code mismatch
+[31m[1m________ TestREQPA002_PriorAuthRetrieval.test_retry_on_database_failure ________[0m
+[1m[31mapp/services/decision_engine.py[0m:172: in step2_locate_prior_auths
+    prior_auth_records = await self.prior_auth_adapter.query_prior_auths(
+[1m[31m/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py[0m:2154: in _execute_mock_call
+    raise effect
+[1m[31mE   Exception: Timeout[0m
+
+[33mDuring handling of the above exception, another exception occurred:[0m
+[1m[31mtests/test_functional_requirements.py[0m:87: in test_retry_on_database_failure
+    await decision_engine.step2_locate_prior_auths(check, appointment_data)
+[1m[31mapp/services/decision_engine.py[0m:198: in step2_locate_prior_auths
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to FAILED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:197 Prior-auth database query failed: Timeout
+[31m[1m_____ TestREQPA008_ManualFallback.test_manual_fallback_on_database_failure _____[0m
+[1m[31mtests/test_functional_requirements.py[0m:285: in test_manual_fallback_on_database_failure
+    assert "manual check required" in result.escalation_reason.lower()
+[1m[31mE   AttributeError: 'NoneType' object has no attribute 'lower'[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424154050-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:197 Prior-auth database query failed: Database down
+[31m[1m____________ TestEHRIntegration.test_write_verification_note_to_ehr ____________[0m
+[1m[31mtests/test_integration.py[0m:47: in test_write_verification_note_to_ehr
+    check.status = CheckStatus.COMPLETED
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+[31m[1m___________ TestErrorHandling.test_database_unavailable_retry_logic ____________[0m
+[1m[31mtests/test_integration.py[0m:167: in test_database_unavailable_retry_logic
+    assert "database unavailable" in result.escalation_reason.lower()
+[1m[31mE   AttributeError: 'NoneType' object has no attribute 'lower'[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424154050-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:197 Prior-auth database query failed: Connection refused
+[31m[1m______________ TestErrorHandling.test_ehr_write_failure_fallback _______________[0m
+[1m[31mtests/test_integration.py[0m:172: in test_ehr_write_failure_fallback
+    check.status = CheckStatus.COMPLETED
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+[31m[1m____ TestConfidenceScoreCalculation.test_low_confidence_unknown_requirement ____[0m
+[1m[31mtests/test_unit_confidence_score.py[0m:171: in test_low_confidence_unknown_requirement
+    check.status = CheckStatus.ESCALATED
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+[31m[1m______________________ TestCPTMatching.test_cpt_mismatch _______________________[0m
+[1m[31mtests/test_unit_cpt_matching.py[0m:52: in test_cpt_mismatch
+    matched = await decision_engine.step3_validate_match(check, prior_auth_records, {})
+[1m[31mapp/services/decision_engine.py[0m:244: in step3_validate_match
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_REVIEW. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:240 Prior-auth found but CPT code mismatch
+[31m[1m__________ TestCPTMatching.test_multiple_prior_auths_multiple_matches __________[0m
+[1m[31mtests/test_unit_cpt_matching.py[0m:143: in test_multiple_prior_auths_multiple_matches
+    matched = await decision_engine.step3_validate_match(check, prior_auth_records, {})
+[1m[31mapp/services/decision_engine.py[0m:271: in step3_validate_match
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_REVIEW. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:266 Multiple prior-auths match procedure: 2
+[31m[1m______________ TestCPTMatching.test_multiple_prior_auths_no_match ______________[0m
+[1m[31mtests/test_unit_cpt_matching.py[0m:167: in test_multiple_prior_auths_no_match
+    matched = await decision_engine.step3_validate_match(check, prior_auth_records, {})
+[1m[31mapp/services/decision_engine.py[0m:282: in step3_validate_match
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_REVIEW. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:278 Multiple prior-auths found but none match procedure CPT code
+[31m[1m_________________ TestCPTMatching.test_vague_approval_language _________________[0m
+[1m[31mtests/test_unit_cpt_matching.py[0m:188: in test_vague_approval_language
+    matched = await decision_engine.step3_validate_match(check, prior_auth_records, {})
+[1m[31mapp/services/decision_engine.py[0m:244: in step3_validate_match
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_REVIEW. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:240 Prior-auth found but CPT code mismatch
+[31m[1m_____ TestPriorAuthRequirement.test_procedure_does_not_require_prior_auth ______[0m
+[1m[31mapp/services/decision_engine.py[0m:138: in step1_determine_requirement
+    check.transition_to(CheckStatus.COMPLETED)
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+
+[33mDuring handling of the above exception, another exception occurred:[0m
+[1m[31mtests/test_unit_prior_auth_requirement.py[0m:41: in test_procedure_does_not_require_prior_auth
+    result = await decision_engine.step1_determine_requirement(check, {})
+[1m[31mapp/services/decision_engine.py[0m:154: in step1_determine_requirement
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 99213
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:136 Prior-auth not required for CPT 99213
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:152 Error checking insurance requirements: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>]
+[31m[1m_______________ TestPriorAuthRequirement.test_no_procedure_codes _______________[0m
+[1m[31mtests/test_unit_prior_auth_requirement.py[0m:52: in test_no_procedure_codes
+    result = await decision_engine.step1_determine_requirement(check, {})
+[1m[31mapp/services/decision_engine.py[0m:120: in step1_determine_requirement
+    check.transition_to(CheckStatus.COMPLETED)
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:118 No procedures scheduled, prior-auth not applicable
+[31m[1m_____________ TestPriorAuthRequirement.test_unknown_procedure_code _____________[0m
+[1m[31mapp/services/decision_engine.py[0m:145: in step1_determine_requirement
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+
+[33mDuring handling of the above exception, another exception occurred:[0m
+[1m[31mtests/test_unit_prior_auth_requirement.py[0m:66: in test_unknown_procedure_code
+    result = await decision_engine.step1_determine_requirement(check, {})
+[1m[31mapp/services/decision_engine.py[0m:154: in step1_determine_requirement
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 99999
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:143 Cannot determine prior-auth requirement for CPT 99999
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:152 Error checking insurance requirements: Invalid state transition from PENDING_CHECK to ESCALATED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>]
+[31m[1m____________ TestPriorAuthRequirement.test_insurance_database_error ____________[0m
+[1m[31mapp/services/decision_engine.py[0m:126: in step1_determine_requirement
+    requirement_data = await self.insurance_adapter.check_prior_auth_requirement(
+[1m[31m/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py[0m:2154: in _execute_mock_call
+    raise effect
+[1m[31mE   Exception: Database timeout[0m
+
+[33mDuring handling of the above exception, another exception occurred:[0m
+[1m[31mtests/test_unit_prior_auth_requirement.py[0m:77: in test_insurance_database_error
+    result = await decision_engine.step1_determine_requirement(check, {})
+[1m[31mapp/services/decision_engine.py[0m:154: in step1_determine_requirement
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:152 Error checking insurance requirements: Database timeout
+[31m[1m____ TestPriorAuthRequirement.test_office_visits_do_not_require_prior_auth _____[0m
+[1m[31mapp/services/decision_engine.py[0m:138: in step1_determine_requirement
+    check.transition_to(CheckStatus.COMPLETED)
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+
+[33mDuring handling of the above exception, another exception occurred:[0m
+[1m[31mtests/test_unit_prior_auth_requirement.py[0m:108: in test_office_visits_do_not_require_prior_auth
+    result = await decision_engine.step1_determine_requirement(check, {})
+[1m[31mapp/services/decision_engine.py[0m:154: in step1_determine_requirement
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 99213
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:136 Prior-auth not required for CPT 99213
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:152 Error checking insurance requirements: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>]
+[31m[1m______ TestPriorAuthRequirement.test_lab_work_does_not_require_prior_auth ______[0m
+[1m[31mapp/services/decision_engine.py[0m:138: in step1_determine_requirement
+    check.transition_to(CheckStatus.COMPLETED)
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+
+[33mDuring handling of the above exception, another exception occurred:[0m
+[1m[31mtests/test_unit_prior_auth_requirement.py[0m:139: in test_lab_work_does_not_require_prior_auth
+    result = await decision_engine.step1_determine_requirement(check, {})
+[1m[31mapp/services/decision_engine.py[0m:154: in step1_determine_requirement
+    check.transition_to(
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 80053
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:136 Prior-auth not required for CPT 80053
+[31m[1mERROR   [0m app.services.decision_engine:decision_engine.py:152 Error checking insurance requirements: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>]
+[31m[1m_________ TestPriorAuthRequirement.test_whitespace_only_procedure_code _________[0m
+[1m[31mtests/test_unit_prior_auth_requirement.py[0m:148: in test_whitespace_only_procedure_code
+    result = await decision_engine.step1_determine_requirement(check, {})
+[1m[31mapp/services/decision_engine.py[0m:120: in step1_determine_requirement
+    check.transition_to(CheckStatus.COMPLETED)
+[1m[31mapp/models/prior_auth_check.py[0m:146: in transition_to
+    self.status = new_status
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:537: in __set__
+    self.impl.set(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1277: in set
+    value = self.fire_replace_event(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/attributes.py[0m:1292: in fire_replace_event
+    value = fn(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/events.py[0m:2569: in wrap
+    return fn(target, *arg)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/util.py[0m:331: in set_
+    return validator(state.obj(), key, value)
+[1m[31mapp/models/prior_auth_check.py[0m:129: in validate_status_transition
+    raise ValueError(
+[1m[31mE   ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid transitions: [<CheckStatus.CHECKING: 'CHECKING'>][0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for    
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:118 No procedures scheduled, prior-auth not applicable
+============================= slowest 10 durations =============================
+0.02s setup    tests/test_integration.py::TestDatabaseOperations::test_save_prior_auth_check_to_database
+0.02s setup    tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expired_1_day_ago
+0.01s setup    tests/test_edge_cases.py::TestEdgeCase3_VagueApprovalLanguage::test_vague_approval_language_low_similarity
+0.00s setup    tests/test_e2e_workflows.py::TestE2EHappyPath::test_complete_workflow_valid_prior_auth
+0.00s call     tests/test_integration.py::TestDatabaseOperations::test_save_prior_auth_check_to_database
+0.00s call     tests/test_integration.py::TestDatabaseOperations::test_update_prior_auth_check_status
+0.00s setup    tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_procedure_does_not_require_prior_auth
+0.00s setup    tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_rationale_default_generation
+0.00s call     tests/test_edge_cases.py::TestEdgeCase3_VagueApprovalLanguage::test_vague_approval_language_low_similarity
+0.00s setup    tests/test_unit_cpt_matching.py::TestCPTMatching::test_fuzzy_match_high_similarity
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m tests/test_e2e_workflows.py::[1mTestE2ESystemError::test_database_unavailable_workflow[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_edge_cases.py::[1mTestEdgeCase2_MultiplePriorAuths::test_multiple_prior_auths_multiple_matches[0m - ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_R...
+[31mFAILED[0m tests/test_edge_cases.py::[1mTestEdgeCase2_MultiplePriorAuths::test_multiple_prior_auths_no_match[0m - ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_R...
+[31mFAILED[0m tests/test_edge_cases.py::[1mTestEdgeCase3_VagueApprovalLanguage::test_vague_approval_language_low_similarity[0m - ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_R...
+[31mFAILED[0m tests/test_edge_cases.py::[1mTestEdgeCase4_DatabaseUnavailable::test_database_timeout_transitions_to_failed[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_edge_cases.py::[1mTestEdgeCase5_CPTMismatch::test_cpt_mismatch_contrast_difference[0m - ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_R...
+[31mFAILED[0m tests/test_functional_requirements.py::[1mTestREQPA002_PriorAuthRetrieval::test_retry_on_database_failure[0m - ValueError: Invalid state transition from PENDING_CHECK to FAILED. Valid tr...
+[31mFAILED[0m tests/test_functional_requirements.py::[1mTestREQPA008_ManualFallback::test_manual_fallback_on_database_failure[0m - AttributeError: 'NoneType' object has no attribute 'lower'
+[31mFAILED[0m tests/test_integration.py::[1mTestEHRIntegration::test_write_verification_note_to_ehr[0m - ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid...
+[31mFAILED[0m tests/test_integration.py::[1mTestErrorHandling::test_database_unavailable_retry_logic[0m - AttributeError: 'NoneType' object has no attribute 'lower'
+[31mFAILED[0m tests/test_integration.py::[1mTestErrorHandling::test_ehr_write_failure_fallback[0m - ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid...
+[31mFAILED[0m tests/test_unit_confidence_score.py::[1mTestConfidenceScoreCalculation::test_low_confidence_unknown_requirement[0m - ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid...
+[31mFAILED[0m tests/test_unit_cpt_matching.py::[1mTestCPTMatching::test_cpt_mismatch[0m - ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_R...
+[31mFAILED[0m tests/test_unit_cpt_matching.py::[1mTestCPTMatching::test_multiple_prior_auths_multiple_matches[0m - ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_R...
+[31mFAILED[0m tests/test_unit_cpt_matching.py::[1mTestCPTMatching::test_multiple_prior_auths_no_match[0m - ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_R...
+[31mFAILED[0m tests/test_unit_cpt_matching.py::[1mTestCPTMatching::test_vague_approval_language[0m - ValueError: Invalid state transition from PENDING_CHECK to AWAITING_HUMAN_R...
+[31mFAILED[0m tests/test_unit_prior_auth_requirement.py::[1mTestPriorAuthRequirement::test_procedure_does_not_require_prior_auth[0m - ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid...
+[31mFAILED[0m tests/test_unit_prior_auth_requirement.py::[1mTestPriorAuthRequirement::test_no_procedure_codes[0m - ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid...
+[31mFAILED[0m tests/test_unit_prior_auth_requirement.py::[1mTestPriorAuthRequirement::test_unknown_procedure_code[0m - ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid...
+[31mFAILED[0m tests/test_unit_prior_auth_requirement.py::[1mTestPriorAuthRequirement::test_insurance_database_error[0m - ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid...
+[31mFAILED[0m tests/test_unit_prior_auth_requirement.py::[1mTestPriorAuthRequirement::test_office_visits_do_not_require_prior_auth[0m - ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid...
+[31mFAILED[0m tests/test_unit_prior_auth_requirement.py::[1mTestPriorAuthRequirement::test_lab_work_does_not_require_prior_auth[0m - ValueError: Invalid state transition from PENDING_CHECK to ESCALATED. Valid...
+[31mFAILED[0m tests/test_unit_prior_auth_requirement.py::[1mTestPriorAuthRequirement::test_whitespace_only_procedure_code[0m - ValueError: Invalid state transition from PENDING_CHECK to COMPLETED. Valid...
+[31m======================== [31m[1m23 failed[0m, [32m129 passed[0m[31m in 2.05s[0m[31m ========================[0m

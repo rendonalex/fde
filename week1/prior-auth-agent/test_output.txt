@@ -1,0 +1,489 @@
+[1m============================= test session starts ==============================[0m
+platform darwin -- Python 3.9.6, pytest-7.4.4, pluggy-1.6.0 -- /Users/Alexandra_Rendon/gh/fde/week1/prior-auth-agent/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/Alexandra_Rendon/gh/fde/week1/prior-auth-agent
+configfile: pytest.ini
+plugins: anyio-4.12.1, asyncio-0.23.3
+asyncio: mode=auto
+[1mcollecting ... [0mcollected 152 items
+
+tests/test_e2e_workflows.py::TestE2EHappyPath::test_complete_workflow_valid_prior_auth [31mFAILED[0m[31m [  0%][0m
+tests/test_e2e_workflows.py::TestE2EExpiredPriorAuth::test_expired_prior_auth_workflow [32mPASSED[0m[31m [  1%][0m
+tests/test_e2e_workflows.py::TestE2EMissingPriorAuth::test_missing_prior_auth_workflow [31mFAILED[0m[31m [  1%][0m
+tests/test_e2e_workflows.py::TestE2EAmbiguousCase::test_multiple_prior_auths_workflow [31mFAILED[0m[31m [  2%][0m
+tests/test_e2e_workflows.py::TestE2ESystemError::test_database_unavailable_workflow [31mFAILED[0m[31m [  3%][0m
+tests/test_e2e_workflows.py::TestE2ENoRequirementWorkflow::test_no_prior_auth_required [32mPASSED[0m[31m [  3%][0m
+tests/test_e2e_workflows.py::TestE2EExpiringSoonWorkflow::test_expiring_soon_escalation [32mPASSED[0m[31m [  4%][0m
+tests/test_e2e_workflows.py::TestE2EPerformance::test_workflow_completes_within_10_seconds [32mPASSED[0m[31m [  5%][0m
+tests/test_edge_cases.py::TestEdgeCase1_SameDayExpiration::test_same_day_expiration_escalates [32mPASSED[0m[31m [  5%][0m
+tests/test_edge_cases.py::TestEdgeCase2_MultiplePriorAuths::test_multiple_prior_auths_single_match [32mPASSED[0m[31m [  6%][0m
+tests/test_edge_cases.py::TestEdgeCase2_MultiplePriorAuths::test_multiple_prior_auths_multiple_matches [31mFAILED[0m[31m [  7%][0m
+tests/test_edge_cases.py::TestEdgeCase2_MultiplePriorAuths::test_multiple_prior_auths_no_match [32mPASSED[0m[31m [  7%][0m
+tests/test_edge_cases.py::TestEdgeCase3_VagueApprovalLanguage::test_vague_approval_language_low_similarity [32mPASSED[0m[31m [  8%][0m
+tests/test_edge_cases.py::TestEdgeCase4_DatabaseUnavailable::test_database_timeout_transitions_to_failed [31mFAILED[0m[31m [  9%][0m
+tests/test_edge_cases.py::TestEdgeCase5_CPTMismatch::test_cpt_mismatch_contrast_difference [32mPASSED[0m[31m [  9%][0m
+tests/test_edge_cases.py::TestEdgeCase6_InactivePolicyworkflow::test_patient_switched_insurance_no_prior_auth_found [31mFAILED[0m[31m [ 10%][0m
+tests/test_edge_cases.py::TestEdgeCase7_MissingExpirationDate::test_missing_expiration_date_causes_error [32mPASSED[0m[31m [ 11%][0m
+tests/test_edge_cases.py::TestEdgeCase8_MultipleProcedures::test_appointment_with_single_procedure_standard_flow [32mPASSED[0m[31m [ 11%][0m
+tests/test_edge_cases.py::TestEdgeCaseDataQuality::test_empty_cpt_code_list [32mPASSED[0m[31m [ 12%][0m
+tests/test_edge_cases.py::TestEdgeCaseDataQuality::test_none_approved_cpt_codes [31mFAILED[0m[31m [ 13%][0m
+tests/test_edge_cases.py::TestEdgeCaseDataQuality::test_malformed_expiration_date [32mPASSED[0m[31m [ 13%][0m
+tests/test_functional_requirements.py::TestREQPA001_AutomaticTrigger::test_check_triggered_for_appointment_with_procedures [31mFAILED[0m[31m [ 14%][0m
+tests/test_functional_requirements.py::TestREQPA001_AutomaticTrigger::test_check_triggered_48_hours_before [32mPASSED[0m[31m [ 15%][0m
+tests/test_functional_requirements.py::TestREQPA002_PriorAuthRetrieval::test_retrieve_prior_auth_within_5_seconds [32mPASSED[0m[31m [ 15%][0m
+tests/test_functional_requirements.py::TestREQPA002_PriorAuthRetrieval::test_retry_on_database_failure [32mPASSED[0m[31m [ 16%][0m
+tests/test_functional_requirements.py::TestREQPA003_CPTMatching::test_exact_cpt_match_high_confidence [32mPASSED[0m[31m [ 17%][0m
+tests/test_functional_requirements.py::TestREQPA003_CPTMatching::test_fuzzy_match_threshold_0_8 [32mPASSED[0m[31m [ 17%][0m
+tests/test_functional_requirements.py::TestREQPA004_ExpirationValidation::test_expired_prior_auth_reschedule [32mPASSED[0m[31m [ 18%][0m
+tests/test_functional_requirements.py::TestREQPA004_ExpirationValidation::test_expiring_within_7_days_escalates [32mPASSED[0m[31m [ 19%][0m
+tests/test_functional_requirements.py::TestREQPA004_ExpirationValidation::test_valid_expiration_proceeds [32mPASSED[0m[31m [ 19%][0m
+tests/test_functional_requirements.py::TestREQPA005_HumanReviewInterface::test_interface_displays_required_fields [32mPASSED[0m[31m [ 20%][0m
+tests/test_functional_requirements.py::TestREQPA005_HumanReviewInterface::test_human_decision_recorded_with_audit_trail [32mPASSED[0m[31m [ 21%][0m
+tests/test_functional_requirements.py::TestREQPA006_EHRDocumentation::test_verification_documented_in_ehr [32mPASSED[0m[31m [ 21%][0m
+tests/test_functional_requirements.py::TestREQPA007_AuditLogging::test_audit_trail_complete [31mFAILED[0m[31m [ 22%][0m
+tests/test_functional_requirements.py::TestREQPA007_AuditLogging::test_state_transitions_logged [31mFAILED[0m[31m [ 23%][0m
+tests/test_functional_requirements.py::TestREQPA007_AuditLogging::test_escalation_reason_logged [32mPASSED[0m[31m [ 23%][0m
+tests/test_functional_requirements.py::TestREQPA008_ManualFallback::test_manual_fallback_on_database_failure [31mFAILED[0m[31m [ 24%][0m
+tests/test_functional_requirements.py::TestREQPA008_ManualFallback::test_manual_entry_recorded [31mFAILED[0m[31m [ 25%][0m
+tests/test_functional_requirements.py::TestREQPA009_ConfidenceScore::test_high_confidence_conditions [32mPASSED[0m[31m [ 25%][0m
+tests/test_functional_requirements.py::TestREQPA009_ConfidenceScore::test_medium_confidence_fuzzy_match [32mPASSED[0m[31m [ 26%][0m
+tests/test_functional_requirements.py::TestREQPA009_ConfidenceScore::test_low_confidence_ambiguous [32mPASSED[0m[31m [ 26%][0m
+tests/test_functional_requirements.py::TestREQPA010_StateMachine::test_valid_transitions_allowed [32mPASSED[0m[31m [ 27%][0m
+tests/test_functional_requirements.py::TestREQPA010_StateMachine::test_invalid_transitions_blocked [31mFAILED[0m[31m [ 28%][0m
+tests/test_functional_requirements.py::TestREQPA010_StateMachine::test_state_transitions_atomic [32mPASSED[0m[31m [ 28%][0m
+tests/test_functional_requirements.py::TestREQPA010_StateMachine::test_completed_timestamp_set [32mPASSED[0m[31m [ 29%][0m
+tests/test_functional_requirements.py::TestNonFunctionalRequirements::test_response_time_target [32mPASSED[0m[31m [ 30%][0m
+tests/test_functional_requirements.py::TestNonFunctionalRequirements::test_escalation_rate_target [32mPASSED[0m[31m [ 30%][0m
+tests/test_functional_requirements.py::TestNonFunctionalRequirements::test_accuracy_target_95_percent [32mPASSED[0m[31m [ 31%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_exact_match [32mPASSED[0m[31m   [ 32%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_case_insensitive [32mPASSED[0m[31m [ 32%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_punctuation_ignored [32mPASSED[0m[31m [ 33%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_similar_strings_high_score [31mFAILED[0m[31m [ 34%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_different_strings_low_score [32mPASSED[0m[31m [ 34%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_empty_strings [32mPASSED[0m[31m [ 35%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_is_match_above_threshold [31mFAILED[0m[31m [ 36%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_is_match_below_threshold [32mPASSED[0m[31m [ 36%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_normalize_text [32mPASSED[0m[31m [ 37%][0m
+tests/test_fuzzy_matcher.py::TestFuzzyMatcher::test_levenshtein_distance [32mPASSED[0m[31m [ 38%][0m
+tests/test_integration.py::TestEHRIntegration::test_read_appointment_from_ehr [32mPASSED[0m[31m [ 38%][0m
+tests/test_integration.py::TestEHRIntegration::test_write_verification_note_to_ehr [32mPASSED[0m[31m [ 39%][0m
+tests/test_integration.py::TestEHRIntegration::test_ehr_read_with_timeout [32mPASSED[0m[31m [ 40%][0m
+tests/test_integration.py::TestEHRIntegration::test_ehr_write_with_retry [32mPASSED[0m[31m [ 40%][0m
+tests/test_integration.py::TestPriorAuthDatabaseIntegration::test_query_prior_auths_success [32mPASSED[0m[31m [ 41%][0m
+tests/test_integration.py::TestPriorAuthDatabaseIntegration::test_query_prior_auths_no_results [32mPASSED[0m[31m [ 42%][0m
+tests/test_integration.py::TestPriorAuthDatabaseIntegration::test_query_prior_auths_timeout [32mPASSED[0m[31m [ 42%][0m
+tests/test_integration.py::TestPriorAuthDatabaseIntegration::test_query_with_filters [32mPASSED[0m[31m [ 43%][0m
+tests/test_integration.py::TestErrorHandling::test_database_unavailable_retry_logic [31mFAILED[0m[31m [ 44%][0m
+tests/test_integration.py::TestErrorHandling::test_ehr_write_failure_fallback [32mPASSED[0m[31m [ 44%][0m
+tests/test_integration.py::TestErrorHandling::test_insurance_requirements_db_error [32mPASSED[0m[31m [ 45%][0m
+tests/test_integration.py::TestHumanReviewInterface::test_human_decision_approval [32mPASSED[0m[31m [ 46%][0m
+tests/test_integration.py::TestHumanReviewInterface::test_human_decision_reschedule [32mPASSED[0m[31m [ 46%][0m
+tests/test_integration.py::TestHumanReviewInterface::test_human_decision_escalate_further [32mPASSED[0m[31m [ 47%][0m
+tests/test_integration.py::TestDatabaseOperations::test_save_prior_auth_check_to_database [32mPASSED[0m[31m [ 48%][0m
+tests/test_integration.py::TestDatabaseOperations::test_update_prior_auth_check_status [32mPASSED[0m[31m [ 48%][0m
+tests/test_integration.py::TestDatabaseOperations::test_query_checks_by_status [31mFAILED[0m[31m [ 49%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_high_confidence_exact_match_valid_expiration [32mPASSED[0m[31m [ 50%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_high_confidence_missing_prior_auth [32mPASSED[0m[31m [ 50%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_high_confidence_expired_prior_auth [32mPASSED[0m[31m [ 51%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_medium_confidence_fuzzy_match [32mPASSED[0m[31m [ 51%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_medium_confidence_expiring_soon [32mPASSED[0m[31m [ 52%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_medium_confidence_same_day_expiration [32mPASSED[0m[31m [ 53%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_low_confidence_multiple_prior_auths [32mPASSED[0m[31m [ 53%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_low_confidence_cpt_mismatch [32mPASSED[0m[31m [ 54%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_low_confidence_missing_expiration_date [32mPASSED[0m[31m [ 55%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_rationale_generated [32mPASSED[0m[31m [ 55%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_rationale_default_generation [32mPASSED[0m[31m [ 56%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_high_confidence_no_conflicting_information [32mPASSED[0m[31m [ 57%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_medium_confidence_minor_data_issues [32mPASSED[0m[31m [ 57%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_low_confidence_unknown_requirement [32mPASSED[0m[31m [ 58%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_progression_through_steps [32mPASSED[0m[31m [ 59%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_with_single_prior_auth_exact_match [32mPASSED[0m[31m [ 59%][0m
+tests/test_unit_confidence_score.py::TestConfidenceScoreCalculation::test_confidence_escalation_preserves_reason [32mPASSED[0m[31m [ 60%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_exact_cpt_match [32mPASSED[0m[31m [ 61%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_cpt_mismatch [31mFAILED[0m[31m [ 61%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_fuzzy_match_high_similarity [31mFAILED[0m[31m [ 62%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_multiple_cpt_codes_in_prior_auth [32mPASSED[0m[31m [ 63%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_multiple_prior_auths_single_match [32mPASSED[0m[31m [ 63%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_multiple_prior_auths_multiple_matches [31mFAILED[0m[31m [ 64%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_multiple_prior_auths_no_match [32mPASSED[0m[31m [ 65%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_vague_approval_language [32mPASSED[0m[31m [ 65%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_empty_approved_cpt_codes [32mPASSED[0m[31m [ 66%][0m
+tests/test_unit_cpt_matching.py::TestCPTMatching::test_case_insensitive_cpt_match [32mPASSED[0m[31m [ 67%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_valid_prior_auth_30_days_future [32mPASSED[0m[31m [ 67%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expired_prior_auth_10_days_past [32mPASSED[0m[31m [ 68%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_same_day_as_appointment [32mPASSED[0m[31m [ 69%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_within_7_days [32mPASSED[0m[31m [ 69%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_exactly_7_days_after [32mPASSED[0m[31m [ 70%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_8_days_after [32mPASSED[0m[31m [ 71%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expired_1_day_ago [32mPASSED[0m[31m [ 71%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_1_day_after_appointment [32mPASSED[0m[31m [ 72%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_6_months_future [32mPASSED[0m[31m [ 73%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_no_prior_auth_provided [32mPASSED[0m[31m [ 73%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_confidence_score_preserved_from_step3 [32mPASSED[0m[31m [ 74%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_days_until_expiration_calculation [32mPASSED[0m[31m [ 75%][0m
+tests/test_unit_expiration.py::TestExpirationDateCalculation::test_timezone_handling [32mPASSED[0m[31m [ 75%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_procedure_requires_prior_auth [32mPASSED[0m[31m [ 76%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_procedure_does_not_require_prior_auth [32mPASSED[0m[31m [ 76%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_no_procedure_codes [32mPASSED[0m[31m [ 77%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_unknown_procedure_code [32mPASSED[0m[31m [ 78%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_insurance_database_error [32mPASSED[0m[31m [ 78%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_imaging_procedures_require_prior_auth [32mPASSED[0m[31m [ 79%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_office_visits_do_not_require_prior_auth [32mPASSED[0m[31m [ 80%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_surgical_procedures_require_prior_auth [32mPASSED[0m[31m [ 80%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_lab_work_does_not_require_prior_auth [32mPASSED[0m[31m [ 81%][0m
+tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_whitespace_only_procedure_code [32mPASSED[0m[31m [ 82%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_pending_to_checking [32mPASSED[0m[31m [ 82%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_checking_to_awaiting_review [32mPASSED[0m[31m [ 83%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_checking_to_escalated [32mPASSED[0m[31m [ 84%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_checking_to_failed [32mPASSED[0m[31m [ 84%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_checking_to_completed [32mPASSED[0m[31m [ 85%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_awaiting_review_to_approved [32mPASSED[0m[31m [ 86%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_awaiting_review_to_rescheduled [32mPASSED[0m[31m [ 86%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_awaiting_review_to_escalated [32mPASSED[0m[31m [ 87%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_escalated_to_awaiting_review [32mPASSED[0m[31m [ 88%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_escalated_to_completed [32mPASSED[0m[31m [ 88%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_approved_to_completed [32mPASSED[0m[31m [ 89%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_rescheduled_to_completed [32mPASSED[0m[31m [ 90%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_valid_transition_failed_to_completed [32mPASSED[0m[31m [ 90%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_completed_to_checking [31mFAILED[0m[31m [ 91%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_completed_to_any_state [31mFAILED[0m[31m [ 92%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_pending_to_approved [31mFAILED[0m[31m [ 92%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_pending_to_rescheduled [31mFAILED[0m[31m [ 93%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_awaiting_review_to_checking [31mFAILED[0m[31m [ 94%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_invalid_transition_failed_to_checking [31mFAILED[0m[31m [ 94%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_completed_at_timestamp_set_on_completion [32mPASSED[0m[31m [ 95%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_last_updated_at_timestamp_updated_on_transition [31mFAILED[0m[31m [ 96%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_escalation_reason_set_on_escalation [32mPASSED[0m[31m [ 96%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_complete_workflow_pending_to_completed [32mPASSED[0m[31m [ 97%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_escalation_workflow [32mPASSED[0m[31m [ 98%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_reschedule_workflow [32mPASSED[0m[31m [ 98%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_failed_workflow [32mPASSED[0m[31m [ 99%][0m
+tests/test_unit_state_machine.py::TestStateMachineValidation::test_same_state_transition_allowed [32mPASSED[0m[31m [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m___________ TestE2EHappyPath.test_complete_workflow_valid_prior_auth ___________[0m
+[1m[31mtests/test_e2e_workflows.py[0m:69: in test_complete_workflow_valid_prior_auth
+    assert result.created_at is not None
+[1m[31mE   AssertionError: assert None is not None[0m
+[1m[31mE    +  where None = <PriorAuthCheck(check_id='PAC-20260424143250-TEST', status=AWAITING_HUMAN_REVIEW, confidence=HIGH)>.created_at[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424143250-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:193 Found 1 prior-auth record(s)
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:224 Exact CPT match found with prior-auth PA-2024-001
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:325 Step 4: Checking expiration for prior-auth PA-2024-001
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:334 Days until expiration: 43
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:379 Step 5: Generating final recommendation
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:392 Final recommendation: PROCEED (confidence: HIGH)
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:93 Prior-auth check PAC-20260424143250-TEST completed: recommendation=PROCEED, confidence=HIGH
+[31m[1m___________ TestE2EMissingPriorAuth.test_missing_prior_auth_workflow ___________[0m
+[1m[31mtests/test_e2e_workflows.py[0m:132: in test_missing_prior_auth_workflow
+    assert "No active prior-auth found" in result.escalation_reason
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424143250-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:183 No prior-auth found for patient PAT-12345
+[31m[1m___________ TestE2EAmbiguousCase.test_multiple_prior_auths_workflow ____________[0m
+[1m[31mtests/test_e2e_workflows.py[0m:173: in test_multiple_prior_auths_workflow
+    assert "Multiple prior-auths match" in result.escalation_reason
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424143250-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:193 Found 2 prior-auth record(s)
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:266 Multiple prior-auths match procedure: 2
+[31m[1m____________ TestE2ESystemError.test_database_unavailable_workflow _____________[0m
+[1m[31mtests/test_e2e_workflows.py[0m:197: in test_database_unavailable_workflow
+    assert "Prior-auth database unavailable" in result.escalation_reason
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424143250-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[1m[31mERROR   [0m app.services.decision_engine:decision_engine.py:197 Prior-auth database query failed: Database timeout
+[31m[1m_ TestEdgeCase2_MultiplePriorAuths.test_multiple_prior_auths_multiple_matches __[0m
+[1m[31mtests/test_edge_cases.py[0m:102: in test_multiple_prior_auths_multiple_matches
+    assert "Multiple prior-auths match" in check.escalation_reason
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:266 Multiple prior-auths match procedure: 2
+[31m[1m_ TestEdgeCase4_DatabaseUnavailable.test_database_timeout_transitions_to_failed _[0m
+[1m[31mtests/test_edge_cases.py[0m:171: in test_database_timeout_transitions_to_failed
+    assert "Prior-auth database unavailable" in result.escalation_reason
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424143250-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[1m[31mERROR   [0m app.services.decision_engine:decision_engine.py:197 Prior-auth database query failed: Connection timeout
+[31m[1m_ TestEdgeCase6_InactivePolicyworkflow.test_patient_switched_insurance_no_prior_auth_found _[0m
+[1m[31mtests/test_edge_cases.py[0m:227: in test_patient_switched_insurance_no_prior_auth_found
+    assert "No active prior-auth found" in result.escalation_reason
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424143250-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:183 No prior-auth found for patient PAT-12345
+[31m[1m_____________ TestEdgeCaseDataQuality.test_none_approved_cpt_codes _____________[0m
+[1m[31mtests/test_edge_cases.py[0m:307: in test_none_approved_cpt_codes
+    result = decision_engine._check_cpt_match(check, prior_auth)
+[1m[31mapp/services/decision_engine.py[0m:302: in _check_cpt_match
+    if check.procedure_code in approved_codes:
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+[31m[1m_ TestREQPA001_AutomaticTrigger.test_check_triggered_for_appointment_with_procedures _[0m
+[1m[31mtests/test_functional_requirements.py[0m:35: in test_check_triggered_for_appointment_with_procedures
+    assert check.created_at is not None
+[1m[31mE   AssertionError: assert None is not None[0m
+[1m[31mE    +  where None = <PriorAuthCheck(check_id='PAC-20260424143250-TEST', status=PENDING_CHECK, confidence=None)>.created_at[0m
+[31m[1m_____________ TestREQPA007_AuditLogging.test_audit_trail_complete ______________[0m
+[1m[31mtests/test_functional_requirements.py[0m:248: in test_audit_trail_complete
+    assert check.created_at is not None
+[1m[31mE   AssertionError: assert None is not None[0m
+[1m[31mE    +  where None = <PriorAuthCheck(check_id='PAC-20260424143250-TEST', status=PENDING_CHECK, confidence=None)>.created_at[0m
+[31m[1m___________ TestREQPA007_AuditLogging.test_state_transitions_logged ____________[0m
+[1m[31mtests/test_functional_requirements.py[0m:258: in test_state_transitions_logged
+    assert check.last_updated_at > initial_updated
+[1m[31mE   TypeError: '>' not supported between instances of 'datetime.datetime' and 'NoneType'[0m
+[31m[1m_____ TestREQPA008_ManualFallback.test_manual_fallback_on_database_failure _____[0m
+[1m[31mtests/test_functional_requirements.py[0m:285: in test_manual_fallback_on_database_failure
+    assert "manual check required" in result.escalation_reason.lower()
+[1m[31mE   AttributeError: 'NoneType' object has no attribute 'lower'[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424143250-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[1m[31mERROR   [0m app.services.decision_engine:decision_engine.py:197 Prior-auth database query failed: Database down
+[31m[1m____________ TestREQPA008_ManualFallback.test_manual_entry_recorded ____________[0m
+[1m[31mvenv/lib/python3.9/site-packages/pytest_asyncio/plugin.py[0m:856: in pytest_pyfunc_call
+    pyfuncitem.warn(
+[1m[31mE   pytest.PytestWarning: The test <Function test_manual_entry_recorded> is marked with '@pytest.mark.asyncio' but it is not an async function. Please remove the asyncio mark. If the test is not marked explicitly, check for global marks applied via 'pytestmark'.[0m
+[31m[1m__________ TestREQPA010_StateMachine.test_invalid_transitions_blocked __________[0m
+[1m[31mtests/test_functional_requirements.py[0m:353: in test_invalid_transitions_blocked
+    check.transition_to(CheckStatus.CHECKING)
+[1m[31mE   Failed: DID NOT RAISE <class 'ValueError'>[0m
+[31m[1m_______________ TestFuzzyMatcher.test_similar_strings_high_score _______________[0m
+[1m[31mtests/test_fuzzy_matcher.py[0m:31: in test_similar_strings_high_score
+    assert score > 0.8
+[1m[31mE   assert 0.7391304347826086 > 0.8[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[31m[1m________________ TestFuzzyMatcher.test_is_match_above_threshold ________________[0m
+[1m[31mtests/test_fuzzy_matcher.py[0m:46: in test_is_match_above_threshold
+    assert is_match is True
+[1m[31mE   assert False is True[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[31m[1m___________ TestErrorHandling.test_database_unavailable_retry_logic ____________[0m
+[1m[31mtests/test_integration.py[0m:167: in test_database_unavailable_retry_logic
+    assert "database unavailable" in result.escalation_reason.lower()
+[1m[31mE   AttributeError: 'NoneType' object has no attribute 'lower'[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:60 Starting prior-auth check PAC-20260424143250-TEST for appointment APT-12345
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:114 Step 1: Determining prior-auth requirement for 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:131 Prior-auth required for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:169 Step 2: Locating prior-auths for patient PAT-12345
+[1m[31mERROR   [0m app.services.decision_engine:decision_engine.py:197 Prior-auth database query failed: Connection refused
+[31m[1m______________ TestDatabaseOperations.test_query_checks_by_status ______________[0m
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/engine/base.py[0m:1938: in _exec_single_context
+    self.dialect.do_executemany(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/engine/default.py[0m:919: in do_executemany
+    cursor.executemany(statement, parameters)
+[1m[31mE   sqlite3.IntegrityError: UNIQUE constraint failed: prior_auth_checks.appointment_id[0m
+
+[33mThe above exception was the direct cause of the following exception:[0m
+[1m[31mtests/test_integration.py[0m:283: in test_query_checks_by_status
+    db_session.commit()
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/session.py[0m:1969: in commit
+    trans.commit(_to_root=True)
+[1m[31m<string>[0m:2: in commit
+    ???
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/state_changes.py[0m:139: in _go
+    ret_value = fn(self, *arg, **kw)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/session.py[0m:1256: in commit
+    self._prepare_impl()
+[1m[31m<string>[0m:2: in _prepare_impl
+    ???
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/state_changes.py[0m:139: in _go
+    ret_value = fn(self, *arg, **kw)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/session.py[0m:1231: in _prepare_impl
+    self.session.flush()
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/session.py[0m:4312: in flush
+    self._flush(objects)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/session.py[0m:4448: in _flush
+    transaction.rollback(_capture_exception=True)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/util/langhelpers.py[0m:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/session.py[0m:4408: in _flush
+    flush_context.execute()
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/unitofwork.py[0m:466: in execute
+    rec.execute(self)
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/unitofwork.py[0m:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/persistence.py[0m:93: in save_obj
+    _emit_insert_statements(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/orm/persistence.py[0m:1044: in _emit_insert_statements
+    result = connection.execute(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/engine/base.py[0m:1416: in execute
+    return meth(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/sql/elements.py[0m:517: in _execute_on_connection
+    return connection._execute_clauseelement(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/engine/base.py[0m:1639: in _execute_clauseelement
+    ret = self._execute_context(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/engine/base.py[0m:1848: in _execute_context
+    return self._exec_single_context(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/engine/base.py[0m:1988: in _exec_single_context
+    self._handle_dbapi_exception(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/engine/base.py[0m:2344: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/engine/base.py[0m:1938: in _exec_single_context
+    self.dialect.do_executemany(
+[1m[31mvenv/lib/python3.9/site-packages/sqlalchemy/engine/default.py[0m:919: in do_executemany
+    cursor.executemany(statement, parameters)
+[1m[31mE   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: prior_auth_checks.appointment_id[0m
+[1m[31mE   [SQL: INSERT INTO prior_auth_checks (check_id, patient_id, appointment_id, scheduled_date, procedure_code, procedure_description, insurance_policy_id, status, prior_auth_required, prior_auth_status, ai_recommendation, confidence_score, confidence_rationale, human_decision, human_decision_by, human_decision_at, human_decision_notes, created_at, completed_at, last_updated_at, escalation_reason, prior_auth_records_found, matched_prior_auth_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)][0m
+[1m[31mE   [parameters: [('CHECK-001', 'PAT-12345', 'APT-12345', '2026-04-26 14:32:50.659475', '70553', 'MRI Brain with Contrast', 'INS-POL-67890', 'AWAITING_HUMAN_REVIEW', None, None, None, None, None, None, None, None, None, '2026-04-24 12:32:50.660346', None, '2026-04-24 12:32:50.660346', None, None, None), ('CHECK-002', 'PAT-12345', 'APT-12345', '2026-04-26 14:32:50.659512', '70553', 'MRI Brain with Contrast', 'INS-POL-67890', 'COMPLETED', None, None, None, None, None, None, None, None, None, '2026-04-24 12:32:50.660347', None, '2026-04-24 12:32:50.660347', None, None, None), ('CHECK-003', 'PAT-12345', 'APT-12345', '2026-04-26 14:32:50.659532', '70553', 'MRI Brain with Contrast', 'INS-POL-67890', 'AWAITING_HUMAN_REVIEW', None, None, None, None, None, None, None, None, None, '2026-04-24 12:32:50.660347', None, '2026-04-24 12:32:50.660348', None, None, None)]][0m
+[1m[31mE   (Background on this error at: https://sqlalche.me/e/20/gkpj)[0m
+[31m[1m______________________ TestCPTMatching.test_cpt_mismatch _______________________[0m
+[1m[31mtests/test_unit_cpt_matching.py[0m:51: in test_cpt_mismatch
+    assert matched is None
+[1m[31mE   AssertionError: assert {'approved_cpt_codes': ['70551'], 'approved_service_description': 'MRI Brain without contrast', 'prior_auth_id': 'PA-001'} is None[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:230 Fuzzy match found with prior-auth PA-001
+[31m[1m_______________ TestCPTMatching.test_fuzzy_match_high_similarity _______________[0m
+[1m[31mtests/test_unit_cpt_matching.py[0m:72: in test_fuzzy_match_high_similarity
+    assert matched is not None
+[1m[31mE   assert None is not None[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:240 Prior-auth found but CPT code mismatch
+[31m[1m__________ TestCPTMatching.test_multiple_prior_auths_multiple_matches __________[0m
+[1m[31mtests/test_unit_cpt_matching.py[0m:145: in test_multiple_prior_auths_multiple_matches
+    assert "Multiple prior-auths match" in check.escalation_reason
+[1m[31mE   TypeError: argument of type 'NoneType' is not iterable[0m
+------------------------------ Captured log setup ------------------------------
+[32mINFO    [0m app.services.fuzzy_matcher:fuzzy_matcher.py:25 Initialized FuzzyMatcher with threshold 0.8
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:47 Initialized PriorAuthDecisionEngine
+------------------------------ Captured log call -------------------------------
+[32mINFO    [0m app.services.decision_engine:decision_engine.py:213 Step 3: Validating prior-auth match for CPT 70553
+[33mWARNING [0m app.services.decision_engine:decision_engine.py:266 Multiple prior-auths match procedure: 2
+[31m[1m___ TestStateMachineValidation.test_invalid_transition_completed_to_checking ___[0m
+[1m[31mtests/test_unit_state_machine.py[0m:135: in test_invalid_transition_completed_to_checking
+    check.transition_to(CheckStatus.CHECKING)
+[1m[31mE   Failed: DID NOT RAISE <class 'ValueError'>[0m
+[31m[1m__ TestStateMachineValidation.test_invalid_transition_completed_to_any_state ___[0m
+[1m[31mtests/test_unit_state_machine.py[0m:151: in test_invalid_transition_completed_to_any_state
+    check.transition_to(target_status)
+[1m[31mE   Failed: DID NOT RAISE <class 'ValueError'>[0m
+[31m[1m____ TestStateMachineValidation.test_invalid_transition_pending_to_approved ____[0m
+[1m[31mtests/test_unit_state_machine.py[0m:158: in test_invalid_transition_pending_to_approved
+    check.transition_to(CheckStatus.APPROVED)
+[1m[31mE   Failed: DID NOT RAISE <class 'ValueError'>[0m
+[31m[1m__ TestStateMachineValidation.test_invalid_transition_pending_to_rescheduled ___[0m
+[1m[31mtests/test_unit_state_machine.py[0m:165: in test_invalid_transition_pending_to_rescheduled
+    check.transition_to(CheckStatus.RESCHEDULED)
+[1m[31mE   Failed: DID NOT RAISE <class 'ValueError'>[0m
+[31m[1m_ TestStateMachineValidation.test_invalid_transition_awaiting_review_to_checking _[0m
+[1m[31mtests/test_unit_state_machine.py[0m:172: in test_invalid_transition_awaiting_review_to_checking
+    check.transition_to(CheckStatus.CHECKING)
+[1m[31mE   Failed: DID NOT RAISE <class 'ValueError'>[0m
+[31m[1m____ TestStateMachineValidation.test_invalid_transition_failed_to_checking _____[0m
+[1m[31mtests/test_unit_state_machine.py[0m:179: in test_invalid_transition_failed_to_checking
+    check.transition_to(CheckStatus.CHECKING)
+[1m[31mE   Failed: DID NOT RAISE <class 'ValueError'>[0m
+[31m[1m_ TestStateMachineValidation.test_last_updated_at_timestamp_updated_on_transition _[0m
+[1m[31mtests/test_unit_state_machine.py[0m:198: in test_last_updated_at_timestamp_updated_on_transition
+    assert check.last_updated_at > initial_updated_at
+[1m[31mE   TypeError: '>' not supported between instances of 'datetime.datetime' and 'NoneType'[0m
+============================= slowest 10 durations =============================
+0.02s setup    tests/test_unit_cpt_matching.py::TestCPTMatching::test_case_insensitive_cpt_match
+0.01s setup    tests/test_edge_cases.py::TestEdgeCase4_DatabaseUnavailable::test_database_timeout_transitions_to_failed
+0.01s setup    tests/test_integration.py::TestDatabaseOperations::test_save_prior_auth_check_to_database
+0.00s setup    tests/test_e2e_workflows.py::TestE2EHappyPath::test_complete_workflow_valid_prior_auth
+0.00s call     tests/test_integration.py::TestDatabaseOperations::test_save_prior_auth_check_to_database
+0.00s call     tests/test_integration.py::TestDatabaseOperations::test_update_prior_auth_check_status
+0.00s setup    tests/test_unit_prior_auth_requirement.py::TestPriorAuthRequirement::test_unknown_procedure_code
+0.00s setup    tests/test_edge_cases.py::TestEdgeCase3_VagueApprovalLanguage::test_vague_approval_language_low_similarity
+0.00s setup    tests/test_unit_expiration.py::TestExpirationDateCalculation::test_expires_1_day_after_appointment
+0.00s setup    tests/test_edge_cases.py::TestEdgeCase8_MultipleProcedures::test_appointment_with_single_procedure_standard_flow
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m tests/test_e2e_workflows.py::[1mTestE2EHappyPath::test_complete_workflow_valid_prior_auth[0m - AssertionError: assert None is not None
+[31mFAILED[0m tests/test_e2e_workflows.py::[1mTestE2EMissingPriorAuth::test_missing_prior_auth_workflow[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_e2e_workflows.py::[1mTestE2EAmbiguousCase::test_multiple_prior_auths_workflow[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_e2e_workflows.py::[1mTestE2ESystemError::test_database_unavailable_workflow[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_edge_cases.py::[1mTestEdgeCase2_MultiplePriorAuths::test_multiple_prior_auths_multiple_matches[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_edge_cases.py::[1mTestEdgeCase4_DatabaseUnavailable::test_database_timeout_transitions_to_failed[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_edge_cases.py::[1mTestEdgeCase6_InactivePolicyworkflow::test_patient_switched_insurance_no_prior_auth_found[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_edge_cases.py::[1mTestEdgeCaseDataQuality::test_none_approved_cpt_codes[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_functional_requirements.py::[1mTestREQPA001_AutomaticTrigger::test_check_triggered_for_appointment_with_procedures[0m - AssertionError: assert None is not None
+[31mFAILED[0m tests/test_functional_requirements.py::[1mTestREQPA007_AuditLogging::test_audit_trail_complete[0m - AssertionError: assert None is not None
+[31mFAILED[0m tests/test_functional_requirements.py::[1mTestREQPA007_AuditLogging::test_state_transitions_logged[0m - TypeError: '>' not supported between instances of 'datetime.datetime' and '...
+[31mFAILED[0m tests/test_functional_requirements.py::[1mTestREQPA008_ManualFallback::test_manual_fallback_on_database_failure[0m - AttributeError: 'NoneType' object has no attribute 'lower'
+[31mFAILED[0m tests/test_functional_requirements.py::[1mTestREQPA008_ManualFallback::test_manual_entry_recorded[0m - pytest.PytestWarning: The test <Function test_manual_entry_recorded> is mar...
+[31mFAILED[0m tests/test_functional_requirements.py::[1mTestREQPA010_StateMachine::test_invalid_transitions_blocked[0m - Failed: DID NOT RAISE <class 'ValueError'>
+[31mFAILED[0m tests/test_fuzzy_matcher.py::[1mTestFuzzyMatcher::test_similar_strings_high_score[0m - assert 0.7391304347826086 > 0.8
+[31mFAILED[0m tests/test_fuzzy_matcher.py::[1mTestFuzzyMatcher::test_is_match_above_threshold[0m - assert False is True
+[31mFAILED[0m tests/test_integration.py::[1mTestErrorHandling::test_database_unavailable_retry_logic[0m - AttributeError: 'NoneType' object has no attribute 'lower'
+[31mFAILED[0m tests/test_integration.py::[1mTestDatabaseOperations::test_query_checks_by_status[0m - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint f...
+[31mFAILED[0m tests/test_unit_cpt_matching.py::[1mTestCPTMatching::test_cpt_mismatch[0m - AssertionError: assert {'approved_cpt_codes': ['70551'], 'approved_service_...
+[31mFAILED[0m tests/test_unit_cpt_matching.py::[1mTestCPTMatching::test_fuzzy_match_high_similarity[0m - assert None is not None
+[31mFAILED[0m tests/test_unit_cpt_matching.py::[1mTestCPTMatching::test_multiple_prior_auths_multiple_matches[0m - TypeError: argument of type 'NoneType' is not iterable
+[31mFAILED[0m tests/test_unit_state_machine.py::[1mTestStateMachineValidation::test_invalid_transition_completed_to_checking[0m - Failed: DID NOT RAISE <class 'ValueError'>
+[31mFAILED[0m tests/test_unit_state_machine.py::[1mTestStateMachineValidation::test_invalid_transition_completed_to_any_state[0m - Failed: DID NOT RAISE <class 'ValueError'>
+[31mFAILED[0m tests/test_unit_state_machine.py::[1mTestStateMachineValidation::test_invalid_transition_pending_to_approved[0m - Failed: DID NOT RAISE <class 'ValueError'>
+[31mFAILED[0m tests/test_unit_state_machine.py::[1mTestStateMachineValidation::test_invalid_transition_pending_to_rescheduled[0m - Failed: DID NOT RAISE <class 'ValueError'>
+[31mFAILED[0m tests/test_unit_state_machine.py::[1mTestStateMachineValidation::test_invalid_transition_awaiting_review_to_checking[0m - Failed: DID NOT RAISE <class 'ValueError'>
+[31mFAILED[0m tests/test_unit_state_machine.py::[1mTestStateMachineValidation::test_invalid_transition_failed_to_checking[0m - Failed: DID NOT RAISE <class 'ValueError'>
+[31mFAILED[0m tests/test_unit_state_machine.py::[1mTestStateMachineValidation::test_last_updated_at_timestamp_updated_on_transition[0m - TypeError: '>' not supported between instances of 'datetime.datetime' and '...
+[31m======================== [31m[1m28 failed[0m, [32m124 passed[0m[31m in 0.80s[0m[31m ========================[0m
