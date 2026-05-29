@@ -1,0 +1,11 @@
+Alexandra — read your work over coffee. Three things before Monday.
+
+Your timeline says 8 weeks. My board update is in 6. I told you I want to start getting money back in 8 — I didn't tell you the board wants a demo before that. Feature 1 (parser), Feature 2 (ranker), and Feature 3 (coordinator review) are all marked 2-3 weeks each, sequential dependencies, and the ranker is "large 3-4 weeks." That math doesn't land anything I can show in 6. Tell me what you cut. Not what you'd phase to v2 in a nice roadmap — what comes out of the 6-week window so I have something running on real shifts when I walk into that boardroom. If the answer is "just the parser," say so. I'd rather have a parser live than five half-built features.
+
+Second thing. Your whole plan rests on my Head of Operations showing up in week 1. I read your risk register — R3 says if she's not available by week 2 you "formally downscope." Alexandra, I haven't even named her to you yet. I'm not going to pull her off her actual job for an 8-week consulting engagement when she's running the matching floor that's making the $14M. You need a version of week 1 that doesn't require her. What can you build, or at least specify, by yourself in week 1 with the data I can get you directly? Because "blocked on ops access" is not an answer I can take to my board.
+
+Third. Your M3 says $1.5M recovered revenue in 6 months. I read where it comes from — A5 (30% of requests lost to competitors) and A6 (we recover half of those at <1h fill time). You flagged both as Low confidence. My CFO is going to read your problem framing and ask me, in dollars, what I'm getting for the engagement cost plus the per-match API spend you priced in A22. If A5 is really 10% — your own document's words — the $1.5M becomes $500K and the ROI math changes. I don't need you to remove the assumption. I need you to tell me what you'd measure in the first two weeks of running on real ServiceNow data that would prove or kill A5 before I've spent the full budget. A falsifiable check, not another metric in the dashboard.
+
+I want this revised by end of Friday, before our Monday board update.
+
+— Marcus

@@ -1,0 +1,53 @@
+# Prompt: Agent Purpose
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Write agent mapping deliverables for the following 2 candidates: 
+- ADR-1: Claim Intake and Format Validation
+- ADR-4: Clinical Content Triage
+
+## Input Files
+Read only the files referenced in this prompt. Do not read all the files in the repository.
+
+### Primary Input
+- Previous phase outputs (`specs/cognitive-load-map.md`, `specs/03-agentic-solution-architecture.md`, and `specs/volume-×-value-analysis.md`)
+- `input-docs/scenario.md` scenario description, for information
+- `specs/stakeholder-alignment-memo.md`, stakeholder alignment, for information
+
+### Guidance Document
+- Use **only** `input-docs/atx/atx-agent-mapping.md` for guidance on the steps that should be followed.
+
+## Specific Requirements
+
+### Assumptions Management
+- Make assumption ID references throughout the document for all values used that are not stated in the scenario
+- If assumptions are not listed in the `specs/assumptions.md` file, add no more than 3 new assumptions.
+
+### Required Deliverables
+Create the following deliverables as stated in the 'Agent mapping deliverables summary' section of the `input-docs/atx/atx-agent-mapping.md` file. Create these deliverables per candidate, **making sure that shared entities are consistent across both candidates**:
+- Agent Purpose Document
+- Agent Activity Catalog (micro-tasks with delegation levels and tool requirements)
+- Autonomy Matrix (Decision Authority Matrix)
+- System and Data Inventory (entities, required integration contracts, availability, gaps)
+- Context Engineering Design (memory, retrieval, prompt architecture)
+- Compounding Roadmap (wave sequencing, integration reuse matrix)
+
+## Output Files
+
+### `04a-capability-spec-intake.md`
+- Include the deliverables for the "Claim Intake and Format Validation" candidate
+- Must create a table of contents
+- Must create an executive summary
+
+### `04b-capability-spec-triage.md`
+- Include the following deliverables for the "Clinical Content Triage" candidate:
+- Must create a table of contents
+- Must create an executive summary
+
+## File Organization
+- Create output files under the `specs/` folder
+
+## Style
+Be concise but complete.

@@ -1,0 +1,41 @@
+# Prompt: Stakeholder alignment memo
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+The scenario presents a real-world stakeholder conflict. Your role as the FDE: navigate competing priorities, gather requirements from conflicting perspectives, and produce a stakeholder alignment memo that acknowledges the tensions, proposes a path forward, and gets buy-in from all parties.
+
+The scenario contains email and Slack exchanges between executives with contradictory goals. Your job is to:
+
+- Identify the underlying concerns of each stakeholder
+- Clarify what's negotiable vs. non-negotiable
+- Propose a phased approach or compromise that addresses the real risks
+- Get signatures on a memo that commits all parties
+
+
+## Input Files
+Read only the files referenced in this prompt. Do not read all the files in the repository.
+
+### Primary Scenario
+- `input-docs/scenario.md` description of the scenario and the stakeholder communications/tensions
+
+## Specific Requirements
+
+### Required Deliverables
+1. **Stakeholder Alignment Memo:** 
+- Identify the underlying concerns of each stakeholder
+- Clarify what's negotiable vs. non-negotiable
+- Propose a phased approach or compromise that addresses the real risks
+- Get signatures on a memo that commits all parties
+
+### Output Files
+
+#### `stakeholder-alignment-memo.md`
+- Include all deliverables listed above
+
+### File Organization
+- Create output file under the `specs/` folder
+
+## Style
+Be concise but complete. 

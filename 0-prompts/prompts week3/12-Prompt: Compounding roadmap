@@ -1,0 +1,20 @@
+After executing the Economics model
+
+Create a compounding-roadmap.md file containing a 3-wave implementation plan showing how platform assets (integrations, governance, retrieval pipelines) built in Wave 1 reduce Wave 2–3 costs. Include an integration reuse matrix.
+
+Use this as guidance:
+Compounding Roadmap
+The agent roadmap should be designed so that integrations and platform assets built for Wave 1 agents amplify Wave 2 and beyond.
+Roadmap structure
+Wave 1 — Foundation agents (self-funding, build shared assets):
+* Agent 1: [name, purpose, wave rationale]
+    * Key integrations built: [list]
+    * Shared assets created: [retrieval pipeline, auth pattern, etc.]
+* Agent 2: [name, purpose]
+    * Reuses: [what from Agent 1]
+Wave 2 — Compounding agents (leverage Wave 1 assets):
+* Agent 3: [name, purpose]
+    * Reuses: [CRM integration, RAG pipeline, etc.]
+    * New integrations: [list]
+Wave 3 — Multi-agent workflows:
+* Workflow: [name, agents involved, orchestration pattern]

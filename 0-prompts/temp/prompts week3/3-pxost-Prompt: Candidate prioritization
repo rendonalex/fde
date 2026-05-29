@@ -1,0 +1,59 @@
+# Prompt3: Candidate Prioritization
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Proceed to prioritize scenario workstreams analysed in the Agentic solution architecture.
+
+## Input Files
+
+### Primary Input
+- Previous phase outputs (`specs/cognitive-load-map.md` and `specs/3-agentic-solution-architecture.md`).
+
+### Guidance Documents
+- `input-docs/atx/atx-scoring.md` - Use for scoring guidance for the workstreams/candidate processes. Follow each step listed to score the workstreams:
+   Step 1: Suitability Gating (Validation)
+   Step 2: Volume × Value Scoring in Mermaid format
+   Step 3: Total Cost of Ownership (TCO) Assessment
+   Step 4: Feasibility Scoring Matrix
+   Step 5: Strategic Sequencing Validation
+   Use case scoring template
+
+- `input-docs/atx/atx-assessment.md` - Use **only** section: 'Phase 4: Candidate Prioritisation' for definitions and the required deliverables.
+
+## Specific Requirements
+
+### Volume × Value Quadrant (Visual Prioritization)
+Create a mermaid diagram showing the position for each workstream/candidate process:
+
+- **Y-axis**: Execution frequency / volume (cases per day/week)
+- **X-axis**: Non-deterministic decision effort (how much does this task require reasoning beyond rules?)
+- **JtD positioning**: Based on Volume Score and Non-Determinism Score
+- **Value score notation**: Write Value score in parenthesis (e.g. JtD-1 (15))
+- **Quadrant structure**: Draw lines to create the 4 squares of the quadrant
+- **JtD placement**: Place each JtD in the appropriate quadrant
+
+### Required Deliverables
+As outlined in Phase 4 section (Candidate Prioritisation) of `input-docs/atx/atx-assessment.md`:
+1. **Prioritised candidate shortlist**: each workstream ranked with feasibility scores and recommended waves
+2. **Implementation sequencing logic**: which use cases/workstreams fund the next wave
+
+### Assumptions Management
+- Make assumption ID references throughout the document for all values used that are not stated in the scenario
+- If assumptions are not listed in the `specs/assumptions.md` file, add them, but do not add more than 3 more assumptions
+
+## Output Files
+
+### `volume-×-value-analysis.md`
+- Include all deliverables listed above
+- Include a short supporting analysis and prioritization rationale from scoring analysis
+- Must create a table of contents
+- Must create an executive summary
+
+## File Organization
+- Save `volume-×-value-analysis.md` under the `specs/` folder
+
+## Style
+Be concise but complete.
+Do not overthink.

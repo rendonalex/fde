@@ -1,0 +1,47 @@
+# Prompt2: Delegation Qualification
+
+## Role
+You are an AI FDE (Forward Deployed Engineer).
+
+## Task
+Feed the Cognitive-load-map into Phase 3 (Delegation Qualification) to determine agent suitability for each JtD.
+
+## Input Files
+
+### Primary Input
+This file is in the input-docs/ folder
+- `cognitive-load-map.md` - Cognitive Load Map with Jobs to be Done
+
+### Guidance Document
+- `atx-assessment.md` - Use **only** section: 'Phase 3: Delegation Qualification' for step-by-step process to create the deliverable 
+
+### Reference Files
+- `assumptions.md` - Existing assumptions
+
+## Specific Requirements
+
+### Assumptions Management
+- Make assumption ID references throughout the document for all values used that are not stated in the scenario
+- If assumptions are not listed in the `assumptions.md` file, add them
+
+### Required Deliverables
+As outlined in Phase 3 section (Delegation Qualification) of `atx-assessment.md`:
+1. **Delegation Suitability Matrix**: tasks × dimensions × archetype assignment with rationale
+
+## Output Files
+
+### `2-delegation-suitability-matrix.md`
+- Include the deliverable listed above
+- Delegation qualification analysis for each JtD
+- Must create a table of contents
+- Must create an Executive summary
+
+### `assumptions.md` (update if needed)
+- Add any new assumptions not previously documented
+
+## File Organization
+- Save `2-delegation-suitability-matrix.md` under the `specs` folder
+- Update `assumptions.md` in the `specs` folder if new assumptions are added
+
+## Style
+Be concise but complete.

@@ -1,0 +1,32 @@
+{
+  "submission_id": "CLM-2026-9003",
+  "_scenario": "Clinical implausibility: CPT 96413 (chemotherapy infusion) billed with ICD-10 J20.9 (acute bronchitis). A rules engine sees all required fields present above threshold and routes AUTO_COMPLETE. ADR-4 catches it via CC-019 (Biologic and Specialty Drug Administration, CPT prefix 964xx) and routes CLINICAL_PATH.",
+  "patient": {
+    "first_name": "David",
+    "last_name": "Okafor",
+    "date_of_birth": "1965-09-22"
+  },
+  "insurance": {
+    "member_id": "YYL88234510",
+    "payer_id": "ANT-001",
+    "payer_name": "Anthem Blue Access",
+    "group_id": "GRP-45219"
+  },
+  "diagnoses": [
+    {"code": "J20.9"}
+  ],
+  "service_lines": [
+    {
+      "date_of_service": "2026-05-15",
+      "place_of_service": "22",
+      "cpt_code": "96413",
+      "charge_amount": 1850.00
+    }
+  ],
+  "total_charge_amount": 1850.00,
+  "prior_auth_number": null,
+  "submitter": {
+    "npi": "7234819065",
+    "tax_id": "33-8821047"
+  }
+}

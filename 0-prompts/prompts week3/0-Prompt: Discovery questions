@@ -1,0 +1,38 @@
+# Prompt: Discovery questions
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Generate discovery questions for a healthcare staffing company focused on uncovering AI automation opportunities.
+
+## Input Files
+Read only the files referenced in this prompt. Do not read all the files in the repository.
+
+### Primary Scenario
+- `input-docs/scenario.md` description of the scenario for which discovery questions must be asked
+- `input-docs/discovery-questioning-patterns.md` for guidance on how questions must be phrased
+
+## Specific Requirements
+
+### Required Deliverables
+Generate 15 discovery questions for a healthcare staffing company focused on uncovering AI automation opportunities. Structure them across the FDE funnel pattern and **align the questions with the ATX assessment categories**:
+
+1. **Broad Funnel (5 questions):** Work patterns, time sinks, repetitive vs. novel work, coordination pain points
+2. **Narrow Funnel (5 questions):** Specific pause points in candidate placement/credentialing, judgment calls in matching staff to facilities, exception handling, cross-system data gathering
+3. **Probe Funnel (5 questions):** Codifiability of matching criteria, exception rates, risk/reversibility of placement decisions, latency requirements, human trust in AI-assisted decisions
+
+Focus on: pause points where humans verify credentials/availability, judgment calls in candidate-facility matching, coordination work across scheduling systems, pattern recognition in urgent staffing requests, async waits for credential verification.
+
+Avoid: leading questions, binary yes/no, "tell me about your system" questions. Prioritize "walk me through a real case" framing.
+
+### Output Files
+
+#### `discovery-questions-answers.md`
+- Include all deliverables listed above
+
+### File Organization
+- Create output file under the `specs/` folder
+
+## Style
+Be concise but complete. 

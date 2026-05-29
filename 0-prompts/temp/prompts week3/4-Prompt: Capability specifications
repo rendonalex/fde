@@ -1,0 +1,58 @@
+# Prompt:4 Agent Purpose
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Write agent mapping deliverables for the following 2 workstreams: 
+- <name>
+- <name>
+
+## Input Files
+
+### Primary Input
+- Previous phase outputs (`specs/cognitive-load-map.md`, `specs/3-agentic-solution-architecture.md`, and `specs/volume-×-value-analysis.md`)
+
+### Guidance Document
+- Use **only** `input-docs/atx/atx-agent-mapping.md` for guidance on the steps that should be followed.
+
+## Specific Requirements
+
+### Assumptions Management
+- Make assumption ID references throughout the document for all values used that are not stated in the scenario
+- If assumptions are not listed in the `specs/assumptions.md` file, add them
+
+### Required Deliverables
+Create the following deliverables as stated in the 'Agent mapping deliverables summary' section of the `input-docs/atx/atx-agent-mapping.md` file. Create these delivarables per workstream, making sure that shared entities are consistent across both workstreams:
+- Agent Purpose Document
+- Agent Activity Catalog (micro-tasks with delegation levels and tool requirements)
+- Autonomy Matrix (Decision Authority Matrix)
+- System and Data Inventory (required integrations, availability, gaps)
+- Context Engineering Design (memory, retrieval, prompt architecture)
+- Compounding Roadmap (wave sequencing, integration reuse matrix)
+
+Use the `input-docs/production-spec-checklist.md` to validate that the specifications are "production-grade" for AI to build from it. A specification is "production-grade" for AI when every requirement is testable, every entity is defined consistently, and every integration contract is explicit. 
+- Use the section INTEGRATION CONTRACTS for completeness in the definitions of the required integrations. 
+- Use the section ENTITY PRECISION for completeness in the definitions of the data entities.
+- Use the section BUILDABILITY to ensure an AI coding agent can start building from these specifications without asking clarifying questions
+**Do not write the analysis of this validation in the output file. Write just the outcome. If all specifications passed the validations, just write that, if some specifications did not pass the validation, write a validation summary section with the findings**
+
+## Output File
+
+### `4-capability-specifications.md`
+Include the following deliverables per workstream (grouped per workstream):
+- Agent Purpose Document
+- Agent Activity Catalog (micro-tasks with delegation levels and tool requirements)
+- Autonomy Matrix (Decision Authority Matrix)
+- System and Data Inventory (required integrations, availability, gaps)
+- Context Engineering Design (memory, retrieval, prompt architecture)
+- Compounding Roadmap (wave sequencing, integration reuse matrix)
+- "Production-grade" validation results
+- Must create a table of contents
+- Must create an executive summary
+
+## File Organization
+- Create output file under the `specs/` folder
+
+## Style
+Be concise but complete.

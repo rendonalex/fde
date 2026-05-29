@@ -1,0 +1,73 @@
+You're right - I didn't explicitly align the questions with the ATX assessment categories. Let me revise to include questions that map to **Volume & Time, Cognitive Nature, Data & Systems, Risk & Compliance, and Organisational** dimensions.
+
+# Discovery Questions for Healthcare Staffing Company
+
+## Broad Funnel Questions (5-10 minutes)
+**Goal: Understand work patterns, time sinks, and coordination pain points**
+
+1. **Daily Work Pattern**
+   "Walk me through how your staffing coordinators spend time on a typical day. What are the biggest time sinks?"
+
+2. **Busy Work Breakdown**
+   "When you say you're 'busy,' what kinds of work are you actually doing? Can you give me an example from this week—maybe a shift that was hard to fill or a last-minute placement?"
+
+3. **Repetitive vs. Novel**
+   "What parts of matching nurses to facilities feel repetitive—like you're doing the same thing over and over—versus what feels genuinely different each time?"
+
+4. **System Jumping**
+   "If I were shadowing your team, how many different systems or spreadsheets would I see you checking to fill a single shift? What information lives where?"
+
+5. **Coordination Pain**
+   "When you're trying to fill an urgent shift, who do you have to coordinate with? Where do things get stuck waiting on someone else?"
+
+---
+
+## Narrow Funnel Questions (15-20 minutes)
+**Goal: Identify pause points, judgment calls, and exception handling in placement/credentialing**
+
+6. **Real Placement Scenario (Cognitive Nature)**
+   "Pick a shift you filled yesterday or this week. Walk me through what actually happened, step by step—not the ideal process, but what you really did. At which steps did you have to think, decide, or check something?"
+
+7. **Credential Verification Pause Points (Data & Systems + Risk & Compliance)**
+   "When you're vetting a candidate for a facility, where do you have to stop and verify credentials? What systems do you check? Are there compliance requirements you must meet? What happens if something's missing or expired?"
+
+8. **Matching Judgment Call (Cognitive Nature)**
+   "You mentioned deciding which nurse to assign to which facility. What rules or heuristics do you apply when the decision isn't obvious? What would a junior person in your role not know how to do?"
+
+9. **Exception Handling (Cognitive Nature)**
+   "Tell me about the last time a placement didn't go as planned—maybe a nurse canceled last minute or a facility rejected a candidate. Are there cases that don't fit the normal pattern? How often? How do you recognize them?"
+
+10. **Cross-System Data Gathering (Data & Systems)**
+    "Where does the input data come from—candidate credentials, facility requirements, shift details? Is the data you need always available, or do you sometimes have to wait or hunt for it? Are there data quality issues?"
+
+---
+
+## Probe Funnel Questions (15-20 minutes)
+**Goal: Assess codifiability, exception rates, risk, latency, and trust in AI delegation**
+
+11. **Volume & Time**
+    "How many placements does your team process per week or month? How much time does each one take, end-to-end? What's your team's total capacity, and what percentage is consumed by urgent requests versus planned placements?"
+
+12. **Codifiability & Exception Rate (Cognitive Nature)**
+    "When you match a nurse to a facility, is there a pattern? Like, if X is true and Y is true, you assign candidate A; if Z is true, you assign candidate B? What percentage of cases fit the standard pattern versus exceptions?"
+
+13. **Risk & Compliance**
+    "What could go wrong if a placement is made incorrectly—wrong credentials, wrong specialty, scheduling conflict? Are there regulatory or compliance requirements? If you made a mistake, how would you detect it? Who would notice? Is there a way to reverse a decision, or is it permanent?"
+
+14. **Latency & Organisational (Organisational)**
+    "When a facility requests a nurse urgently, does the placement need to happen in real-time, or could it happen asynchronously—an AI queues candidates, you review later? Who depends on the output of this process? Are there approval gates?"
+
+15. **Trust in AI-Assisted Decisions (Cognitive Nature + Risk)**
+    "Are there any cases where you'd be comfortable with an AI agent making this decision if you could review it first? If something goes wrong—let's say the agent makes the wrong call—what's the consequence? How would you detect it?"
+
+---
+
+## ATX Mapping Summary
+
+| ATX Dimension | Questions Covering This |
+|---------------|------------------------|
+| **Volume & Time** | Q11 (volume, capacity, time per placement) |
+| **Cognitive Nature** | Q6, Q8, Q9, Q12, Q15 (judgment calls, exception patterns, codifiability, training requirements) |
+| **Data & Systems** | Q4, Q7, Q10 (system access, data sources, data quality, availability) |
+| **Risk & Compliance** | Q7, Q13 (consequences, reversibility, regulatory requirements, error detection) |
+| **Organisational** | Q5, Q14 (coordination, dependencies, approval gates, latency) |

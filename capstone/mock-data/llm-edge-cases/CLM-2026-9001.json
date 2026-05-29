@@ -1,0 +1,33 @@
+{
+  "submission_id": "CLM-2026-9001",
+  "_scenario": "Prior auth required but auth number field is empty string — not null. Rules engine checking (number == null) passes this claim. LLM recognizes empty string is not a valid auth number and should route HUMAN_REQUIRED.",
+  "patient": {
+    "first_name": "Maria",
+    "last_name": "Santos",
+    "date_of_birth": "1978-03-14"
+  },
+  "insurance": {
+    "member_id": "YYL44821903",
+    "payer_id": "UHC-001",
+    "payer_name": "UnitedHealthcare Choice Plus",
+    "group_id": "GRP-72341"
+  },
+  "diagnoses": [
+    {"code": "M51.16"},
+    {"code": "M54.5"}
+  ],
+  "service_lines": [
+    {
+      "date_of_service": "2026-05-12",
+      "place_of_service": "11",
+      "cpt_code": "64483",
+      "charge_amount": 625.00
+    }
+  ],
+  "total_charge_amount": 625.00,
+  "prior_auth_number": "",
+  "submitter": {
+    "npi": "3891024567",
+    "tax_id": "47-2813904"
+  }
+}

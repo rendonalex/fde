@@ -1,0 +1,39 @@
+# Validation Summary
+
+The Shift Intake Parsing (JtD-1) specification has **failed production-grade validation** in the following areas:
+
+## Critical Gaps
+
+### 1. Integration Contracts - Incomplete Error Handling
+- **§7.1 ServiceNow Queue Poll**: Missing specification for handling empty `u_raw_text` field (constraint states it triggers immediate PARSE_FAILED, but no HTTP contract details provided)
+- **§7.5 HITL Queue API**: Endpoint `/internal/api/v1/hitl-queue` is defined but the corresponding read/update contracts for coordinator interaction are missing
+- **Missing Contract**: No specification for the "shift_parsed event" emission mechanism (§7, MT-1.7) - event bus schema, retry logic, and failure handling undefined
+
+### 2. Entity Precision - Ambiguous Constraints
+- **§3.1 ShiftRequest**: `u_failure_reason` max length (500 chars) not validated against actual LLM error message lengths from Claude API
+- **§3.2 ParsedShiftRequirement**: `u_credentials` array constraint "max 10 items" has no validation rule for what happens if LLM extracts 11+ credentials
+- **§3.3 HITLQueueEntry**: `u_partial_parse` JSON object structure is "optional" but no schema definition provided for when it IS present
+
+### 3. Buildability - Missing Implementation Details
+- **§8.1 System Prompt**: Prompt content marked as `<system_prompt_content>` placeholder - actual prompt text not provided (700 token budget specified but content missing)
+- **§8.2 Domain Dictionaries**: Marked as "representative; full list loaded from config" - no specification of config file format, location, or loading mechanism
+- **§8.3 Hospital Location Lookup**: Example entries provided but no specification for the config file structure or update procedure
+- **Dead-Letter Queue**: Referenced in multiple failure modes (§7.3, §10.3) but never defined as an entity or integration contract
+
+### 4. Autonomy Matrix - Incomplete SLA Definitions
+- **§5 Category 3**: HITL SLA specifies "PENDING → IN_REVIEW: ≤ 30 minutes" but no specification for what happens if coordinator doesn't claim within SLA (auto-escalation mechanism undefined)
+- **§5 Category 4**: Manual re-queue process for PARSE_FAILED records has no specified interface or permission model
+
+### 5. Validation Design - Untestable Scenarios
+- **§10.2 Edge Case 4**: Duplicate detection deferred to "JtD-2 or JtD-3 coordinator review" but no contract specified for how duplicates are flagged back to JtD-1
+- **§10.3 Failure Mode 2**: "Reconciliation cron" mentioned but never defined (frequency, retry logic, ownership unclear)
+
+## Non-Critical Issues
+
+- **§6 A24 Dependency Note**: ServiceNow field names flagged as "Low confidence" assumption but no fallback validation procedure specified
+- **§9 Wave 2**: System prompt v2 improvement process described but no specification for A/B testing or rollback procedure
+- **§4 MT-1.6**: Human review correction flow references "HITL UI" but no UI contract or API specification provided for coordinator submission endpoint
+
+---
+
+**Recommendation**: Address critical gaps in sections 3, 7, and 10 before proceeding to build phase. Specification requires 12-15 additional contract definitions and 3-4 entity schemas to reach production-grade completeness.

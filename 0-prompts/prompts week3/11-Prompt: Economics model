@@ -1,0 +1,56 @@
+# Prompt: Token Economics model
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Use the atx-economics guidance input file to build the economics model for both capability specifications.
+
+## Input Files
+Read only the files referenced in this prompt. Do not read all the files in the repository.
+
+### Primary Input
+- `input-docs/scenario.md` scenario description
+- `specs/stakeholder-alignment-memo.md` inofrmation on addressing the stakeholder tensions
+- `specs/06a-capability-spec-intake.md` - capability specification for the intake.
+- `specs/06b-capability-spec-triage.md` - capability specification for the triage.
+
+### Guidance Documents
+- `input-docs/atx/atx-economics.md`. Contains the steps to build the Economics model document. Make sure you follow all the steps and sub-steps in the guidance document. For the "Token Consumption Per Case" section, ensure that the tokens calculation for input and output is accurate and well supported for the calculations. Including if a need for caching the codebookis needed for token savings.
+
+### Reference Files
+- `specs/assumptions.md` - Existing assumptions
+
+## Specific Requirements
+
+### Assumptions Management
+- Make assumption ID references throughout the document for all values used that are not stated in the scenario
+- If assumptions are not listed in the `specs/assumptions.md` file, add them
+
+### Required Deliverables
+As outlined in `input-docs/atx/atx-economics.md`.
+1. **Baseline cost model**: Quantify what the current cognitive work costs.
+2. **Token economics model**: Model the cost of each agent interaction. Follow all sub-sections in the guidance for this topic.
+3. **ROI and business case**: Standard business case model, Financial sensitivity table
+4. **Self-financing roadmap**: Structure the use case sequence so early ROI funds subsequent waves.
+5. **Calibration — making economics survive reality**: Business case assumptions must be validated before production.
+6. **Economic governance — ongoing**: Once in production, treat economics as a live governance instrument.
+7. **Multi-model experimentation note**: Reason about when to use which model, not default to Sonnet. Validate which step in the agent's flow actually needs Opus versus Sonnet versus Haiku (or a cross-provider alternative). A defensible routing decision — "classification runs on Haiku, the high-stakes determination on Sonnet, nothing needs Opus" with the cost delta named — is a stronger economic case than assuming one model for everything.
+
+## Output Files
+
+### `08-economics.md`
+- Include the deliverables listed above **per capability spec**
+- Delegation qualification analysis for each capability
+- Must create a table of contents
+- Must create an Executive summary
+
+### `assumptions.md` (update if needed)
+- Add any new assumptions not previously documented (not more than 3 new assumptions)
+
+## File Organization
+- Save `08-economics.md` under the `specs/` folder
+- Update `specs/assumptions.md` if new assumptions are added
+
+## Style
+Be concise but complete.

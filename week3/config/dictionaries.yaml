@@ -1,0 +1,63 @@
+specialty_codes:
+  ICU_RN:
+    aliases: ["ICU", "Intensive Care", "MICU", "SICU", "Critical Care", "CVICU"]
+  ED_RN:
+    aliases: ["ED", "ER", "Emergency", "Emergency Department", "Emergency Room"]
+  TELE_RN:
+    aliases: ["Tele", "Telemetry", "Step-down", "PCU", "Progressive Care"]
+  MED_SURG_RN:
+    aliases: ["Med-Surg", "M/S", "Medical-Surgical", "MS", "Med Surg"]
+  OR_RN:
+    aliases: ["OR", "Operating Room", "Perioperative", "Scrub", "Circulator"]
+  PACU_RN:
+    aliases: ["PACU", "Post-Anesthesia", "Recovery Room", "PACU/Recovery"]
+  L_D_RN:
+    aliases: ["L&D", "Labor and Delivery", "OB", "Labor & Delivery", "Obstetrics"]
+  NICU_RN:
+    aliases: ["NICU", "Neonatal ICU", "Newborn Intensive", "Neonatal Intensive"]
+  PEDS_RN:
+    aliases: ["Peds", "Pediatric", "Pediatrics", "Pedi"]
+  FLOAT_RN:
+    aliases: ["Float", "Float Pool", "Flex", "Flex Pool"]
+  LPN:
+    aliases: ["LPN", "Licensed Practical Nurse", "LVN", "Licensed Vocational Nurse"]
+  CNA:
+    aliases: ["CNA", "Certified Nursing Assistant", "Aide", "NA", "Nursing Assistant"]
+
+credential_codes:
+  BLS:
+    aliases: ["BLS", "Basic Life Support", "CPR", "BLS/CPR"]
+  ACLS:
+    aliases: ["ACLS", "Advanced Cardiac Life Support", "Advanced Cardiac"]
+  PALS:
+    aliases: ["PALS", "Pediatric Advanced Life Support", "Pediatric Life Support"]
+  NRP:
+    aliases: ["NRP", "Neonatal Resuscitation Program", "Neonatal Resuscitation"]
+  TNCC:
+    aliases: ["TNCC", "Trauma Nursing Core Course", "Trauma Core"]
+  CEN:
+    aliases: ["CEN", "Certified Emergency Nurse"]
+  CCRN:
+    aliases: ["CCRN", "Critical Care Registered Nurse", "Critical Care Cert"]
+  NIHSS:
+    aliases: ["NIHSS", "NIH Stroke Scale", "Stroke Scale"]
+  ONS:
+    aliases: ["ONS", "Oncology Nursing Society", "Chemo Cert", "ONS Chemo"]
+  STABLE:
+    aliases: ["STABLE", "post-resuscitation neonatal stabilization"]
+
+hospital_locations:
+  ST_DAVIDS_NORTH:
+    aliases: ["St. David's North", "St Davids North", "St Davids North Austin", "SDN", "St. David's North Austin"]
+  ST_DAVIDS_SOUTH:
+    aliases: ["St. David's South", "St Davids South", "St Davids South Austin", "SDS", "St. David's South Austin"]
+  ST_DAVIDS_MAIN:
+    aliases: ["St. David's Medical Center", "SDMC", "St David's Main", "St Davids Main", "St. David's Main Campus"]
+  SETON_MAIN:
+    aliases: ["Ascension Seton Medical Center", "Seton Main", "ASMC", "Seton Medical Center", "Ascension Seton Main"]
+  SETON_NW:
+    aliases: ["Ascension Seton Northwest", "Seton NW", "ASNW", "Seton Northwest", "Ascension Seton NW"]
+  SETON_WILLIAMSON:
+    aliases: ["Ascension Seton Williamson", "Seton Williamson", "ASWL", "Williamson"]
+  CEDAR_PARK:
+    aliases: ["Cedar Park Regional", "Cedar Park", "CPR", "CPRMC"]

@@ -1,0 +1,42 @@
+Ambiguous requirement: The Learning Phase chase timing workflow — the Autonomy Matrix places it under both "AGENT ACTS,
+   HUMAN NOTIFIED AFTER" (§3) and "AGENT PROPOSES, HUMAN APPROVES BEFORE ACTION" (§3), creating a direct contradiction; a
+   builder could implement either a fire-and-notify system (agent surfaces the recommendation and Dana catches it later) 
+  or a gate-and-wait system (agent holds until Dana explicitly approves), producing fundamentally different HITL         
+  architectures despite the same spec.
+
+  ⏺ Ambiguous requirement: The pattern update trigger — §5's system prompt guardrail states "If Dana corrects your timing
+  >2 days → flag as high-confidence correction (update pattern immediately)," but §3's Autonomy Matrix explicitly
+  requires Dana to approve all pattern library updates before they're applied; a builder implementing the guardrail
+  literally would create an agent that auto-updates patterns without Dana's approval, directly violating the stated
+  human-oversight contract.
+
+   
+   
+   
+  QUESTION:                    
+                                                                                                   
+⏺ **...The hardest part of build-loop diagnosis for me will be knowing whether a divergence originated in the spec or in the implementation.**
+                                                                                                                         
+  When the build loop shows the agent making wrong decisions, the hard diagnostic question is: did the builder misread an
+   ambiguous requirement (like the two contradictions we just found), or did they read it correctly but implement it     
+  wrong? The failure mode looks identical in the output — the fix is completely different. One requires a spec change and
+   re-alignment with the stakeholder; the other is a code fix.   
+
+
+     The loop is just:                                                                                                      
+  write code → run agent → see bad output → diagnose → fix → repeat
+                                                                                                                         
+  The hard part is that when you see bad output, you have two completely different root causes that look the same:       
+                                                                                                                         
+  ┌──────────────────┬─────────────────────────────────────────────────────┬────────────────────────────────────────┐    
+  │    Looks like    │                     Root cause                      │                  Fix                   │    
+  ├──────────────────┼─────────────────────────────────────────────────────┼────────────────────────────────────────┤    
+  │ Agent chases at  │ Builder misread the ambiguous guardrail ("update    │ Fix the spec, re-align with            │
+  │ wrong day        │ immediately" vs. "wait for Dana")                   │ stakeholder, then re-implement         │
+  ├──────────────────┼─────────────────────────────────────────────────────┼────────────────────────────────────────┤    
+  │ Agent chases at  │ Builder read the spec correctly but coded the       │ Just fix the code                      │
+  │ wrong day        │ condition wrong                                     │                                        │    
+  └──────────────────┴─────────────────────────────────────────────────────┴────────────────────────────────────────┘
+                                                                                                                         
+  You can't tell which it is from the output alone — you have to trace back through the spec and the code together.      
+  That's the diagnostic skill.

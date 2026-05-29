@@ -1,0 +1,254 @@
+# Prompt: FDE - Engagement Intake & Scope Definition
+
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Your task is to produce a comprehensive engagement scope document that will guide the deployment and ensure alignment between technical implementation and business objectives, based on the scenario `input-docs/scenario.md`. 
+
+## Input Files
+
+### Primary Scenario
+- `input-docs/scenario.md`. Scenario description that includes relevant information about the client, their problem space, organizational context, and initial requirements. This file is in the input-docs/ folder.
+- <name> additional files under the xxxx/ folder
+That is the full scenario. The constraints are what is written there. The numbers are what is written there. The systems are what is written there. If you need more than what is there, that is an assumption — name it as one in the assumption section.
+
+### Problem statament analysis
+- `specs/1-Problem-framing-and-success-metrics.md`
+
+
+## Specific Requirements
+
+### Required Deliverables
+1. **Business Context**:
+Analyze and document: Be concise, no more than 2 sentences for each of the points below.
+- **Problem Statement**: What specific business problem or opportunity is driving this engagement? For this use input `specs/1-Problem-framing-and-success-metrics.md` to write a summary line.
+- **Current State**: How are they operating today? What pain points exist?
+- **Desired Future State**: What does success look like from the business perspective?
+- **Strategic Alignment**: How does this fit into broader company objectives or digital transformation initiatives?
+- **Success Metrics**: What KPIs or metrics will define success? (quantitative and qualitative). For this use input `specs/1-Problem-framing-and-success-metrics.md` to write a summary line.
+- **Business Value**: Expected ROI, efficiency gains, revenue impact, or competitive advantage
+- **Timeline & Urgency**: What's driving the timeline? Are there market pressures, regulatory deadlines, or seasonal factors?
+
+2. **Stakeholder Map**:
+Create a comprehensive stakeholder analysis:
+
+| Stakeholder | Role/Title | Influence Level | Interest Level | Primary Concerns | Engagement Strategy |
+|-------------|-----------|-----------------|----------------|------------------|---------------------|
+| | | H/M/L | H/M/L | | |
+
+**Stakeholder Categories:**
+- **Executive Sponsors**: C-suite or VP-level champions (budget authority, strategic direction)
+- **Product/Business Owners**: Day-to-day decision makers, feature prioritization
+- **End Users**: People who will actually use the solution (different personas if applicable)
+- **Technical Teams**: Internal engineering, data, DevOps, security teams
+- **Adjacent Teams**: Teams with integration dependencies or shared resources
+- **External Partners**: Third-party vendors, system integrators, data providers
+- **Governance/Compliance**: Legal, security, privacy, audit stakeholders
+
+**Key Considerations:**
+- Who has veto power?
+- Who are the champions vs. skeptics?
+- What communication cadence is needed for each group?
+- Are there organizational politics or change management concerns?
+
+3. **Constraints**:
+Document limiting factors:
+
+**Constraints categories to consider:** choose maximum 5, the most critical constraints applicable to the scenario and the identified problem.
+
+**Technical Constraints:**
+- Existing technology stack and architecture patterns
+- Data availability, quality, and access restrictions
+- Infrastructure limitations (cloud vs. on-prem, regions, compute resources)
+- Integration requirements with legacy systems
+- API rate limits or platform-specific limitations
+- Security and authentication requirements
+- Performance or scalability requirements
+
+**Resource Constraints:**
+- Budget and cost limitations
+- FDE availability and engagement duration
+- Client team capacity and technical capabilities
+- Access to subject matter experts
+- Dependency on external vendors or teams
+
+**Organizational Constraints:**
+- Approval processes and governance requirements
+- Change management and deployment windows
+- Training and documentation requirements
+- Procurement or contracting limitations
+- Cultural factors (risk tolerance, innovation readiness)
+
+**Regulatory/Compliance Constraints:**
+- Industry regulations (HIPAA, GDPR, SOC2, etc.)
+- Data residency and sovereignty requirements
+- Audit and compliance documentation needs
+- Privacy and PII handling requirements
+
+**Timeline Constraints:**
+- Hard deadlines (regulatory, contractual, market-driven)
+- Competing priorities and resource conflicts
+- Seasonal business cycles
+- Dependency on other projects or initiatives
+
+4. **Risks**:
+Identify and assess potential risks with mitigation strategies:
+
+| Risk | Category | Probability (H/M/L) | Impact (H/M/L) | Mitigation Strategy | Owner | Status |
+|------|----------|---------------------|----------------|---------------------|-------|--------|
+| | | | | | | |
+
+**Risk Categories to Consider:** choose maximum 5, the most critical risks applicable to the scenario and the identified problem.
+
+**Technical Risks:**
+- Data quality or availability issues
+- Integration complexity with legacy systems
+- Scalability or performance concerns
+- Technical debt or architectural limitations
+- Dependency on unproven or beta features
+
+**Organizational Risks:**
+- Lack of executive sponsorship or changing priorities
+- Insufficient user adoption or change resistance
+- Key personnel turnover or availability
+- Competing initiatives or resource conflicts
+- Siloed teams or poor cross-functional collaboration
+
+**Delivery Risks:**
+- Scope creep or unclear requirements
+- Unrealistic timelines or expectations
+- Dependency on external teams or vendors
+- Insufficient testing or validation
+- Knowledge transfer and sustainability concerns
+
+**External Risks:**
+- Regulatory changes
+- Market or competitive pressures
+- Vendor or platform changes
+- Economic or budget constraints
+- Security threats or data breaches
+
+**For each HIGH risk, document:**
+- Early warning indicators
+- Contingency plans
+- Decision points and escalation paths
+
+5. **MVP Scope**:
+Define the Minimum Viable Product that delivers core value:
+
+**MVP Objectives:**
+- What is the smallest set of features that solves the core business problem?
+- What hypotheses are we validating?
+- What does "viable" mean for this specific context?
+
+**Core Features (Must-Have, maximum 5):**
+List each feature with:
+- Feature description
+- Business value and success criteria
+- Technical approach (high-level)
+- Dependencies
+- Estimated effort
+
+**Example Format:**
+1. **[Feature Name]**
+   - **Description**: [What is this about]
+   - **Business Value**: [Why this is critical for MVP]
+   - **Acceptance Criteria**: [How we know it's done]
+   - **Technical Approach**: [Key implementation details]
+   - **Effort Estimate**: [T-shirt size or story points]
+
+5. **Out of Scope**:
+Explicitly define what is NOT included and why:
+
+**Features/Capabilities Excluded:** list maximun 5 excluded features, the most applicable to the scenario and the identified problem.
+List each with rationale:
+
+1. **[Feature/Capability]**
+   - **Why Out of Scope**: [Reason: not critical for MVP, technical complexity, resource constraints, etc.]
+   - **Future Consideration**: [Will this be revisited in Phase 2? Under what conditions?]
+
+**Common Out-of-Scope Categories:**
+
+**Advanced Features:**
+- Nice-to-have enhancements that don't impact core value
+- Features that require significant additional complexity
+- Capabilities that serve edge cases or small user segments
+
+**Scale/Performance:**
+- Optimization beyond MVP requirements
+- Support for user volumes beyond initial deployment
+- Advanced caching, CDN, or performance tuning
+
+**Integrations:**
+- Non-critical system integrations
+- Future data sources not needed for initial validation
+- Advanced API features or webhooks
+
+**User Experience:**
+- Advanced UI/UX polish
+- Mobile or additional platform support
+- Internationalization or localization
+- Accessibility features (unless required by compliance)
+
+**Operations:**
+- Advanced monitoring and alerting
+- Disaster recovery beyond basic backups
+- Multi-region deployment
+- Advanced security features beyond baseline requirements
+
+**Organizational:**
+- Full change management program (vs. basic training)
+- Enterprise-wide rollout (vs. pilot or single team)
+- Complete documentation suite (vs. essential docs)
+
+**Rationale Categories:**
+- **Timing**: Can be added later without blocking core value
+- **Complexity**: Risk/effort ratio too high for initial deployment
+- **Uncertainty**: Need to validate assumptions before investing
+- **Resources**: Budget or capacity constraints
+- **Dependencies**: Blocked by external factors
+- **Business Priority**: Lower priority than core features
+
+**Future Roadmap Considerations:**
+- What might Phase 2 include?
+- What learnings from MVP will inform future scope?
+- What technical foundations are being laid for future expansion?
+
+
+### Assumptions Management
+The scenario and its artefacts are partial by design. Every inference you make — about volumes the scenario doesn't state, stakeholder priorities, system behaviours implied by an artefact — is an assumption.
+- Mark each assumption explicitly
+- Include confidence levels
+- What happens if assumptions prove false or dependencies fail?
+- Create assumption ID references throughout the document
+- Maximum 5 assumptions due to this analysis
+- Save all assumptions in `specs/assumptions.md`
+
+### Output Files
+
+#### `2-engagement-intake-and-scope-definition.md`
+- Include all deliverables listed above
+- Must create a table of contents
+- Must create an Executive summary
+
+#### `assumptions.md`
+- Add any new assumptions not previously documented
+
+### File Organization
+- Create all files under the `specs/` folder
+
+
+## Style
+Be concise but complete.
+
+
+## Instructions for Use:
+1. Read the provided scenario carefully
+2. Fill out each section based on explicit information and reasonable inferences
+3. Flag any critical unknowns or information gaps that need clarification
+4. Prioritize ruthlessly - the MVP should be the minimum truly viable solution
+5. Be explicit about trade-offs and rationale for scope decisions
+6. Consider both technical feasibility and business value
+7. Think about sustainability and knowledge transfer from day one

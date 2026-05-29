@@ -1,0 +1,59 @@
+# Prompt3: Candidate Prioritization
+
+## Role
+You are an AI FDE (Forward Deployed Engineer).
+
+## Task
+Proceed with Phase 4 to prioritize automation candidates.
+
+## Input Files
+
+### Primary Input
+- Previous phase outputs (Cognitive Load Map and Delegation Qualification)
+
+### Guidance Documents
+- `atx-scoring.md` - Use for scoring guidance. Follow each step listed:
+   Step 1: Suitability Gating (Validation)
+   Step 2: Volume × Value Scoring in Mermaid format
+   Step 3: Total Cost of Ownership (TCO) Assessment
+   Step 4: Feasibility Scoring Matrix
+   Step 5: Strategic Sequencing Validation
+   Use case scoring template
+
+- `atx-assessment.md` - Use **only** section: 'Phase 4: Candidate Prioritisation' for definitions and the required deliverables
+
+## Specific Requirements
+
+### Assumptions Management
+- Make assumption ID references throughout the document for all values used that are not stated in the scenario
+- If assumptions are not listed in the `assumptions.md` file, add them
+
+### Volume × Value Quadrant (Visual Prioritization)
+Create a diagram showing:
+
+- **Y-axis**: Execution frequency / volume (cases per day/week)
+- **X-axis**: Non-deterministic decision effort (how much does this task require reasoning beyond rules?)
+- **JtD positioning**: Based on Volume Score and Non-Determinism Score
+- **Value score notation**: Write Value score in parenthesis (e.g. JtD-1 (15))
+- **Quadrant structure**: Draw lines to create the 4 squares of the quadrant
+- **JtD placement**: Place each JtD in the appropriate quadrant
+
+### Required Deliverables
+As outlined in Phase 4 section (Candidate Prioritisation) of `atx-assessment.md`:
+1. **Prioritised candidate shortlist**: ranked with feasibility scores and recommended waves
+2. **Implementation sequencing logic**: which use cases fund the next wave
+
+## Output Files
+
+### `3-volume-×-value-analysis.md`
+- Include all deliverables listed above
+- Include supporting analysis and prioritization rationale from scoring analysis
+- Must create a table of contents
+- Must create an executive summary
+
+## File Organization
+- Save `3-volume-×-value-analysis.md` under the `specs` folder
+
+## Style
+Be concise but complete.
+Do not overthink.

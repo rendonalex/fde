@@ -1,0 +1,62 @@
+# Prompt1: Cognitive Load Mapping
+
+
+
+## Role
+You are an AI FDE (Forward Deployed Engineer).
+
+## Task
+Create a cognitive map for the scenario described in the file `scenario.md`.
+
+## Input Files & Guidance
+
+### Primary Scenario
+- `scenario.md`
+- sample export files under the sample-exports/ folder
+
+### Guidance Documents
+These files are stored in the input-docs/ folder
+- `atx-assessment.md` - Use **only** section: 'Phase 2: Cognitive Load Mapping' for step-by-step process to create the deliverables
+- `atx-concepts.md` - Use **only** the following sections for understanding definitions:
+  1. 'Cognitive work vs. processes'
+  2. 'Jobs to be Done as cognitive contracts'
+  3. 'Cognitive Zones and Breakpoints'
+
+## Specific Requirements
+
+### Work Stream Decomposition
+Decompose the following work streams given in the scenario into Jobs to be Done:
+- Dispatch Adjustments
+- Delivery Exceptions
+
+### Assumptions Management
+The scenario and its artefacts are partial by design. Every inference you make — about volumes the scenario doesn't state, stakeholder priorities not yet surfaced through coach role-play, system behaviours implied by an artefact — is an assumption.
+
+- Mark each assumption explicitly
+- Include confidence levels
+- Create assumption ID references throughout the document
+- Save all assumptions in `assumptions.md`
+
+### Required Deliverables
+As outlined in Phase 2 section (Cognitive Load Mapping) of `atx-assessment.md`:
+1. **Cognitive Load Map**: table of micro-tasks with dimension scores
+2. **Process topology diagram**: zones, breakpoints, and handoffs, using mermaid formatting for a visual display
+3. **Lived process narrative**: 1-page description of what really happens vs. what the SOP says
+
+### Output Files
+
+#### `1-cognitive-load-map.md`
+- Include all deliverables listed above
+- Must create a table of contents
+- Must create an Executive summary
+
+#### `assumptions.md`
+- All assumptions with IDs, confidence levels, and references
+
+### File Organization
+- Create all files under the `specs` folder
+- Start a build loop folder under the `g-week2` folder to track all iterations for specs creation
+- Each iteration must be in an md file
+
+## Style
+Be concise but complete.

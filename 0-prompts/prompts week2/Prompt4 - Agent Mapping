@@ -1,0 +1,53 @@
+# Prompt:4 Agent Purpose
+
+
+## Role
+You are an AI FDE (Forward Deployed Engineer).
+
+## Task
+Write agent mapping deliverables for the selected JtD: DE-3: Missed Window Investigation
+
+## Input Files
+
+### Primary Input
+- Previous phase outputs (Cognitive Load Map, Delegation Qualification, and Candidate Prioritization)
+
+### Guidance Document
+- Use **only** `atx-agent-mapping.md`
+
+## Specific Requirements
+
+### Assumptions Management
+- Make assumption ID references throughout the document for all values used that are not stated in the scenario
+- If assumptions are not listed in the `assumptions.md` file, add them
+
+### Required Deliverables
+Create the following deliverables as stated in the 'Agent mapping deliverables summary' section.
+- Agent Purpose Document
+- Agent Activity Catalog (micro-tasks with delegation levels and tool requirements)
+- Autonomy Matrix (Decision Authority Matrix)
+- System and Data Inventory (required integrations, availability, gaps)
+- Context Engineering Design (memory, retrieval, prompt architecture)
+- Compounding Roadmap (wave sequencing, integration reuse matrix)
+
+## Output Files
+
+### `4-agent-purpose-document.md`
+Include the following deliverables:
+- Agent Purpose Document
+- Agent Activity Catalog (micro-tasks with delegation levels and tool requirements)
+- Autonomy Matrix (Decision Authority Matrix)
+- Context Engineering Design (memory, retrieval, prompt architecture)
+- Compounding Roadmap (wave sequencing, integration reuse matrix)
+- Must create a table of contents
+- Must create an executive summary
+
+### `5-system-data-inventory.md`
+Include the following deliverable:
+- System and Data Inventory (required integrations, availability, gaps)
+
+## File Organization
+- Create all files under the `specs` folder
+
+## Style
+Be concise but complete.

@@ -1,0 +1,36 @@
+  1. Shift Request Intake                       
+                                                                                                                                                                                  
+  Parsing inbound requests (email/portal/phone), extracting structured data, triaging urgency. Currently unstructured — three channels, no standard format.                       
+                                                                                                                                                                                  
+  2. Candidate Matching                                                                                                                                                           
+                                                                                                                                                                                  
+  Selecting the right nurse given credentials, proximity, availability, hospital preferences, nurse preferences. The core cognitive load — 120 decisions/coordinator/day.         
+  
+  3. Credential & Compliance Verification                                                                                                                                         
+                  
+  License checks, background, training certs against state regulatory databases. Done manually today. Drives the 7% mismatch rate and creates async wait time.                    
+  
+  4. Availability Tracking                                                                                                                                                        
+                  
+  Maintaining an accurate real-time picture of nurse availability. Likely the most fragile workstream — the "Kim updates by hand" contradiction lives here.                       
+  
+  5. Outreach & Confirmation                                                                                                                                                      
+                  
+  Contacting nurses, getting shift confirmations, managing back-and-forth until a slot is filled. Major contributor to the 4.2h fill time.                                        
+                  
+  6. No-Show Response                                                                                                                                                             
+                  
+  Detecting no-shows, triggering emergency replacement workflows. 12% rate means this is high-frequency, time-critical, and currently reactive.                                   
+                  
+  7. Exception Handling & Escalation                                                                                                                                              
+                  
+  Non-standard cases: credential edge cases, hospital-specific requirements, urgent fills outside normal hours, VIP accounts. Volume unknown — this is a key probe target.        
+                  
+  ---                                                                                                                                                                             
+  Prioritization Signal
+                                                                                                                                                                                  
+  The 4.2h fill time is primarily driven by Outreach & Confirmation (waiting on nurse responses) and Matching (coordinator decision time). The 7% mismatch points directly at
+  Credential Verification quality. The 12% no-show rate suggests Availability Tracking is unreliable — if availability data were accurate, no-show risk would drop.               
+                  
+  Highest-leverage workstreams for an 8-week engagement: Matching + Credential Verification, with Availability Tracking as the hidden dependency that determines whether either is
+   buildable.  

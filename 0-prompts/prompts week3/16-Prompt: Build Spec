@@ -1,0 +1,16 @@
+I want you to write a detailed BUILD SPEC (not implementation code) for the “<capability name>” feature described in the Claude.md file.
+
+A build spec should include:
+1. Feature overview and purpose
+2. Detailed logic flow with decision points
+3. API contracts (request/response formats)
+4. Data models and state transitions
+5. Edge cases and error handling
+6. Acceptance criteria and test scenarios
+7. Dependencies and integration points
+
+Use ONLY the information in CLAUDE.md to write this spec.
+
+CRITICAL INSTRUCTION: If you encounter ANY ambiguity or missing information in CLAUDE.md that prevents you from writing a complete, unambiguous build spec, STOP immediately and list all the ambiguities you found. Do NOT make assumptions or invent details.
+
+Your goal is to identify gaps in CLAUDE.md, not to fill them in yourself.

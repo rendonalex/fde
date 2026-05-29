@@ -1,0 +1,1 @@
+**The hardest part of build-loop diagnosis for me will be knowing whether a divergence originated in the spec or in the implementation.**

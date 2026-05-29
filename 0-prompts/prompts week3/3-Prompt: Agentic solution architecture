@@ -1,0 +1,50 @@
+# Prompt: Delegation Qualification
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Use the Cognitive-load-map to determine agent suitability for each scenario workstream.
+
+## Input Files
+Read only the files referenced in this prompt. Do not read all the files in the repository.
+
+### Primary Input
+- `specs/cognitive-load-map.md` - Cognitive Load Map with Jobs to be Done.
+- `input-docs/scenario.md`. Scenario description
+- `specs/stakeholder-alignment-memo.md`
+
+### Guidance Document
+- `input-docs/atx/atx-assessment.md` - Use **only** section: 'Phase 3: Delegation Qualification' for step-by-step process to create the deliverable 
+
+### Reference Files
+- `specs/assumptions.md` - Existing assumptions
+
+## Specific Requirements
+
+### Assumptions Management
+- Make assumption ID references throughout the document for all values used that are not stated in the scenario
+- If assumptions are not listed in the `specs/assumptions.md` file, add them, but no more than 5 new assumptions
+
+### Required Deliverables
+As outlined in Phase 3 section (Delegation Qualification) of `input-docs/atx/atx-assessment.md`.
+1. **Delegation Suitability Matrix**: tasks × dimensions × archetype assignment with rationale and with trade-off analysis.
+2. Refer to each JtD as ADR (Architecture Decision record) (e.g. JtD-1 -> ADR-1)
+
+## Output Files
+
+### `03-agentic-solution-architecture.md`
+- Include the deliverable listed above
+- Delegation qualification analysis for each workstream
+- Must create a table of contents
+- Must create an Executive summary
+
+### `assumptions.md` (update if needed)
+- Add any new assumptions not previously documented (not more than 3 new assumptions)
+
+## File Organization
+- Save `03-agentic-solution-architecture.md` under the `specs/` folder
+- Update `specs/assumptions.md` if new assumptions are added
+
+## Style
+Be concise but complete.

@@ -1,0 +1,36 @@
+# Prompt: CEO pushed back on scope and timeline during the week; respond professionally
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+CEO pushed back on scope and timeline during the week. Address each pushback point concretely.
+
+## Input Files
+Read only the files referenced in this prompt. Do not read all the files in the repository.
+
+### CEO memo
+- `input-docs/ceo-pushback-memo.md`
+
+### Deliverables analysed by the CEO
+- `specs/01-problem-framing-and-success-metrics.md`
+- `specs/02-engagement-intake-and-scope-definition.md`
+- `specs/03-agentic-solution-architecture.md`
+
+## Specific Requirements
+
+### Required Deliverables
+Generate a response that addresses each pushback point concretely. 
+
+1. **CEO pushback response:** Hold scope discipline; if you cave on one point, name what gets cut. If you decline, propose a concrete alternative. Respond professionally.
+
+### Output Files
+
+#### `06-client-feedback.md`
+- Include deliverable listed above.
+
+### File Organization
+- Create output file under the `specs/` folder
+
+## Style
+Be concise but complete. 

@@ -1,0 +1,6 @@
+Use the `input-docs/production-spec-checklist.md` as guidance to validate that the created specifications (files `specs/04a-capability-spec-intake.md` and specs/`04b-capability-spec-triage.md`) are "production-grade" for AI to build from it. A specification is "production-grade" for AI when every requirement is testable, every entity is defined consistently, and every integration contract is explicit. 
+From the guidance document `input-docs/production-spec-checklist.md`:
+- Use the section INTEGRATION CONTRACTS for completeness in the definitions of the required integrations. 
+- Use the section ENTITY PRECISION for completeness in the definitions of the data entities.
+- Use the section BUILDABILITY to ensure an AI coding agent can start building from these specifications without asking clarifying questions
+Update each specification file with what is missing to be production-grade, **making sure that shared entities are consistent across both specifications** 

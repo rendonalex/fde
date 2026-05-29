@@ -1,0 +1,101 @@
+# Prompt: Problem framing & success metrics
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Your task is to produce a rigorous problem statement with quantified success metrics for the scenario`input-docs/scenario.md`. This file is in the input-docs/ folder.
+
+## Input Files
+
+### Primary Scenario
+- `input-docs/scenario.md`
+- <name> additional files under the xxxx/ folder
+- `input-docs/discovery-questions-answers.md`
+The files above comprise the full scenario. The constraints are what is written there. The numbers are what is written there. The systems are what is written there. If you need more than what is there, that is an assumption — name it as one in the assumption section.
+
+
+## Specific Requirements
+
+### Assumptions
+For every assumption you make beyond what's explicitly stated in the scenario:
+- Write maximum 10 assumptions, which are the most critical for the design of a solution for this problem
+- Label it clearly (A1, A2, A3...)
+- State the assumed value
+- Explain why that value is reasonable (cite industry benchmarks, logical inference from given data, or standard practice patterns)
+- Show your reasoning transparently 
+- Include confidence levels
+- Create assumption ID references throughout the document
+- Save all assumptions in `specs/assumptions.md`
+
+Examples of assumptions you'll need to make:
+- Time per intake task
+- Error rates in current process
+- Cost per staff hour
+- Distribution of work across intake steps
+- Physician time lost per intake error
+- Token costs for AI operations
+
+### Required Deliverables
+
+1. **Problem Statement**: 
+Write a clear, evidence-based problem statement that:
+- Frames the problem from both the claimant's perspective and the business's perspective. Define measurable outcomes that would justify the investment. Reference the scenario's specific numbers.
+- Quantifies the current state using the numbers provided in the scenario
+- Identifies the actual problem (not the stated request)
+- Distinguishes between what the client asked for and what they actually need
+- Calls out the constraints explicitly
+
+2. **Success Metrics**: 
+Define 3-5 quantified success metrics that:
+- Are tied directly to the numbers in the scenario and your stated assumptions
+- Reference which assumption(s) each metric depends on (e.g., "based on A3 and A7")
+- Are measurable and falsifiable
+- Distinguish between leading indicators (process metrics) and lagging indicators (outcome metrics)
+- Avoid generic business-speak like "improve efficiency" or "enhance patient experience"
+
+Each metric must follow this format:
+**Metric Name**: [Clear description]
+**Current Baseline**: [Quantified current state, with assumption reference]
+**Target**: [Specific numerical target]
+**Measurement Method**: [How we would actually measure this]
+**Dependencies**: [Which assumptions this relies on]
+
+3. **Unknowns**: 
+List the critical unknowns (maximum 10) that would need discovery work:
+- What information is genuinely missing from the scenario?
+- What questions would you ask the stakeholder in discovery?
+- Which unknowns create the most risk if wrong?
+- Which unknowns can be safely deferred vs. must be resolved before specification?
+
+
+### Output Files
+
+#### `1-problem-framing-and-success-metrics.md`
+- Include all deliverables listed above
+- Must create a table of contents
+- Must create an Executive summary
+
+#### `assumptions.md`
+- All assumptions with IDs, confidence levels, and references
+
+### File Organization
+- Create all files under the `specs/` folder
+- Start a build loop folder under the `week3/` folder to track all iterations for specs creation
+- Each iteration must be in a separate md file
+
+## Style
+Be concise but complete. 
+
+
+## Requirements for Your Output
+
+**Critical Thinking**: Question whether "offload administrative load to an agentic workflow" is the right solution or just the stated request.
+
+**Assumption Management**: Make assumptions explicit. Don't hide uncertainty behind confident language.
+
+**Intellectual Honesty**: Distinguish clearly between what you know from the scenario, what you're inferring with reasoning, and what you genuinely don't know.
+
+**Precision**: Use the actual numbers provided (e.g. 6 physicians, 180 patients/day, 4 staff, 2 locations). Build from these, don't replace them with generic estimates.
+
+**Economics**: Show the math. If you claim something saves time or money, quantify it with reference to your assumptions.

@@ -1,0 +1,84 @@
+# What Claude code identified:
+The specification `04a-capability-spec-intake-Priya-Gupta` did not pass production-grade validation. The following issues were identified:
+
+  1. Language/framework — I'll assume Python with Pydantic + FastAPI for the webhook endpoint. Correct?  
+  2. Data store for ShiftRequirement — The spec says "data store" but never specifies what. Options: in-memory dict (good for MVP/testing), SQLite, or PostgreSQL. Which do you want?                          
+  3. Coordinator review queue mechanism — Spec says "write to coordinator queue data store" but doesn't define it (flagged in review). Is this: (a) same DB table as above with status = PENDING_COORDINATOR_REVIEW, (b) a separate message queue (Redis/SQS), or (c) just a log entry for now?                                                                                                       
+  4. Credential lookup CSV — Spec says "static CSV updated by compliance team monthly" but gives no schema or sample data. I'll create a sample CSV with the codes mentioned in the glossary (RN, ICU-CERT,    
+  PACU-EXP) plus the ACLS edge case. Is that enough to start?                                                                                                                                                  
+  5. Fuzzy matching algorithm for credentials — Spec says "fuzzy match" with no algorithm. I'll use rapidfuzz (Levenshtein/token-sort ratio, threshold ~80%). Acceptable?  
+  6. LOCATION_INCOMPLETE detection — Spec flags partial addresses but gives no programmatic rule. I'll treat an address as "complete" if it contains a street number + street name + city, and "partial"       
+  otherwise. OK?                                                                                                                                                                                               
+  7. POSSIBLE_MISSED_CREDENTIAL detection — No rules given. I'll use a heuristic: if preferred_attributes contains words like "certified", "licensed", "experience with", "trained in". OK?                    
+  8. Required fields for −0.25/null deduction (Step 4) — The spec conditionally requires fields based on status, but scoring happens before status is set. I'll treat these as required for scoring:           
+  shift_date, shift_time_start, shift_time_end, unit_type, location_address. Confirm?  
+
+# What I identified
+
+## INTEGRATION CONTRACTS - Missing Details
+
+### ServiceNow Integration
+- **Missing webhook payload schema**: No definition of the exact JSON structure ServiceNow sends
+- **Missing error response format**: What does the agent return to ServiceNow on success/failure?
+- **Missing endpoint specification**: What URL path does the agent expose for the webhook?
+- **Incomplete polling fallback**: Query parameters defined but no response schema documented
+- **Missing idempotency handling**: Beyond deduplication, how are retries handled at the HTTP level?
+
+### LLM Extraction
+- **Missing request schema**: Exact prompt structure and JSON schema for structured output not specified
+- **Missing response schema**: Expected JSON structure from LLM not documented
+- **Missing API endpoint**: Which specific API endpoint is called?
+- **Missing authentication details**: How is the API key passed (header name, format)?
+- **Rate limit handling incomplete**: "Queue inbound requests" mentioned but no queue mechanism specified
+
+### Coordinator Review Queue
+  - **Missing write mechanism**: Is this a database write, message queue, or API call?
+- **Missing connection details**: No database connection string, queue URL, or API endpoint specified
+- **Missing error handling**: What happens if the write fails?
+
+## ENTITY PRECISION - Ambiguities
+
+### ShiftRequirement Entity
+- **`hospital_name_raw` validation**: "max 200 chars" but no handling for extraction failures
+- **`location_address` partial state**: "may be null or partial" is ambiguous - how is "partial" determined programmatically?
+- **`preferred_attributes` structure**: "array of strings" with "free-text preferences extracted verbatim" - no extraction rules defined
+- **`parse_confidence_flags` enumeration**: Example values given but not exhaustive list - is this open-ended or fixed? Also, there is no clear description of how they are set
+
+### Input Entity
+- **`hospital_id` mapping logic**: "ServiceNow sender mapping" not defined - where/how is this mapping stored?
+- **`raw_text` sanitization**: No specification for handling special characters, encoding, or malicious input; or what if it has lenght > 10,000 chars?
+
+## BUILDABILITY - Implementation Gaps
+
+### Step 1: Extract Fields via LLM
+- **Prompt engineering**: No actual prompt template provided - AI cannot build without knowing what to send to LLM
+- **Field extraction rules**: "Extract all ShiftRequirement fields" is not specific enough - which fields map to which parts of raw_text?
+- **Retry logic on malformed JSON**: "retry once" but no specification of what changes between attempts
+
+### Step 2: Normalize Credential Codes
+- **Fuzzy matching algorithm**: "Fuzzy match" mentioned but no algorithm specified (Levenshtein distance? Threshold? Semantic similarity?)
+- **Lookup table location**: "static CSV file" but no file path, format specification, or column headers defined
+- **Cache invalidation**: "reads it at startup" but no mechanism for detecting updates or forcing reload
+
+### Step 3: Normalize unit_type
+- **Lookup table not provided**: References "a lookup table" but doesn't define it or provide examples beyond the enum values
+- **Mapping rules**: How does "ICU unit" map to "ICU"? No fuzzy matching rules specified
+
+### Step 4: Compute parse_confidence
+- **Multiple null fields**: "−0.25 per field" but which fields count as "required" for this calculation? The entity shows conditional requirements based on status
+- **"Partial or incomplete" detection**: `LOCATION_INCOMPLETE` flag requires undefined logic to detect partial addresses
+- **"Credential-like language" detection**: `POSSIBLE_MISSED_CREDENTIAL` flag has no detection rules specified
+
+## Missing Cross-Cutting Concerns
+
+- **Logging specification**: "Every route decision is logged" but no log format, destination, or structured logging schema provided
+- **Monitoring/alerting**: No specification for when/how to alert coordinators of system issues
+- **Data retention**: No specification for how long ShiftRequirement records are kept
+- **Timezone handling**: ISO 8601 timestamps specified as UTC but no handling for shift times in local hospital timezone
+- **Concurrency**: No specification for handling multiple simultaneous requests
+
+## Testability Gaps
+
+- **No acceptance criteria**: Examples provided but no pass/fail criteria for each processing step
+- **Confidence score validation**: No test cases showing exact score calculations with multiple flags
+- **Edge case completeness**: Edge cases table provided but missing scenarios like: network failures mid-processing, database unavailability, partial LLM responses

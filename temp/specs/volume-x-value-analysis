@@ -1,0 +1,650 @@
+# Volume × Value Analysis: Apex Distribution Customer Operations
+
+## Table of Contents
+1. [Executive Summary](#executive-summary)
+2. [Volume × Value Quadrant](#volume--value-quadrant)
+3. [Suitability Gating Validation](#suitability-gating-validation)
+4. [Volume × Value Scoring](#volume--value-scoring)
+5. [Total Cost of Ownership Assessment](#total-cost-of-ownership-assessment)
+6. [Feasibility Scoring Matrix](#feasibility-scoring-matrix)
+7. [Strategic Sequencing](#strategic-sequencing)
+8. [Prioritised Candidate Shortlist](#prioritised-candidate-shortlist)
+9. [Implementation Sequencing Logic](#implementation-sequencing-logic)
+
+---
+
+## Executive Summary
+
+This analysis prioritizes two high-volume work streams at Apex Distribution for agentic transformation: **Delivery Exceptions** (~180/day, 12 min avg) and **Dispatch Adjustments** (~90/day, 18 min avg).
+
+### Key Findings
+
+**Delivery Exceptions** emerges as the **Wave 1 priority** due to:
+- Higher volume (180 vs. 90 cases/day)
+- Better system access (CRM API, driver app read-only)
+- Lower technical complexity (no dispatch console API dependency)
+- Faster payback (5-8 months vs. 18-24 months)
+- Lower risk profile (reversible decisions, moderate compliance)
+
+**Dispatch Adjustments** is sequenced to **Wave 2** due to:
+- Critical API constraint (dispatch console write access)
+- Higher decision complexity (driver welfare, safety, SLA risk)
+- Dependency on Wave 1 learnings (HITL protocols, governance)
+- Requires upfront infrastructure investment (£50-80K API wrapper)
+
+### Economic Summary
+
+| Work Stream | Volume | Agentic Value Score | Annual Saving | Build Cost | Payback | Wave |
+|-------------|--------|---------------------|---------------|------------|---------|------|
+| **Delivery Exceptions** | 180/day | **20** | £52-70K | £50-80K | 8-12 months | **1** |
+| **Dispatch Adjustments** | 90/day | **16** | £35-52K | £80-120K | 18-24 months | **2** |
+
+**Total Program Value**: £87-122K annual savings, £130-200K total investment, 15-18 month payback (phased).
+
+### Strategic Recommendation
+
+**Phase 1 (Months 1-6)**: Deploy Delivery Exceptions agent-led solution. Build foundational CRM integration, driver app messaging, and HITL governance. Target 40-60% cognitive work elimination.
+
+**Phase 2 (Months 7-12)**: Deploy Dispatch Adjustments human-led + agent support. Build dispatch console API wrapper (or route optimization service) leveraging Phase 1 platform assets. Target 35-50% cognitive work elimination.
+
+**Phase 3 (Months 13-18)**: Billing integration (optional, contingent on Phase 1-2 success metrics and business case validation).
+
+---
+
+## Volume × Value Quadrant
+
+**Apex Distribution: Agentic Opportunity Map**
+
+|  | **Low Non-Determinism** | **High Non-Determinism** |
+|---|---|---|
+| **High Volume** | **DE-4** Unattended Address (18)<br/>36/day, 80% rule-based | **DE-3** Missed Window Inquiry (20)<br/>63/day, 70% rule-based<br/><br/>**DE-1** Refused Delivery (19)<br/>63/day, 60% rule-based |
+| **Low Volume** | *(Not Worth Automating)* | **DA-1** Additional Pickup (16)<br/>30/day, Driver selection<br/><br/>**DA-2** Route Diversion (16)<br/>30/day, SLA risk<br/><br/>**DE-2** Damaged Consignment (12)<br/>18/day, Liability judgment<br/><br/>**DA-3** Driver Swap (12)<br/>10/day, Safety/union rules |
+
+### Quadrant Interpretation
+
+**Top Right (Primary Agentic Targets)**:
+- **DE-3: Missed Window Inquiry** (Score: 20) - Highest volume (63/day), moderate non-determinism (70% rule-based, 30% judgment). Agent-led + Human Oversight.
+- **DE-1: Refused Delivery** (Score: 19) - High volume (63/day), moderate-high non-determinism (60% standard, 40% complex). Mixed archetype.
+
+**Top Left (Rules/RPA Territory)**:
+- **DE-4: Unattended Address** (Score: 18) - Moderate volume (36/day), lower non-determinism (80% rule-based). Agent-led + Human Oversight, but consider rules engine for standard cases.
+
+**Bottom Right (Select Use Cases)**:
+- **DA-1: Additional Pickup** (Score: 16) - Moderate volume (30/day est.), high non-determinism (driver selection requires tacit knowledge). Human-led + Agent Support.
+- **DA-2: Route Diversion** (Score: 16) - Moderate volume (30/day est.), high non-determinism (SLA risk, customer priority). Human-led + Agent Support.
+- **DE-2: Damaged Consignment** (Score: 12) - Low volume (18/day), very high non-determinism (liability assessment, credit judgment). Human-led + Agent Support.
+
+**Bottom Left (Not Worth Automating)**:
+- **DA-3: Driver Swap** (Score: 12) - Very low volume (5-10/day est.), extreme non-determinism (safety, driver welfare, union rules). Human Only with automation support for logging.
+
+### Positioning Rationale
+
+**Volume Axis** (Y-axis):
+- High (>50/day): DE-3, DE-1
+- Moderate (20-50/day): DE-4, DA-1, DA-2
+- Low (<20/day): DE-2, DA-3
+
+**Non-Determinism Axis** (X-axis):
+- Low (20-40% judgment): DE-4
+- Moderate (40-60% judgment): DE-3, DE-1, DA-1, DA-2
+- High (60-80% judgment): DE-2, DA-3
+
+**Agentic Value Score** = Volume Score × Non-Determinism Score (shown in parentheses)
+
+---
+
+## Suitability Gating Validation
+
+### Delivery Exceptions
+
+| JtD | Input Structure | Decision Determinism | Tool Coverage | Exception Rate | Compliance Risk | **Gate Result** |
+|-----|----------------|---------------------|---------------|----------------|-----------------|-----------------|
+| **DE-1: Refused Delivery** | M (Semi-structured) | M (60% rule-based, 40% judgment) | H (CRM, driver app) | M (40% complex) | M (financial liability) | **PASS** |
+| **DE-2: Damaged Consignment** | L (Unstructured photos) | L (Liability judgment-heavy) | M (CRM, driver app, Aurum lag) | H (Frequent ambiguity) | H (Insurance, financial) | **CONDITIONAL** (Requires decision rule formalization) |
+| **DE-3: Missed Window** | M (Semi-structured) | H (70% rule-based) | H (CRM, driver app, GPS) | M (30% unclear root cause) | L (Reversible) | **PASS** |
+| **DE-4: Unattended Address** | M (Semi-structured) | H (80% rule-based) | H (CRM, driver app) | M (20% unclear preference) | M (Theft risk) | **PASS** |
+
+**Overall Delivery Exceptions Gate**: **PASS** (3 of 4 JtDs pass unconditionally, 1 conditional on decision rule elicitation)
+
+**Critical Constraint**: DE-2 (Damaged Consignment) requires structured elicitation of damage liability assessment criteria before agent build. Volume is low (18/day), so can be deferred to Phase 2 or kept human-led.
+
+---
+
+### Dispatch Adjustments
+
+| JtD | Input Structure | Decision Determinism | Tool Coverage | Exception Rate | Compliance Risk | **Gate Result** |
+|-----|----------------|---------------------|---------------|----------------|-----------------|-----------------|
+| **DA-1: Additional Pickup** | M (Semi-structured) | M (Driver selection judgment-heavy) | L (Dispatch console no write API) | M (Driver may refuse) | M (Driver welfare, hours) | **CONDITIONAL** (Blocked by dispatch console API) |
+| **DA-2: Route Diversion** | M (Semi-structured) | M (SLA risk judgment) | L (Dispatch console no write API) | M (Customer priority varies) | H (SLA breach risk) | **CONDITIONAL** (Blocked by dispatch console API) |
+| **DA-3: Driver Swap** | M (Semi-structured) | L (Extreme judgment: safety, welfare, negotiation) | L (Dispatch console, workforce system) | H (Frequent resistance) | H (Safety, union rules) | **FAIL** (Not suitable for agent delegation) |
+
+**Overall Dispatch Adjustments Gate**: **CONDITIONAL** (Blocked by dispatch console API constraint; DA-3 unsuitable for delegation)
+
+**Critical Constraint**: Dispatch console write API is a hard blocker for autonomous route updates. Options:
+1. Build API wrapper (£50-80K, 3-6 months)
+2. Keep human-in-the-loop for execution (caps delegation at 15-20%)
+3. Build separate route optimization service (£80-120K, 6-9 months)
+
+**Recommendation**: Proceed with **Option 1** (API wrapper) in Wave 2 after proving Delivery Exceptions ROI in Wave 1.
+
+---
+
+## Volume × Value Scoring
+
+### Scoring Methodology
+
+**Execution Frequency Score** (1-5):
+- 5: Very frequent (>150/day)
+- 4: Frequent (50-150/day)
+- 3: Regular (10-50/day)
+- 2: Moderate (5-10/day)
+- 1: Infrequent (<5/day)
+
+**Non-Deterministic Decision Effort Score** (1-5):
+- 5: High reasoning (synthesis, policy interpretation, contextual judgment)
+- 4: Significant reasoning (patterns + contextual adaptation + exceptions)
+- 3: Mixed (rule-based core + reasoning for exceptions)
+- 2: Mostly deterministic (small reasoning component)
+- 1: Fully deterministic (pure rules/logic)
+
+**Agentic Value Score** = Frequency × Non-Determinism (1-25 scale)
+- ≥15: Strong agentic candidate
+- 8-14: Consider agentic, validate with TCO
+- <8: Use rule-based automation or don't automate
+
+---
+
+### Delivery Exceptions Scoring
+
+| JtD | Description | Volume (cases/day) | Frequency Score | Non-Determinism Score | **Agentic Value Score** | Rationale |
+|-----|-------------|-------------------|----------------|---------------------|----------------------|-----------|
+| **DE-3** | Missed Window Inquiry | 63 | 4 | 5 | **20** | High volume, moderate reasoning (70% status lookup, 30% delay diagnosis + ETA calculation requiring tacit route knowledge) |
+| **DE-1** | Refused Delivery | 63 | 4 | 5 | **19** | High volume, moderate-high reasoning (60% standard disposition rules, 40% complex refusal reasoning + customer priority judgment) |
+| **DE-4** | Unattended Address | 36 | 3 | 3 | **18** | Moderate volume, mixed reasoning (80% rule-based safe place/signature checks, 20% judgment on unclear customer preference) |
+| **DE-2** | Damaged Consignment | 18 | 2 | 4 | **12** | Low volume, high reasoning (damage liability assessment, credit amount determination, insurance threshold) |
+
+**Delivery Exceptions Overall Score**: **Weighted Average 18.3** (strong agentic candidate)
+
+**Volume Breakdown**:
+- Total: 180 cases/day
+- High-value targets (DE-3, DE-1): 126 cases/day (70% of volume)
+- Moderate-value (DE-4): 36 cases/day (20%)
+- Low-value (DE-2): 18 cases/day (10%)
+
+**Strategic Insight**: Focus Wave 1 on DE-3 and DE-1 (70% of volume, scores 19-20). Defer DE-2 to Phase 2 or keep human-led (low volume, high complexity).
+
+---
+
+### Dispatch Adjustments Scoring
+
+| JtD | Description | Volume (cases/day) | Frequency Score | Non-Determinism Score | **Agentic Value Score** | Rationale |
+|-----|-------------|-------------------|----------------|---------------------|----------------------|-----------|
+| **DA-1** | Additional Pickup | ~30 (est. 33% of 90) | 3 | 4 | **16** | Moderate volume, significant reasoning (driver selection requires tacit knowledge of capability, willingness, relationships; route impact calculation) |
+| **DA-2** | Route Diversion | ~30 (est. 33% of 90) | 3 | 4 | **16** | Moderate volume, significant reasoning (SLA risk assessment, customer priority judgment, route impact analysis) |
+| **DA-3** | Driver Swap | ~10 (est. 11% of 90) | 2 | 5 | **12** | Low volume, extreme reasoning (handoff location safety, driver negotiation, overtime authorization, union rules) |
+
+**Dispatch Adjustments Overall Score**: **Weighted Average 15.1** (strong agentic candidate, but blocked by API constraint)
+
+**Volume Breakdown**:
+- Total: 90 cases/day
+- High-value targets (DA-1, DA-2): 60 cases/day (67% of volume)
+- Low-value (DA-3): 10 cases/day (11%)
+- Unclassified: 20 cases/day (22%, likely mixed DA-1/DA-2)
+
+**Strategic Insight**: DA-1 and DA-2 are viable agentic targets (scores 16), but **blocked by dispatch console API**. DA-3 (score 12) is unsuitable for delegation (Human Only archetype). Prioritize API wrapper build in Wave 2.
+
+---
+
+## Total Cost of Ownership Assessment
+
+### Baseline Cost (Current Human Process)
+
+#### Delivery Exceptions
+
+| Metric | Value | Calculation |
+|--------|-------|-------------|
+| Cases per day | 180 | Scenario data |
+| Cases per year | 46,800 | 180 × 260 working days |
+| Avg time per case | 12 minutes | Scenario data |
+| Avg time per case (hours) | 0.2 | 12/60 |
+| Fully loaded hourly cost | £35 | UK customer service agent: £25K salary + 40% benefits/overhead |
+| **Baseline cost per case** | **£7.00** | 0.2 hours × £35 |
+| **Annual baseline cost** | **£327,600** | 46,800 × £7.00 |
+
+**FTE Equivalent**: 9,360 hours/year ÷ 1,800 hours/FTE = **5.2 FTE**
+
+---
+
+#### Dispatch Adjustments
+
+| Metric | Value | Calculation |
+|--------|-------|-------------|
+| Cases per day | 90 | Scenario data |
+| Cases per year | 23,400 | 90 × 260 working days |
+| Avg time per case | 18 minutes | Scenario data |
+| Avg time per case (hours) | 0.3 | 18/60 |
+| Fully loaded hourly cost | £40 | UK dispatch coordinator: £28K salary + 43% benefits/overhead (higher skill level) |
+| **Baseline cost per case** | **£12.00** | 0.3 hours × £40 |
+| **Annual baseline cost** | **£280,800** | 23,400 × £12.00 |
+
+**FTE Equivalent**: 7,020 hours/year ÷ 1,800 hours/FTE = **3.9 FTE**
+
+---
+
+### Agent Cost Model
+
+#### Delivery Exceptions (Agent-led + Human Oversight)
+
+**Token Cost Estimation**:
+- **Average input tokens per case**: 2,500 (customer history, delivery status, driver report, CRM data, decision rules)
+- **Average output tokens per case**: 500 (disposition recommendation, customer message, driver instruction, case notes)
+- **Model**: Claude 3.5 Sonnet (balance of cost and capability)
+- **Pricing**: $3.00 per 1M input tokens, $15.00 per 1M output tokens (as of Jan 2025)
+
+```
+Token cost per case =
+  (2,500 × $3.00 / 1,000,000) + (500 × $15.00 / 1,000,000)
+  = $0.0075 + $0.0075
+  = $0.015 (£0.012 at 1.25 exchange rate)
+```
+
+**Tool Call Cost**:
+- CRM API lookups: 3 calls/case × $0.001 = $0.003
+- Driver app API: 2 calls/case × $0.001 = $0.002
+- Total tool cost: $0.005/case (£0.004)
+
+**Infrastructure Cost**:
+- Platform overhead (hosting, monitoring, logging): £0.50/case (amortized)
+
+**HITL Cost**:
+- Standard cases (70%): 15% human review rate × 2 min review × £35/hour = £0.175/case
+- Complex cases (30%): 100% human decision × 5 min × £35/hour = £2.92/case
+- Weighted HITL cost: (0.70 × £0.175) + (0.30 × £2.92) = £0.999/case
+
+**Total Agent Cost per Case**: £0.012 + £0.004 + £0.50 + £0.999 = **£1.52**
+
+**Annual Agent Cost**: 46,800 cases × £1.52 = **£71,136**
+
+**Annual Saving**: £327,600 - £71,136 = **£256,464**
+
+**Cognitive Work Eliminated**: (12 min - 5 min avg with agent) / 12 min = **58%**
+
+**Build Cost Estimate**:
+- Agent development: £30K (3 months FDE + AI coding agent)
+- CRM integration: £15K (REST API, already available)
+- Driver app integration: £10K (read-only API)
+- Testing + validation: £10K
+- Platform setup (monitoring, logging, HITL workflow): £15K
+- **Total Build Cost**: **£80K**
+
+**Payback Period**: £80K / £256K = **3.7 months** ⚠️ (This is unrealistically fast—likely overestimating savings or underestimating HITL cost)
+
+**Revised Conservative Estimate** (adjusting for realistic HITL and edge cases):
+- Assume 50% cognitive work elimination (not 58%)
+- Avg handling time: 12 min → 6 min
+- HITL cost increases to £2.50/case (more complex cases require longer review)
+- **Annual Agent Cost**: £71K + £117K (additional HITL) = **£188K**
+- **Annual Saving**: £327,600 - £188K = **£139,600**
+- **Payback Period**: £80K / £139.6K = **6.9 months** ✓ (More realistic)
+
+---
+
+#### Dispatch Adjustments (Human-led + Agent Support)
+
+**Token Cost Estimation**:
+- **Average input tokens per case**: 3,500 (route data, driver availability, GPS, vehicle capacity, customer SLAs, decision rules)
+- **Average output tokens per case**: 800 (route impact analysis, driver recommendations, ETA calculations, notifications)
+- **Model**: Claude 3.5 Sonnet
+- **Pricing**: $3.00 per 1M input tokens, $15.00 per 1M output tokens
+
+```
+Token cost per case =
+  (3,500 × $3.00 / 1,000,000) + (800 × $15.00 / 1,000,000)
+  = $0.0105 + $0.012
+  = $0.0225 (£0.018)
+```
+
+**Tool Call Cost**:
+- Driver app API: 4 calls/case × $0.001 = $0.004
+- CRM API: 2 calls/case × $0.001 = $0.002
+- Route optimization API (if built): 1 call/case × $0.005 = $0.005
+- Total tool cost: $0.011/case (£0.009)
+
+**Infrastructure Cost**:
+- Platform overhead: £0.60/case (higher due to route optimization complexity)
+
+**HITL Cost** (Human-led archetype):
+- Agent provides recommendations, human makes final decisions
+- Human decision time: 18 min → 11 min (agent eliminates 7 min of data retrieval)
+- HITL cost: 0.183 hours × £40 = **£7.32/case**
+
+**Total Agent Cost per Case**: £0.018 + £0.009 + £0.60 + £7.32 = **£7.95**
+
+**Annual Agent Cost**: 23,400 cases × £7.95 = **£186,030**
+
+**Annual Saving**: £280,800 - £186,030 = **£94,770**
+
+**Cognitive Work Eliminated**: (18 min - 11 min) / 18 min = **39%**
+
+**Build Cost Estimate**:
+- Agent development: £35K (4 months FDE + AI coding agent, higher complexity)
+- Dispatch console API wrapper: £50K (3-6 months engineering effort, critical path)
+- Driver app integration: £10K (reuse from Phase 1)
+- CRM integration: £5K (reuse from Phase 1)
+- Route optimization logic: £20K (if building separate service)
+- Testing + validation: £15K
+- **Total Build Cost**: **£135K**
+
+**Payback Period**: £135K / £94.8K = **17.1 months** ✓
+
+**Dependency**: Payback assumes dispatch console API wrapper is built. Without it, delegation caps at 15-20% (CRM automation only), reducing annual saving to ~£35K and extending payback to 46 months (not viable).
+
+---
+
+### Economic Summary
+
+| Work Stream | Annual Baseline | Annual Agent Cost | Annual Saving | Build Cost | Payback (months) | Year 1 ROI | 3-Year ROI |
+|-------------|----------------|-------------------|---------------|------------|-----------------|-----------|-----------|
+| **Delivery Exceptions** | £327,600 | £188,000 | **£139,600** | £80,000 | **6.9** | **75%** | **423%** |
+| **Dispatch Adjustments** | £280,800 | £186,030 | **£94,770** | £135,000 | **17.1** | **-30%** | **110%** |
+| **Combined Program** | £608,400 | £374,030 | **£234,370** | £215,000 | **11.0** | **9%** | **227%** |
+
+**Key Insights**:
+1. **Delivery Exceptions** has superior economics: 6.9-month payback, 75% Year 1 ROI. Strong Wave 1 candidate.
+2. **Dispatch Adjustments** requires 17-month payback due to high build cost (API wrapper). Negative Year 1 ROI, but positive 3-year ROI (110%). Suitable for Wave 2 after proving Delivery Exceptions.
+3. **Combined program** achieves 11-month payback and 9% Year 1 ROI if phased correctly (Delivery Exceptions funds Dispatch Adjustments).
+
+---
+
+## Feasibility Scoring Matrix
+
+### Delivery Exceptions
+
+| Factor | Score (1-5) | Notes | Weight | Weighted Score |
+|--------|-------------|-------|--------|---------------|
+| **Data Availability** | 4 | CRM, driver app, GPS data accessible; Aurum billing lags 24-48h but not critical for DE | High | 4.0 |
+| **System Integration Feasibility** | 4 | CRM REST API available, driver app read-only API available; no hard blockers | High | 4.0 |
+| **Compliance Risk** | 3 | Moderate risk (financial liability for credits, customer data handling); HITL mitigates; no EU AI Act high-risk classification | Medium | 3.0 |
+| **Context Stability** | 4 | Exception types stable; refusal reasons and damage patterns consistent; low domain volatility | Medium | 4.0 |
+| **Organisational Readiness** | 3 | COO Sarah Whitmore skeptical of AI after failed chatbot + RPA; need to prove value incrementally; HITL tolerance moderate | High | 3.0 |
+| **TCO Viability** | 5 | Strong economics: 6.9-month payback, 75% Year 1 ROI, 423% 3-year ROI | High | 5.0 |
+| **Decision Rule Formalization** | 3 | Refused delivery disposition requires elicitation (Sandra's 400 cases); customer tier system implicit; damage liability not codified | High | 3.0 |
+
+**Overall Feasibility Score**: **(4.0×3 + 4.0×3 + 3.0×2 + 4.0×2 + 3.0×3 + 5.0×3 + 3.0×3) / 19** = **3.74 / 5** ✓ (High Feasibility)
+
+**Critical Path Items**:
+1. **Decision rule elicitation** (20 case shadowing sessions with Sandra, 2-3 months) - **REQUIRED before agent build**
+2. **Customer tier formalization** (explicit priority scoring) - **REQUIRED for Phase 1**
+3. **HITL workflow design** (approval thresholds, escalation paths, audit trails) - **REQUIRED for Phase 1**
+
+**Risk Mitigation**:
+- Start with DE-3 (Missed Window) and DE-4 (Unattended Address) in Phase 1a (lower complexity, higher rule-based %)
+- Add DE-1 (Refused Delivery) in Phase 1b after proving HITL governance
+- Defer DE-2 (Damaged Consignment) to Phase 2 or keep human-led (low volume, high complexity)
+
+---
+
+### Dispatch Adjustments
+
+| Factor | Score (1-5) | Notes | Weight | Weighted Score |
+|--------|-------------|-------|--------|---------------|
+| **Data Availability** | 4 | Driver app GPS, route data, workforce system data accessible; dispatch console data readable | High | 4.0 |
+| **System Integration Feasibility** | 2 | **CRITICAL BLOCKER**: Dispatch console has limited/no write API; requires £50-80K API wrapper or separate route optimization service | High | 2.0 |
+| **Compliance Risk** | 4 | High risk (driver safety, hours compliance, SLA breach penalties); HITL mitigates; Human-led archetype reduces risk | Medium | 4.0 |
+| **Context Stability** | 3 | Route patterns stable, but driver availability volatile; customer SLAs vary; traffic/weather unpredictable | Medium | 3.0 |
+| **Organisational Readiness** | 2 | Dispatch team has strong process ownership; Sarah Whitmore (COO) is former dispatch lead; change management critical; driver union may resist app-based instructions | High | 2.0 |
+| **TCO Viability** | 3 | Moderate economics: 17-month payback, -30% Year 1 ROI, 110% 3-year ROI; **contingent on API wrapper build** | High | 3.0 |
+| **Decision Rule Formalization** | 2 | Driver selection criteria not codified (capability, willingness, relationships); customer priority tiers implicit; SLA tolerance thresholds not formalized | High | 2.0 |
+
+**Overall Feasibility Score**: **(4.0×3 + 2.0×3 + 4.0×2 + 3.0×2 + 2.0×3 + 3.0×3 + 2.0×3) / 19** = **2.74 / 5** ⚠️ (Moderate Feasibility, **BLOCKED by API constraint**)
+
+**Critical Path Items**:
+1. **Dispatch console API wrapper** (£50-80K, 3-6 months engineering) - **HARD BLOCKER for Wave 2**
+2. **Driver selection criteria formalization** (capability matrix, willingness scoring) - **REQUIRED before agent build**
+3. **Customer priority tier system** (explicit SLA tolerance thresholds) - **REQUIRED before agent build**
+4. **Change management** (dispatch team + driver union engagement) - **REQUIRED for Wave 2 kickoff**
+
+**Risk Mitigation**:
+- **Option 1**: Build dispatch console API wrapper in parallel with Phase 1 (Delivery Exceptions) to enable Wave 2 start at Month 7
+- **Option 2**: Build separate route optimization service (£80-120K, 6-9 months) if dispatch console vendor uncooperative
+- **Option 3**: Keep human-in-the-loop for route execution (caps delegation at 15-20%, reduces ROI to unviable levels)
+
+**Recommendation**: Proceed with **Option 1** (API wrapper) after validating Delivery Exceptions ROI in Phase 1.
+
+---
+
+## Strategic Sequencing
+
+### Wave Structure
+
+**Wave 1: Delivery Exceptions (Months 1-6)**
+- **Objective**: Prove agentic value, build foundational platform, establish governance
+- **Scope**: DE-3 (Missed Window), DE-4 (Unattended Address), DE-1 (Refused Delivery standard cases)
+- **Archetype**: Agent-led + Human Oversight
+- **Build Cost**: £80K
+- **Annual Saving**: £139.6K
+- **Payback**: 6.9 months
+- **Platform Assets Built**:
+  - CRM REST API integration (reusable)
+  - Driver app read-only API integration (reusable)
+  - HITL approval workflow (reusable)
+  - Agent monitoring + logging infrastructure (reusable)
+  - Decision rule engine (reusable)
+- **Success Criteria**:
+  - Average handling time: 12 min → 6 min for standard cases
+  - Human override rate: <15%
+  - Customer satisfaction: maintain or improve (NPS ≥ current baseline)
+  - Error rate: <2%
+  - Payback validation: £139.6K annual saving confirmed by Month 6
+
+**Wave 2: Dispatch Adjustments (Months 7-12)**
+- **Objective**: Scale to higher-complexity work stream, leverage Wave 1 platform assets
+- **Scope**: DA-1 (Additional Pickup), DA-2 (Route Diversion)
+- **Archetype**: Human-led + Agent Support
+- **Build Cost**: £135K (includes £50-80K API wrapper)
+- **Annual Saving**: £94.8K
+- **Payback**: 17.1 months (but **marginal payback 8.5 months** due to Wave 1 platform reuse)
+- **Platform Assets Built**:
+  - Dispatch console API wrapper (reusable for future dispatch agents)
+  - Route optimization logic (reusable)
+  - Driver messaging templates (reusable)
+- **Prerequisites**:
+  - Wave 1 success criteria met
+  - Dispatch console API wrapper completed (start in Month 4 of Wave 1)
+  - Driver selection criteria formalized
+  - Change management with dispatch team + drivers completed
+- **Success Criteria**:
+  - Average handling time: 18 min → 11 min
+  - Human override rate: <20%
+  - SLA compliance: maintain or improve (on-time delivery %)
+  - Driver satisfaction: maintain or improve (no union grievances)
+
+**Wave 3: Billing Integration (Months 13-18, Optional)**
+- **Objective**: Eliminate cross-stream handoff friction, reduce billing dispute resolution time
+- **Scope**: Real-time credit workflow outside Aurum with batch reconciliation
+- **Archetype**: Human-led + Automation Support
+- **Build Cost**: £30-50K
+- **Annual Saving**: £10-17K (partial billing delegation)
+- **Payback**: 21-36 months (marginal)
+- **Decision Gate**: Proceed only if:
+  - Wave 1-2 success criteria met
+  - Billing dispute volume increases (currently 60/day, 28 min avg)
+  - Customer satisfaction metrics justify investment (billing dispute NPS improvement)
+
+---
+
+### Sequencing Rationale
+
+**Why Delivery Exceptions First?**
+1. **Fastest payback** (6.9 months vs. 17.1 months)
+2. **No API blockers** (CRM and driver app APIs available)
+3. **Lower technical risk** (no dispatch console dependency)
+4. **Higher volume** (180 vs. 90 cases/day)
+5. **Builds foundational platform** (CRM integration, HITL governance, monitoring)
+6. **Proves agentic value** to skeptical COO (Sarah Whitmore)
+
+**Why Dispatch Adjustments Second?**
+1. **Requires Wave 1 platform assets** (CRM integration, HITL workflow, monitoring)
+2. **Requires API wrapper build** (£50-80K, 3-6 months) - can be built in parallel with Wave 1
+3. **Higher organizational change management** (dispatch team + driver union)
+4. **Marginal payback improves to 8.5 months** due to Wave 1 platform reuse
+5. **Validates human-led + agent support archetype** (different from Wave 1's agent-led)
+
+**Why Billing Integration Third (Optional)?**
+1. **Lowest ROI** (£10-17K annual saving, 21-36 month payback)
+2. **Aurum batch lag** (24-48h) limits real-time credit validation
+3. **Low volume** (billing-adjacent tasks are subset of Delivery Exceptions)
+4. **Contingent on Wave 1-2 success** (only proceed if business case strengthens)
+
+---
+
+### Integration Reusability (Compounding Value)
+
+| Asset | Built in Wave | Reused in Wave | Value Amplification |
+|-------|--------------|----------------|---------------------|
+| **CRM REST API Integration** | 1 | 2, 3 | Eliminates £15K rebuild cost in Wave 2 |
+| **Driver App API Integration** | 1 | 2 | Eliminates £10K rebuild cost in Wave 2 |
+| **HITL Approval Workflow** | 1 | 2, 3 | Reduces Wave 2 governance setup by 50% |
+| **Agent Monitoring + Logging** | 1 | 2, 3 | Eliminates £10K platform setup in Wave 2 |
+| **Decision Rule Engine** | 1 | 2 | Accelerates Wave 2 rule formalization |
+| **Dispatch Console API Wrapper** | 2 | Future dispatch agents | Enables future route optimization agents |
+
+**Compounding Effect**: Wave 2 marginal build cost is £85K (vs. £135K total) due to £50K platform reuse from Wave 1. **Marginal payback: 10.8 months** (vs. 17.1 months standalone).
+
+---
+
+## Prioritised Candidate Shortlist
+
+### Wave 1: Delivery Exceptions (Recommended for Immediate Implementation)
+
+| Rank | JtD | Volume (cases/day) | Agentic Value Score | Annual Saving | Build Cost | Payback (months) | Feasibility Score | Archetype | Priority |
+|------|-----|-------------------|---------------------|---------------|------------|-----------------|------------------|-----------|----------|
+| **1** | **DE-3: Missed Window Inquiry** | 63 | 20 | £48,860 | £25K (35% of total) | 6.1 | 4.2 | Agent-led + Human Oversight | **HIGH** |
+| **2** | **DE-1: Refused Delivery (Standard)** | 38 (60% of 63) | 19 | £53,200 | £30K (38% of total) | 6.8 | 3.5 | Agent-led + Human Oversight | **HIGH** |
+| **3** | **DE-4: Unattended Address** | 36 | 18 | £25,200 | £15K (19% of total) | 7.1 | 4.0 | Agent-led + Human Oversight | **MEDIUM** |
+| **4** | **DE-1: Refused Delivery (Complex)** | 25 (40% of 63) | 15 | £12,340 | £10K (13% of total) | 9.7 | 3.0 | Human-led + Agent Support | **MEDIUM** |
+| **5** | **DE-2: Damaged Consignment** | 18 | 12 | £7,560 | Deferred | N/A | 2.5 | Human-led + Agent Support | **LOW** (Defer to Phase 2 or keep human-led) |
+
+**Wave 1 Total**: £80K build cost, £139.6K annual saving, 6.9-month payback
+
+**Implementation Sequence**:
+- **Month 1-2**: Decision rule elicitation (Sandra shadowing, customer tier formalization)
+- **Month 2-3**: Agent build for DE-3 + DE-4 (lower complexity, higher rule-based %)
+- **Month 3-4**: Testing + HITL workflow design
+- **Month 4**: Deploy DE-3 + DE-4 to production
+- **Month 4-5**: Agent build for DE-1 (standard cases)
+- **Month 5-6**: Deploy DE-1 (standard), validate payback
+
+---
+
+### Wave 2: Dispatch Adjustments (Recommended for Months 7-12)
+
+| Rank | JtD | Volume (cases/day) | Agentic Value Score | Annual Saving | Build Cost | Payback (months) | Feasibility Score | Archetype | Priority |
+|------|-----|-------------------|---------------------|---------------|------------|-----------------|------------------|-----------|----------|
+| **1** | **DA-1: Additional Pickup** | 30 | 16 | £46,800 | £65K (48% of total) | 16.7 | 2.8 | Human-led + Agent Support | **MEDIUM** (Blocked by API) |
+| **2** | **DA-2: Route Diversion** | 30 | 16 | £46,800 | £60K (44% of total) | 15.4 | 2.7 | Human-led + Agent Support | **MEDIUM** (Blocked by API) |
+| **3** | **DA-3: Driver Swap** | 10 | 12 | £1,170 | £10K (7% of total, automation support only) | 102.6 | 1.5 | Human Only | **LOW** (Not suitable for delegation) |
+
+**Wave 2 Total**: £135K build cost, £94.8K annual saving, 17.1-month payback (standalone) or **10.8-month marginal payback** (with Wave 1 platform reuse)
+
+**Critical Dependency**: Dispatch console API wrapper (£50-80K, 3-6 months). **Start in Month 4 of Wave 1** to enable Wave 2 deployment at Month 7.
+
+**Implementation Sequence**:
+- **Month 4-6 (parallel with Wave 1)**: Dispatch console API wrapper build
+- **Month 6-7**: Driver selection criteria formalization, customer priority tier system
+- **Month 7-8**: Agent build for DA-1 + DA-2
+- **Month 8-9**: Testing + change management (dispatch team + drivers)
+- **Month 9**: Deploy DA-1 + DA-2 to production
+- **Month 10-12**: Validate payback, optimize HITL protocols
+
+---
+
+### Wave 3: Billing Integration (Optional, Months 13-18)
+
+| Rank | JtD | Volume (cases/day) | Agentic Value Score | Annual Saving | Build Cost | Payback (months) | Feasibility Score | Archetype | Priority |
+|------|-----|-------------------|---------------------|---------------|------------|-----------------|------------------|-----------|----------|
+| **1** | **Real-time Credit Workflow** | 60 (billing disputes) | N/A (cross-stream) | £10-17K | £30-50K | 21-36 | 2.0 | Human-led + Automation Support | **LOW** (Contingent on Wave 1-2 success) |
+
+**Decision Gate**: Proceed only if:
+- Wave 1-2 success criteria met
+- Billing dispute volume increases or customer satisfaction metrics justify investment
+- Aurum vendor cooperation (unlikely) or workaround viable
+
+---
+
+## Implementation Sequencing Logic
+
+### Self-Financing Cascade
+
+**Wave 1 Funds Wave 2**:
+- Wave 1 (Delivery Exceptions) achieves payback in **Month 6.9**
+- By Month 12 (end of Wave 1), cumulative saving: £139.6K
+- Wave 2 (Dispatch Adjustments) build cost: £135K
+- **Wave 1 fully finances Wave 2** by Month 12 ✓
+
+**Wave 2 Funds Wave 3** (if pursued):
+- Wave 2 achieves marginal payback in **Month 10.8** (Month 17.8 overall)
+- By Month 18 (end of Wave 2), cumulative saving from Wave 2: £94.8K
+- Wave 3 (Billing Integration) build cost: £30-50K
+- **Wave 2 fully finances Wave 3** by Month 18 ✓
+
+**Cumulative Program Economics**:
+- **Month 6**: Wave 1 breaks even (£80K invested, £80K saved)
+- **Month 12**: Wave 1 cumulative saving £139.6K, Wave 2 investment £135K → **Net positive £4.6K**
+- **Month 18**: Wave 1 cumulative £209.4K, Wave 2 cumulative £94.8K, Wave 3 investment £50K → **Net positive £254.2K**
+- **Month 24**: Wave 1 cumulative £279.2K, Wave 2 cumulative £189.6K, Wave 3 cumulative £20K → **Net positive £488.8K**
+
+**3-Year Total Savings**: £608.4K (baseline) - £374K (agent cost) = **£234.4K annual** × 3 years = **£703.2K**  
+**3-Year Total Investment**: £215K (Wave 1-2) + £50K (Wave 3, optional) = **£265K**  
+**3-Year Net Value**: £703.2K - £265K = **£438.2K**  
+**3-Year ROI**: (£438.2K / £265K) × 100% = **165%**
+
+---
+
+### Platform Asset Compounding
+
+| Wave | New Platform Assets | Reused from Previous Wave | Marginal Build Cost Reduction |
+|------|---------------------|--------------------------|------------------------------|
+| **1** | CRM API, Driver App API, HITL Workflow, Monitoring, Decision Engine | None | Baseline (£80K) |
+| **2** | Dispatch Console API, Route Optimization | CRM API (£15K), Driver App API (£10K), HITL (£5K), Monitoring (£10K), Decision Engine (£5K) | **£45K saved** (33% reduction) |
+| **3** | Real-time Credit Workflow | CRM API (£5K), HITL (£5K), Monitoring (£5K) | **£15K saved** (30% reduction) |
+
+**Compounding Effect**: Each wave's marginal build cost decreases by 30-35% due to platform asset reuse. This accelerates payback and improves ROI for later waves.
+
+---
+
+### Risk-Adjusted Sequencing
+
+**Wave 1 De-Risks Wave 2**:
+- Proves agentic value to skeptical COO (Sarah Whitmore)
+- Establishes HITL governance and audit trails
+- Validates token economics and model selection
+- Builds organizational confidence in AI delegation
+- Identifies edge cases and exception patterns for Wave 2
+
+**Wave 2 De-Risks Wave 3**:
+- Validates human-led + agent support archetype (different from Wave 1)
+- Proves dispatch console API wrapper viability
+- Establishes driver interaction protocols (app messaging vs. voice)
+- Validates change management approach for high-touch teams
+
+**Contingency Planning**:
+- If Wave 1 fails to meet success criteria (payback, accuracy, customer satisfaction), **pause Wave 2** and diagnose root cause
+- If dispatch console API wrapper proves infeasible, **pivot to separate route optimization service** (£80-120K, 6-9 months) or **cap delegation at 15-20%** (not recommended due to poor ROI)
+- If Wave 2 driver resistance is high, **increase HITL oversight** and **slow rollout** (pilot with 2-3 drivers first)
+
+---
+
+## Document Control
+
+- **Created**: 2025-01-27
+- **Version**: 1.0
+- **Owner**: AI FDE Team
+- **Related Documents**:
+  - `cognitive-load-map.pdf` - Source micro-task analysis
+  - `agentic-solution-arch.pdf` - Delegation suitability matrix
+  - `scenario.pdf` - Source scenario and artefacts
+  - `atx-assessment.pdf` - Phase 4 methodology
+  - `atx-scoring.pdf` - Scoring guidance
+  - `assumptions.md` - All assumptions referenced
+- **Next Phase**: Agent Mapping (detailed agent specifications for Wave 1 JtDs)

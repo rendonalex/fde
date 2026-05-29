@@ -1,0 +1,61 @@
+# Validation Summary
+
+The specification `04a-capability-spec-planned-matching-Krzysztof-Wilniewczyc.md` does not pass production-grade validation for AI buildability. The following gaps prevent an AI coding agent from building without clarifying questions:
+
+## ENTITY PRECISION Gaps
+
+**Section 3: Shared Entities**
+- Missing field types (string, int, datetime, enum values)
+- Missing field constraints (max lengths, required vs optional, null handling)
+- Missing timestamp format specifications (ISO 8601 not specified)
+- Missing enum value definitions (LockState lists values but no casing/storage format)
+- Missing foreign-key cascade behavior
+- Missing index requirements for query performance
+
+**Example**: `ShiftRequest.received_at` - no specification of timezone handling, format, or precision
+
+## INTEGRATION CONTRACTS Gaps
+
+**Section 7: Integration Contracts**
+- Missing endpoint URLs/paths
+- Missing authentication methods (API keys, OAuth, service accounts)
+- Missing request/response JSON schemas
+- Missing specific timeout values (only "retry with backoff" mentioned)
+- Missing rate-limit budgets
+- Missing HTTP methods (GET, POST, PUT)
+- Missing error response codes and handling
+- Missing pagination specifications for list operations
+- Missing API versioning strategy
+
+**Example**: "ServiceNow read API" - no specification of which endpoint, what query parameters, what the response structure looks like
+
+## BUILDABILITY Gaps
+
+**Numeric Parameters Left Undefined** (acknowledged in A11 but blocks building):
+- Near-tie threshold (§5)
+- Top-N shortlist size (§3)
+- Location proximity bound (§4 step 2)
+- Field-level confidence threshold (85% mentioned in step 1, but calculation method undefined)
+- Agreement-between-signals metric calculation (§4 step 5)
+
+**Template/Format Gaps**:
+- `HospitalSubmission.reasoning_summary` format not specified
+- SMS/email message templates not provided
+- Citation format for reasoning not specified
+
+**Timing Precision**:
+- Decision 2 window "~90 min planned" - approximation not sufficient
+- Trust ramp "weeks 5–7 behaviour" undefined
+- Retry backoff algorithm not specified
+
+**Missing Algorithms**:
+- Two-stage extraction validation method (step 1)
+- Rules-based eligibility filter logic (step 2)
+- Contextual reasoning ranking algorithm (step 4)
+- Confidence scoring calculation (step 5)
+
+## Status
+
+**Structurally complete** (all 10 sections present, entities named, validation hooks defined) but **not production-grade for AI building**. The specification correctly identifies these gaps in A11 and A12 as "deliberately deferred," but this deferral means an AI agent cannot compile working code without inventing these values.
+
+**Recommendation**: Pin numeric parameters, define integration schemas, and specify entity field types before handoff to AI coding agent.

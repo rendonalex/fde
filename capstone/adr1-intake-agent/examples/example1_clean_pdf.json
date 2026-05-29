@@ -1,0 +1,25 @@
+{
+  "source_format": "PDF",
+  "source_claim_ref": "PDF-2026-0441",
+  "intake_channel": "CMS1500_PDF",
+  "extracted_fields": {
+    "member_id": {"value": "M-4421908", "confidence": 0.97},
+    "member_dob": {"value": "1978-03-14", "confidence": 0.95},
+    "member_name_last": {"value": "Thompson", "confidence": 0.96},
+    "member_name_first": {"value": "Alice", "confidence": 0.96},
+    "rendering_provider_npi": {"value": "1234567890", "confidence": 0.99},
+    "billing_provider_npi": {"value": "9876543210", "confidence": 0.99},
+    "billing_provider_tax_id": {"value": "472918304", "confidence": 0.93},
+    "payer_id": {"value": "BX-0042", "confidence": 0.98},
+    "payer_name": {"value": "Blue Cross PPO", "confidence": 0.95},
+    "date_of_service_start": {"value": "2026-04-11", "confidence": 0.97},
+    "date_of_service_end": {"value": "2026-04-11", "confidence": 0.97},
+    "place_of_service_code": {"value": "11", "confidence": 0.99},
+    "claim_type": {"value": "PROFESSIONAL", "confidence": 0.99},
+    "icd10_codes": {"value": ["Z00.00"], "confidence": 0.92},
+    "cpt_codes": {"value": ["99213"], "confidence": 0.94},
+    "billed_amount": {"value": 185.00, "confidence": 0.91},
+    "prior_auth_number": {"value": null, "confidence": 1.00},
+    "prior_auth_required": {"value": false, "confidence": 0.97}
+  }
+}

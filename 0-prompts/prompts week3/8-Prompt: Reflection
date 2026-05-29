@@ -1,0 +1,28 @@
+# Prompt: Honest assessment of what would change with more time; specific lessons. Not generic.
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Create an honest assessment of what would change with more time; specific lessons. Not generic.
+
+## Input Files
+Read only the files referenced in this prompt. Do not read all the files in the repository.
+
+
+
+## Specific Requirements
+
+### Required Deliverables
+
+
+### Output Files
+
+#### `08-reflection.md`
+- Include deliverable listed above.
+
+### File Organization
+- Create output file under the `specs/` folder
+
+## Style
+Be concise but complete. 

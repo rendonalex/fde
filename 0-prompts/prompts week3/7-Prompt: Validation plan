@@ -1,0 +1,168 @@
+# Prompt: Validation Plan
+
+## Role
+You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
+
+## Task
+Your task is to create a validation plan for a capability specification. Create a focused validation plan covering the essential test scenarios.
+
+## Input Files
+Read only the files referenced in this prompt. Do not read all the files in the repository.
+- `specs/06a-capability-spec-intake.md`. This file has the specifications for claim intake.
+- `specs/06b-capability-spec-triage`. This file has the specifications for claim triage.
+- `specs/01-problem-framing.md`. This file has the success criteria definitions.
+
+
+## Specific Requirements
+
+### Happy Path Tests
+
+Document the primary user workflows that must work: (maximum 5 user workflows)
+
+| Test ID | Workflow | Steps | Expected Result | Priority |
+|---------|----------|-------|-----------------|----------|
+| HP-01 | [User completes main task] | 1. [Action]<br>2. [Action]<br>3. [Action] | [Outcome] | P0 |
+| HP-02 | [Integration flow] | 1. [Action]<br>2. [System response] | [Outcome] | P0 |
+
+**Key validations:**
+- [ ] Core user workflows complete successfully
+- [ ] Data flows correctly through the system
+- [ ] Integrations work with valid inputs
+- [ ] Output format and quality meet requirements
+- [ ] Performance meets SLA under normal load
+
+### Edge Cases
+
+Test boundary conditions and unusual but valid scenarios: (maximum 5 edge cases)
+
+| Test ID | Edge Case | Input/Scenario | Expected Behavior | Priority |
+|---------|-----------|----------------|-------------------|----------|
+| EC-01 | Empty dataset | User submits no data | [Clear message, no error] | P1 |
+| EC-02 | Maximum size | File at size limit | [Processes within SLA] | P1 |
+| EC-03 | Special characters | Unicode, SQL chars in input | [Handled safely] | P0 |
+| EC-04 | Concurrent users | Multiple users, same resource | [No conflicts/corruption] | P1 |
+| EC-05 | Slow external API | Integration takes 30s | [Timeout handling] | P1 |
+
+**Common edge cases to consider:**
+- Minimum/maximum values
+- Empty, null, or zero values
+- Very large datasets
+- Special characters and encoding
+- Concurrent operations
+- Long-running sessions
+- External system delays
+
+### Error Handling
+
+Test system behavior when things go wrong: (maximum 5 error handling)
+
+| Test ID | Error Scenario | Trigger | Expected Behavior | User Message | Priority |
+|---------|----------------|---------|-------------------|--------------|----------|
+| ER-01 | Invalid input | Wrong file type | Reject with clear error | "Invalid file type. Upload CSV" | P0 |
+| ER-02 | Missing required field | Submit incomplete form | Validation error | "Field X is required" | P0 |
+| ER-03 | External API down | Stop dependency service | Retry then fail gracefully | "Service unavailable. Try again." | P0 |
+| ER-04 | Database timeout | Long-running query | Timeout and log | "Request timed out" | P1 |
+| ER-05 | Authentication failure | Invalid credentials | Block access | "Authentication failed" | P0 |
+| ER-06 | Rate limit exceeded | Too many requests | Backoff and retry | "Too many requests. Wait..." | P1 |
+
+**Error categories to cover:**
+- **Input validation**: Invalid format, missing fields, out-of-range values
+- **System errors**: Timeouts, memory issues, crashes
+- **Integration failures**: API errors (500, 401, 429), timeouts, malformed responses
+- **Data errors**: Duplicates, inconsistencies, corruption
+- **Authorization**: Unauthorized access, expired sessions
+
+**For each error, verify:**
+- Clear, actionable error messages
+- Proper logging (with context for debugging)
+- No data corruption or loss
+- Graceful degradation where possible
+- Retry logic where appropriate
+
+
+### Test Execution
+
+**Test Matrix:**
+
+| Test ID | Category | Description | Type | Status | Owner | Notes |
+|---------|----------|-------------|------|--------|-------|-------|
+| HP-01 | Happy Path | [Description] | Manual | Not Started | | |
+| EC-01 | Edge Case | [Description] | Automated | | | |
+| ER-01 | Error | [Description] | Manual | | | |
+
+**Priority definitions:**
+- **P0**: Must pass to deploy. Blocks release.
+- **P1**: Should pass. Can deploy with workaround.
+- **P2**: Nice to have. Address post-launch.
+
+**Test types:**
+- Manual: Human-executed
+- Automated: Unit/integration/E2E tests
+- Performance: Load/stress testing
+- Security: Vulnerability/penetration testing
+
+### Exit Criteria
+
+**Must have:**
+- [ ] All P0 tests pass
+- [ ] 90%+ of P1 tests pass (documented workarounds for failures)
+- [ ] No open P0 security issues
+- [ ] Performance meets SLA
+- [ ] Critical integrations validated
+- [ ] Error handling works as expected
+
+**Issue severity:**
+- **P0 (Critical)**: Blocks core functionality, data loss, security issue → Must fix
+- **P1 (High)**: Major functionality impaired → Should fix
+- **P2 (Medium)**: Minor issue, edge case → Can deploy with workaround
+- **P3 (Low)**: Enhancement → Future release
+
+### Validation Summary
+
+**Results:**
+
+| Category | Total | Passed | Failed | Pass Rate |
+|----------|-------|--------|--------|-----------|
+| Happy Path | | | | |
+| Edge Cases | | | | |
+| Error Handling | | | | |
+
+**Issues:**
+
+| ID | Severity | Description | Status | Resolution |
+|----|----------|-------------|--------|------------|
+| | | | | |
+
+**Recommendation:**
+- [ ] **Deploy to production** - all criteria met
+- [ ] **Deploy with conditions** - [list conditions]
+- [ ] **Do not deploy** - [critical issues]
+
+
+### Output Files
+
+#### `09-validation-plan.md`
+- Include all deliverables listed above
+- Must create a table of contents
+- Must create an Executive summary
+
+#### `assumptions.md`
+- Add any new assumptions not previously documented (max 3 new assumptions)
+
+### File Organization
+- Create all files under the `specs/` folder
+
+## Style
+Be concise but complete.
+
+## Instructions:
+
+1. Focus on **risk-based testing** - test what's most likely to break or cause business impact
+2. Be **specific** - "test login" is not useful; "test login with invalid password" is
+3. Cover **three scenarios**: it works (happy path), it's weird but valid (edge cases), it breaks (errors)
+4. Define **clear pass/fail criteria** - no ambiguity
+5. **Prioritize ruthlessly** - not everything is P0
+6. Think about **production** - will this give confidence to deploy?
+7. State portal rate limits, regulatory drift, model accuracy drift, single-points-of-failure — all named with mitigation strategies.
+
+**Output a concise validation plan that can be executed and tracked.**
