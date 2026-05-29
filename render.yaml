@@ -3,6 +3,7 @@ services:
   - type: web
     name: adr1-intake-agent
     runtime: python
+    plan: free
     buildCommand: "pip install -r capstone/adr1-intake-agent/requirements.txt"
     startCommand: "cd capstone/adr1-intake-agent && uvicorn src.api.app:app --host 0.0.0.0 --port $PORT"
     envVars:
@@ -16,6 +17,7 @@ services:
   - type: web
     name: adr4-triage-agent
     runtime: python
+    plan: free
     buildCommand: "pip install -r capstone/adr4-triage-agent/requirements.txt"
     startCommand: "cd capstone/adr4-triage-agent && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     envVars:
@@ -29,6 +31,7 @@ services:
   - type: web
     name: workflow-backend
     runtime: node
+    plan: free
     buildCommand: "cd capstone/workflow-ui/backend && npm install"
     startCommand: "cd capstone/workflow-ui/backend && node server.js"
     envVars:
