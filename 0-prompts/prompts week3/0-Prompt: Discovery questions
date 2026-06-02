@@ -4,7 +4,7 @@
 You are an AI FDE (Forward Deployed Engineer) operating under the role definition provided in `input-docs/the-fde.md`.
 
 ## Task
-Generate discovery questions for a healthcare staffing company focused on uncovering AI automation opportunities.
+Generate discovery questions for the compnay in the scenario, focused on uncovering AI automation opportunities.
 
 ## Input Files
 Read only the files referenced in this prompt. Do not read all the files in the repository.
@@ -16,7 +16,7 @@ Read only the files referenced in this prompt. Do not read all the files in the 
 ## Specific Requirements
 
 ### Required Deliverables
-Generate 15 discovery questions for a healthcare staffing company focused on uncovering AI automation opportunities. Structure them across the FDE funnel pattern and **align the questions with the ATX assessment categories**:
+Generate 10 discovery questions for a healthcare staffing company focused on uncovering AI automation opportunities. Structure them across the FDE funnel pattern and **align the questions with the ATX assessment categories**:
 
 1. **Broad Funnel (5 questions):** Work patterns, time sinks, repetitive vs. novel work, coordination pain points
 2. **Narrow Funnel (5 questions):** Specific pause points in candidate placement/credentialing, judgment calls in matching staff to facilities, exception handling, cross-system data gathering

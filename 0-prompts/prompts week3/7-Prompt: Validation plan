@@ -8,8 +8,8 @@ Your task is to create a validation plan for a capability specification. Create 
 
 ## Input Files
 Read only the files referenced in this prompt. Do not read all the files in the repository.
-- `specs/06a-capability-spec-intake.md`. This file has the specifications for claim intake.
-- `specs/06b-capability-spec-triage`. This file has the specifications for claim triage.
+- `specs/05a-capability-spec-intake.md`. This file has the specifications for claim intake.
+- `specs/05b-capability-spec-triage`. This file has the specifications for claim triage.
 - `specs/01-problem-framing.md`. This file has the success criteria definitions.
 
 

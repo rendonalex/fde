@@ -1,0 +1,55 @@
+ADVERSE EVENT REPORT - HITL TEST: LOW CONFIDENCE EXTRACTION
+
+Report ID: HITL-01-LOW-CONFIDENCE
+Received: 2026-06-01T11:00:00Z
+
+PATIENT INFORMATION:
+- Age: Not clearly stated (patient said "in my 50s")
+- Sex: Not stated
+- Weight: Unknown
+
+SUSPECT DRUG:
+- Product Name: Some blood pressure medicine, not sure of the name exactly
+- Indication: High blood pressure
+- Dose: One pill a day, maybe 10mg?
+- Start Date: Started sometime in March or April 2026
+- Route: Oral (pills)
+
+ADVERSE EVENT:
+- Event Description: Patient reports feeling dizzy and tired for the past few weeks. Not sure exactly when it started. Sometimes gets lightheaded when standing up. No falls or injuries. Still able to do normal activities but feels "off."
+
+- Outcome: Ongoing
+- Seriousness: Patient says "not too bad" but concerning
+- Action Taken: Unknown - patient hasn't contacted doctor yet
+
+TEMPORAL INFORMATION:
+- Drug Start Date: March or April 2026 (unclear)
+- AE Onset Date: A few weeks ago (unclear)
+- Outcome: Ongoing
+
+CONCOMITANT MEDICATIONS:
+- Some diabetes medicine (patient can't remember name)
+- Vitamins
+
+REPORTER INFORMATION:
+- Type: Patient (self-report via online portal)
+- Name: Anonymous (patient requested anonymity)
+
+ASSESSMENT:
+Incomplete report with multiple missing/ambiguous data points:
+- Patient age: "in my 50s" (not exact age)
+- Patient sex: Not stated
+- Suspect drug name: "some blood pressure medicine" (cannot be validated without specific name)
+- Dose: "maybe 10mg" (uncertain)
+- Dates: All estimated ("March or April", "a few weeks ago")
+- Concomitant meds: Incomplete ("some diabetes medicine")
+- Outcome unclear: "ongoing" but severity/impact not well characterized
+
+EXPECTED ROUTING:
+This case should route to HITL_QUEUE for human case processor re-key:
+- Required field confidence < 0.85 (age, sex, drug name all ambiguous)
+- Cannot normalize product name (no specific drug mentioned)
+- Cannot determine reportability without minimum required information
+- Human follow-up needed to obtain: exact age, sex, specific drug name, exact dates, concomitant med names
+
+This case should NOT reach ADR-2 triage agent.

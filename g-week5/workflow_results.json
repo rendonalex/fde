@@ -1,0 +1,902 @@
+{
+  "summary": {
+    "total_cases": 5,
+    "adr1_success": 5,
+    "adr1_failed": 0,
+    "routed_to_adr2": 3,
+    "routed_to_hitl": 1,
+    "routed_to_exception": 0,
+    "routed_to_duplicate": 1,
+    "adr2_success": 3,
+    "adr2_failed": 0,
+    "reportability": {
+      "15_DAY_EXPEDITED": 1,
+      "PERIODIC": 1,
+      "NON_REPORTABLE": 1
+    },
+    "mso_deep_review_required": 2,
+    "signal_detections": 0
+  },
+  "results": [
+    {
+      "file": "mock-data/test-adr2/EC-01-serious-unexpected-expedited.txt",
+      "timestamp": "2026-06-01T15:38:59.769724",
+      "adr1_status": "SUCCESS",
+      "routing": "ADR-2",
+      "adr2_status": "SUCCESS",
+      "case_package": {
+        "case_id": "ffe09fd4-6d46-4032-82fd-b52ddce87976",
+        "received_at": "2026-06-01T13:38:59.770503Z",
+        "format": "PHONE_VTT",
+        "extraction_status": "AUTO_COMPLETE",
+        "patient": {
+          "age": 62,
+          "sex": "F",
+          "weight": 68.0,
+          "race": null,
+          "confidence": 0.95
+        },
+        "suspect_drug": {
+          "name": "tezarimab",
+          "dose": "500 mg",
+          "route": "intravenous",
+          "indication": "rheumatoid arthritis",
+          "rxnorm_code": "123456",
+          "confidence": 0.95
+        },
+        "ae_description": {
+          "narrative": "Patient presented to emergency department on 2026-05-25 with sudden onset severe right upper quadrant abdominal pain, jaundice, dark urine, and pale stools. Labs showed ALT 850 U/L (normal <40), AST 720 U/L (normal <40), total bilirubin 8.5 mg/dL (normal <1.2), alkaline phosphatase 420 U/L (normal <120). Imaging ruled out biliary obstruction. Clinical diagnosis: drug-induced liver injury (DILI) Grade 3. Patient was hospitalized for 5 days for monitoring and supportive care. Tezarimab permanently discontinued. Liver enzymes improving at discharge but not yet normalized. Seriousness: SERIOUS - required hospitalization. Expectedness: UNEXPECTED per Tezarimab RSI. Causality: Probable (Naranjo score 7/13).",
+          "meddra_pt": "Drug-induced liver injury",
+          "meddra_code": "10059093",
+          "onset_date": "2026-05-25",
+          "outcome": "recovering",
+          "confidence": 0.95
+        },
+        "temporal": {
+          "drug_start_date": "2026-03-15",
+          "ae_onset_date": "2026-05-25",
+          "outcome_date": "2026-05-30",
+          "date_estimated": false,
+          "confidence": 0.95
+        },
+        "concomitant_meds": [
+          {
+            "name": "methotrexate",
+            "dose": "15 mg weekly",
+            "route": "oral",
+            "confidence": 0.88
+          },
+          {
+            "name": "folic acid",
+            "dose": "1 mg daily",
+            "route": "oral",
+            "confidence": 0.88
+          },
+          {
+            "name": "amlodipine",
+            "dose": "5 mg daily",
+            "route": "oral",
+            "confidence": 0.88
+          }
+        ],
+        "medical_history": {
+          "narrative": "Rheumatoid arthritis (diagnosed 2018), hypertension",
+          "confidence": 0.95
+        },
+        "span_citations": {
+          "patient.age": {
+            "value": "62",
+            "source_span": "175-177"
+          },
+          "patient.sex": {
+            "value": "Female",
+            "source_span": "186-192"
+          },
+          "patient.weight": {
+            "value": "68 kg",
+            "source_span": "203-208"
+          },
+          "suspect_drug.name": {
+            "value": "Tezarimab",
+            "source_span": "290-299"
+          },
+          "suspect_drug.dose": {
+            "value": "500 mg IV infusion every 6 months",
+            "source_span": "320-353"
+          },
+          "suspect_drug.route": {
+            "value": "Intravenous",
+            "source_span": "393-404"
+          },
+          "suspect_drug.indication": {
+            "value": "Rheumatoid arthritis",
+            "source_span": "302-322"
+          },
+          "ae_description.narrative": {
+            "value": "Patient presented to emergency department on 2026-05-25 with sudden onset severe right upper quadrant abdominal pain, jaundice, dark urine, and pale stools.",
+            "source_span": "430-584"
+          },
+          "ae_description.onset_date": {
+            "value": "2026-05-25",
+            "source_span": "473-483"
+          },
+          "ae_description.outcome": {
+            "value": "Recovering/Resolving",
+            "source_span": "1006-1026"
+          },
+          "temporal.drug_start_date": {
+            "value": "2026-03-15",
+            "source_span": "1075-1085"
+          },
+          "temporal.ae_onset_date": {
+            "value": "2026-05-25",
+            "source_span": "1101-1111"
+          },
+          "temporal.outcome_date": {
+            "value": "2026-05-30",
+            "source_span": "1148-1158"
+          },
+          "concomitant_meds[0].name": {
+            "value": "Methotrexate 15mg weekly",
+            "source_span": "1196-1220"
+          },
+          "concomitant_meds[1].name": {
+            "value": "Folic acid 1mg daily",
+            "source_span": "1256-1276"
+          },
+          "concomitant_meds[2].name": {
+            "value": "Amlodipine 5mg daily",
+            "source_span": "1307-1327"
+          },
+          "medical_history.narrative": {
+            "value": "Rheumatoid arthritis (diagnosed 2018), hypertension",
+            "source_span": "218-269"
+          }
+        },
+        "source_documents": [
+          {
+            "filename": "mock-data/test-adr2/EC-01-serious-unexpected-expedited.txt",
+            "format": "TEXT",
+            "received_at": "2026-06-01T13:38:59.770503Z",
+            "sha256_hash": "031642f0f839c9bf0c67f32ffc780eb33f74e1949c5b0afed3af80f04b5b3a96"
+          }
+        ],
+        "model_version_adr1": "ADR-1 v1.0",
+        "created_at": "2026-06-01T13:39:13.869990Z",
+        "updated_at": "2026-06-01T13:39:13.870014Z",
+        "created_by": "ADR-1",
+        "updated_by": "ADR-1"
+      },
+      "triage_recommendation": {
+        "case_id": "ffe09fd4-6d46-4032-82fd-b52ddce87976",
+        "seriousness_classification": {
+          "serious": true,
+          "criteria_matched": [
+            "other_medically_important"
+          ],
+          "reasoning": "Classification failed due to error: 'HOSPITALIZATION' is not a valid SeriousnessCriterion. Defaulting to serious (conservative).",
+          "span_citations": {},
+          "confidence": 0.5
+        },
+        "expectedness_signal": {
+          "unexpected": true,
+          "rsi_match": "none",
+          "rsi_term_matched": null,
+          "reasoning": "AE term 'Drug-induced liver injury' not found in tezarimab RSI (novel event)",
+          "span_citations": {},
+          "confidence": 0.0
+        },
+        "reportability_recommendation": {
+          "recommendation": "15_DAY_EXPEDITED",
+          "jurisdictions": [
+            "FDA"
+          ],
+          "rule_justification": "FDA 21 CFR 314.80(c)(1)(i): Serious and unexpected adverse drug experience",
+          "causality_context": null,
+          "reasoning": "Serious (criteria: ['other_medically_important']) and unexpected (RSI match: none) per FDA regulations - expedited 15-day reporting required",
+          "span_citations": {},
+          "confidence": 0.0
+        },
+        "mso_flags": {
+          "deep_review_required": true,
+          "reason": [
+            "novel_ae_term",
+            "ambiguous_seriousness"
+          ]
+        },
+        "audit_trail": {
+          "timestamp": "2026-06-01T15:39:19.089343",
+          "agent_version": "ADR2-v1.0-sonnet4.6",
+          "regulatory_references": [
+            "ICH E2A: Guidelines for Clinical Safety Data Management - Definitions and Standards for Expedited Reporting",
+            "FDA 21 CFR 314.80: Postmarketing reporting of adverse drug experiences",
+            "FDA May 2026 Guidance on AI-Assisted Pharmacovigilance - Requirements 1-5"
+          ]
+        },
+        "signal_detection_flag": false,
+        "signal_pattern": null,
+        "model_version_adr2": "ADR2-v1.0-sonnet4.6",
+        "created_at": "2026-06-01T13:39:19.089400Z",
+        "created_by": "ADR-2",
+        "mso_reviewed_at": null,
+        "mso_reviewed_by": null,
+        "mso_override": false,
+        "mso_override_reason": null,
+        "mso_action": null,
+        "mso_rationale": null
+      },
+      "error": null
+    },
+    {
+      "file": "mock-data/test-adr2/HP-01-expected-nonserious.txt",
+      "timestamp": "2026-06-01T15:39:19.089649",
+      "adr1_status": "SUCCESS",
+      "routing": "ADR-2",
+      "adr2_status": "SUCCESS",
+      "case_package": {
+        "case_id": "07fb88ea-f691-47ef-856d-3b63df188434",
+        "received_at": "2026-06-01T13:39:19.090472Z",
+        "format": "PHONE_VTT",
+        "extraction_status": "AUTO_COMPLETE",
+        "patient": {
+          "age": 45,
+          "sex": "M",
+          "weight": 80.0,
+          "race": null,
+          "confidence": 0.95
+        },
+        "suspect_drug": {
+          "name": "Solivian",
+          "dose": "10 mg",
+          "route": "oral",
+          "indication": "Pulmonary arterial hypertension",
+          "rxnorm_code": "789012",
+          "confidence": 0.95
+        },
+        "ae_description": {
+          "narrative": "Patient developed headache on 2026-05-20, approximately 5 weeks after starting Solivian. Headache was moderate (5/10 pain scale), bilateral, throbbing. Associated with mild nausea. Patient took acetaminophen 500mg with complete relief within 2 hours.",
+          "meddra_pt": "Headache",
+          "meddra_code": "10019211",
+          "onset_date": "2026-05-20",
+          "outcome": "recovered",
+          "confidence": 0.95
+        },
+        "temporal": {
+          "drug_start_date": "2026-04-15",
+          "ae_onset_date": "2026-05-20",
+          "outcome_date": "2026-05-20",
+          "date_estimated": false,
+          "confidence": 0.95
+        },
+        "concomitant_meds": [
+          {
+            "name": "metformin",
+            "dose": "1000 mg twice daily",
+            "route": "oral",
+            "confidence": 0.92
+          },
+          {
+            "name": "lisinopril",
+            "dose": "10 mg once daily",
+            "route": "oral",
+            "confidence": 0.92
+          },
+          {
+            "name": "acetaminophen",
+            "dose": "500 mg",
+            "route": "oral",
+            "confidence": 0.88
+          }
+        ],
+        "medical_history": {
+          "narrative": "Type 2 diabetes mellitus, hypertension (controlled)",
+          "confidence": 0.95
+        },
+        "span_citations": {
+          "patient.age": {
+            "value": "45",
+            "source_span": "175-177"
+          },
+          "patient.sex": {
+            "value": "Male",
+            "source_span": "187-191"
+          },
+          "patient.weight": {
+            "value": "80 kg",
+            "source_span": "202-207"
+          },
+          "suspect_drug.name": {
+            "value": "Solivian",
+            "source_span": "305-313"
+          },
+          "suspect_drug.dose": {
+            "value": "10 mg orally once daily",
+            "source_span": "345-367"
+          },
+          "suspect_drug.route": {
+            "value": "Oral",
+            "source_span": "383-387"
+          },
+          "suspect_drug.indication": {
+            "value": "Pulmonary arterial hypertension",
+            "source_span": "315-346"
+          },
+          "ae_description.narrative": {
+            "value": "Patient developed headache on 2026-05-20, approximately 5 weeks after starting Solivian. Headache was moderate (5/10 pain scale), bilateral, throbbing. Associated with mild nausea. Patient took acetaminophen 500mg with complete relief within 2 hours.",
+            "source_span": "422-671"
+          },
+          "ae_description.onset_date": {
+            "value": "2026-05-20",
+            "source_span": "449-459"
+          },
+          "ae_description.outcome": {
+            "value": "Recovered/resolved on 2026-05-20",
+            "source_span": "676-708"
+          },
+          "temporal.drug_start_date": {
+            "value": "2026-04-15",
+            "source_span": "810-820"
+          },
+          "temporal.ae_onset_date": {
+            "value": "2026-05-20",
+            "source_span": "836-846"
+          },
+          "temporal.outcome_date": {
+            "value": "2026-05-20",
+            "source_span": "862-872"
+          },
+          "concomitant_meds[0].name": {
+            "value": "Metformin 1000mg twice daily",
+            "source_span": "940-968"
+          },
+          "concomitant_meds[1].name": {
+            "value": "Lisinopril 10mg once daily",
+            "source_span": "1007-1032"
+          }
+        },
+        "source_documents": [
+          {
+            "filename": "mock-data/test-adr2/HP-01-expected-nonserious.txt",
+            "format": "TEXT",
+            "received_at": "2026-06-01T13:39:19.090472Z",
+            "sha256_hash": "9f4e084fedfcf5a226ce07d149fde541ad8fb8c7deeacd91c33cc9ac5fca104b"
+          }
+        ],
+        "model_version_adr1": "ADR-1 v1.0",
+        "created_at": "2026-06-01T13:39:30.450383Z",
+        "updated_at": "2026-06-01T13:39:30.450425Z",
+        "created_by": "ADR-1",
+        "updated_by": "ADR-1"
+      },
+      "triage_recommendation": {
+        "case_id": "07fb88ea-f691-47ef-856d-3b63df188434",
+        "seriousness_classification": {
+          "serious": false,
+          "criteria_matched": [],
+          "reasoning": "The adverse event is a moderate headache (5/10) that resolved completely within 2 hours with OTC acetaminophen 500mg. No death, no life-threatening risk, no hospitalization, no disability, no congenital anomaly, and no requirement for medical/surgical intervention to prevent serious outcomes. The event was self-managed and fully recovered. None of the ICH E2A seriousness criteria are met.",
+          "span_citations": {},
+          "confidence": 0.97
+        },
+        "expectedness_signal": {
+          "unexpected": false,
+          "rsi_match": "exact",
+          "rsi_term_matched": "Headache",
+          "reasoning": "AE term 'Headache' found as exact match in Solivian RSI",
+          "span_citations": {},
+          "confidence": 0.95
+        },
+        "reportability_recommendation": {
+          "recommendation": "NON_REPORTABLE",
+          "jurisdictions": [],
+          "rule_justification": "Non-serious adverse event - no expedited reporting requirement",
+          "causality_context": null,
+          "reasoning": "Non-serious adverse event - does not meet FDA 21 CFR 314.80 expedited reporting criteria",
+          "span_citations": {},
+          "confidence": 0.97
+        },
+        "mso_flags": {
+          "deep_review_required": false,
+          "reason": []
+        },
+        "audit_trail": {
+          "timestamp": "2026-06-01T15:39:34.501423",
+          "agent_version": "ADR2-v1.0-sonnet4.6",
+          "regulatory_references": [
+            "ICH E2A: Guidelines for Clinical Safety Data Management - Definitions and Standards for Expedited Reporting",
+            "FDA 21 CFR 314.80: Postmarketing reporting of adverse drug experiences",
+            "FDA May 2026 Guidance on AI-Assisted Pharmacovigilance - Requirements 1-5"
+          ]
+        },
+        "signal_detection_flag": false,
+        "signal_pattern": null,
+        "model_version_adr2": "ADR2-v1.0-sonnet4.6",
+        "created_at": "2026-06-01T13:39:34.501501Z",
+        "created_by": "ADR-2",
+        "mso_reviewed_at": null,
+        "mso_reviewed_by": null,
+        "mso_override": false,
+        "mso_override_reason": null,
+        "mso_action": null,
+        "mso_rationale": null
+      },
+      "error": null
+    },
+    {
+      "file": "mock-data/test-adr2/high_confidence_report.txt",
+      "timestamp": "2026-06-01T15:39:34.501956",
+      "adr1_status": "SUCCESS",
+      "routing": "PENDING_DUPLICATE",
+      "adr2_status": null,
+      "case_package": {
+        "case_id": "3508f390-7932-48d7-b5e5-58badc61cdc9",
+        "received_at": "2026-06-01T13:39:34.504088Z",
+        "format": "PHONE_VTT",
+        "extraction_status": "PENDING_DUPLICATE",
+        "patient": {
+          "age": 45,
+          "sex": "M",
+          "weight": 80.0,
+          "race": null,
+          "confidence": 0.95
+        },
+        "suspect_drug": {
+          "name": "Solivian",
+          "dose": "10 mg",
+          "route": "oral",
+          "indication": "pulmonary arterial hypertension",
+          "rxnorm_code": "789012",
+          "confidence": 0.95
+        },
+        "ae_description": {
+          "narrative": "Patient developed severe headache on 2026-05-20, approximately 5 weeks after starting Solivian therapy. Headache was severe (7/10 pain scale), bilateral, throbbing in nature. Associated with nausea but no vomiting. No visual disturbances. Patient took acetaminophen 500mg with partial relief. Event resolved on 2026-05-22 after symptomatic treatment with NSAIDs. Drug continued at same dose.",
+          "meddra_pt": "Visual impairment",
+          "meddra_code": "10047571",
+          "onset_date": "2026-05-20",
+          "outcome": "recovered",
+          "confidence": 0.95
+        },
+        "temporal": {
+          "drug_start_date": "2026-04-15",
+          "ae_onset_date": "2026-05-20",
+          "outcome_date": "2026-05-22",
+          "date_estimated": false,
+          "confidence": 0.95
+        },
+        "concomitant_meds": [
+          {
+            "name": "metformin",
+            "dose": "1000 mg twice daily",
+            "route": "oral",
+            "confidence": 0.92
+          },
+          {
+            "name": "lisinopril",
+            "dose": "10 mg once daily",
+            "route": "oral",
+            "confidence": 0.92
+          },
+          {
+            "name": "acetaminophen",
+            "dose": "500 mg",
+            "route": "oral",
+            "confidence": 0.88
+          }
+        ],
+        "medical_history": {
+          "narrative": "Type 2 diabetes mellitus (diagnosed 2020), hypertension (controlled)",
+          "confidence": 0.95
+        },
+        "span_citations": {
+          "patient.age": {
+            "value": "45",
+            "source_span": "162-164"
+          },
+          "patient.sex": {
+            "value": "Male",
+            "source_span": "174-178"
+          },
+          "patient.weight": {
+            "value": "80 kg",
+            "source_span": "189-194"
+          },
+          "suspect_drug.name": {
+            "value": "Solivian",
+            "source_span": "296-304"
+          },
+          "suspect_drug.dose": {
+            "value": "10 mg orally once daily",
+            "source_span": "336-358"
+          },
+          "suspect_drug.route": {
+            "value": "Oral",
+            "source_span": "378-382"
+          },
+          "suspect_drug.indication": {
+            "value": "Pulmonary arterial hypertension",
+            "source_span": "307-338"
+          },
+          "ae_description.narrative": {
+            "value": "Patient developed severe headache on 2026-05-20",
+            "source_span": "420-467"
+          },
+          "ae_description.onset_date": {
+            "value": "2026-05-20",
+            "source_span": "457-467"
+          },
+          "ae_description.outcome": {
+            "value": "Recovered/resolved on 2026-05-22",
+            "source_span": "641-673"
+          },
+          "temporal.drug_start_date": {
+            "value": "2026-04-15",
+            "source_span": "826-836"
+          },
+          "temporal.ae_onset_date": {
+            "value": "2026-05-20",
+            "source_span": "852-862"
+          },
+          "temporal.outcome_date": {
+            "value": "2026-05-22",
+            "source_span": "876-886"
+          },
+          "medical_history.narrative": {
+            "value": "Type 2 diabetes mellitus (diagnosed 2020), hypertension (controlled)",
+            "source_span": "218-286"
+          }
+        },
+        "source_documents": [
+          {
+            "filename": "mock-data/test-adr2/high_confidence_report.txt",
+            "format": "TEXT",
+            "received_at": "2026-06-01T13:39:34.504088Z",
+            "sha256_hash": "5e6911064575062d1e268d040a20dcbb6d505f8ae71eae8c8fdb4e62f5b98f0c"
+          }
+        ],
+        "model_version_adr1": "ADR-1 v1.0",
+        "created_at": "2026-06-01T13:39:46.112037Z",
+        "updated_at": "2026-06-01T13:39:46.112062Z",
+        "created_by": "ADR-1",
+        "updated_by": "ADR-1"
+      },
+      "triage_recommendation": null,
+      "error": null
+    },
+    {
+      "file": "mock-data/test-adr2/FM-01-ambiguous-seriousness.txt",
+      "timestamp": "2026-06-01T15:39:46.112383",
+      "adr1_status": "SUCCESS",
+      "routing": "ADR-2",
+      "adr2_status": "SUCCESS",
+      "case_package": {
+        "case_id": "1ac78a59-5366-4f6e-a35a-39435b8ff087",
+        "received_at": "2026-06-01T13:39:46.113352Z",
+        "format": "PHONE_VTT",
+        "extraction_status": "AUTO_COMPLETE",
+        "patient": {
+          "age": 42,
+          "sex": "M",
+          "weight": 78.0,
+          "race": null,
+          "confidence": 0.95
+        },
+        "suspect_drug": {
+          "name": "Phaedora",
+          "dose": "16 mg",
+          "route": "oral",
+          "indication": "treatment-resistant depression (adjunctive therapy)",
+          "rxnorm_code": "345678",
+          "confidence": 0.95
+        },
+        "ae_description": {
+          "narrative": "Patient presented to urgent care clinic on 2026-05-25 with severe panic attack including palpitations, sweating, tremor, and intense fear. Symptoms started abruptly on the morning of 2026-05-25, approximately 6 weeks after starting Phaedora. Vital signs: BP 145/92 mmHg (baseline 120/80), HR 110 bpm regular, SpO2 98% on room air. ECG showed sinus tachycardia, no acute changes. Patient observed for 2 hours, given lorazepam 1mg orally with good response. Discharged home after symptom resolution. Clinician documented consideration of ED transfer for cardiac workup given elevated BP and tachycardia, but patient remained stable after anxiolytic. Dose subsequently reduced to 8mg daily per psychiatrist.",
+          "meddra_pt": "Palpitations",
+          "meddra_code": "10033557",
+          "onset_date": "2026-05-25",
+          "outcome": "recovered",
+          "confidence": 0.93
+        },
+        "temporal": {
+          "drug_start_date": "2026-04-10",
+          "ae_onset_date": "2026-05-25",
+          "outcome_date": "2026-05-25",
+          "date_estimated": false,
+          "confidence": 0.95
+        },
+        "concomitant_meds": [
+          {
+            "name": "sertraline",
+            "dose": "150 mg once daily",
+            "route": "oral",
+            "confidence": 0.93
+          },
+          {
+            "name": "multivitamin",
+            "dose": "once daily",
+            "route": "oral",
+            "confidence": 0.9
+          },
+          {
+            "name": "lorazepam",
+            "dose": "1 mg",
+            "route": "oral",
+            "confidence": 0.92
+          }
+        ],
+        "medical_history": {
+          "narrative": "Major depressive disorder diagnosed 2023. No other significant history reported.",
+          "confidence": 0.92
+        },
+        "span_citations": {
+          "patient.age": {
+            "value": "42",
+            "source_span": "175-177"
+          },
+          "patient.sex": {
+            "value": "Male",
+            "source_span": "186-190"
+          },
+          "patient.weight": {
+            "value": "78 kg",
+            "source_span": "200-205"
+          },
+          "suspect_drug.name": {
+            "value": "Phaedora",
+            "source_span": "280-288"
+          },
+          "suspect_drug.dose": {
+            "value": "16 mg orally once daily",
+            "source_span": "336-358"
+          },
+          "suspect_drug.route": {
+            "value": "Oral",
+            "source_span": "378-382"
+          },
+          "suspect_drug.indication": {
+            "value": "Treatment-resistant depression (adjunctive therapy)",
+            "source_span": "302-352"
+          },
+          "ae_description.narrative": {
+            "value": "Patient presented to urgent care clinic on 2026-05-25 complaining of severe panic attack with palpitations, sweating, tremor, and intense fear.",
+            "source_span": "424-567"
+          },
+          "ae_description.onset_date": {
+            "value": "2026-05-25",
+            "source_span": "464-474"
+          },
+          "ae_description.outcome": {
+            "value": "Recovered/Resolved (symptoms resolved same day after lorazepam)",
+            "source_span": "1050-1112"
+          },
+          "temporal.drug_start_date": {
+            "value": "2026-04-10",
+            "source_span": "369-379"
+          },
+          "temporal.ae_onset_date": {
+            "value": "2026-05-25",
+            "source_span": "1148-1158"
+          },
+          "temporal.outcome_date": {
+            "value": "2026-05-25",
+            "source_span": "1196-1206"
+          },
+          "concomitant_meds.sertraline": {
+            "value": "Sertraline 150mg once daily",
+            "source_span": "1296-1322"
+          },
+          "concomitant_meds.multivitamin": {
+            "value": "Multivitamin once daily",
+            "source_span": "1363-1385"
+          },
+          "concomitant_meds.lorazepam": {
+            "value": "lorazepam 1mg orally",
+            "source_span": "826-846"
+          },
+          "medical_history.narrative": {
+            "value": "Major depressive disorder (diagnosed 2023), no other significant history",
+            "source_span": "218-289"
+          }
+        },
+        "source_documents": [
+          {
+            "filename": "mock-data/test-adr2/FM-01-ambiguous-seriousness.txt",
+            "format": "TEXT",
+            "received_at": "2026-06-01T13:39:46.113352Z",
+            "sha256_hash": "fcdd0069735e58dc31540c2a103ea9e08bbfb533ccb037b651c3ec7764867107"
+          }
+        ],
+        "model_version_adr1": "ADR-1 v1.0",
+        "created_at": "2026-06-01T13:40:00.647867Z",
+        "updated_at": "2026-06-01T13:40:00.647878Z",
+        "created_by": "ADR-1",
+        "updated_by": "ADR-1"
+      },
+      "triage_recommendation": {
+        "case_id": "1ac78a59-5366-4f6e-a35a-39435b8ff087",
+        "seriousness_classification": {
+          "serious": true,
+          "criteria_matched": [
+            "other_medically_important"
+          ],
+          "reasoning": "Classification failed due to error: 'OTHER_MEDICALLY_IMPORTANT' is not a valid SeriousnessCriterion. Defaulting to serious (conservative).",
+          "span_citations": {},
+          "confidence": 0.5
+        },
+        "expectedness_signal": {
+          "unexpected": false,
+          "rsi_match": "exact",
+          "rsi_term_matched": "Hyperhidrosis",
+          "reasoning": "AE term 'Hyperhidrosis' found as exact match in Phaedora RSI",
+          "span_citations": {},
+          "confidence": 0.95
+        },
+        "reportability_recommendation": {
+          "recommendation": "PERIODIC",
+          "jurisdictions": [],
+          "rule_justification": "FDA 21 CFR 314.80(c)(2): Serious but expected adverse drug experience",
+          "causality_context": null,
+          "reasoning": "Serious but expected (RSI match: exact) - include in next periodic adverse drug experience report",
+          "span_citations": {},
+          "confidence": 0.5
+        },
+        "mso_flags": {
+          "deep_review_required": true,
+          "reason": [
+            "ambiguous_seriousness"
+          ]
+        },
+        "audit_trail": {
+          "timestamp": "2026-06-01T15:40:08.140714",
+          "agent_version": "ADR2-v1.0-sonnet4.6",
+          "regulatory_references": [
+            "ICH E2A: Guidelines for Clinical Safety Data Management - Definitions and Standards for Expedited Reporting",
+            "FDA 21 CFR 314.80: Postmarketing reporting of adverse drug experiences",
+            "FDA May 2026 Guidance on AI-Assisted Pharmacovigilance - Requirements 1-5"
+          ]
+        },
+        "signal_detection_flag": false,
+        "signal_pattern": null,
+        "model_version_adr2": "ADR2-v1.0-sonnet4.6",
+        "created_at": "2026-06-01T13:40:08.140770Z",
+        "created_by": "ADR-2",
+        "mso_reviewed_at": null,
+        "mso_reviewed_by": null,
+        "mso_override": false,
+        "mso_override_reason": null,
+        "mso_action": null,
+        "mso_rationale": null
+      },
+      "error": null
+    },
+    {
+      "file": "mock-data/test-adr2/HITL-01-low-confidence-extraction.txt",
+      "timestamp": "2026-06-01T15:40:08.141093",
+      "adr1_status": "SUCCESS",
+      "routing": "HITL_QUEUE",
+      "adr2_status": null,
+      "case_package": {
+        "case_id": "a363e318-1e94-42a8-8d3e-a4db95211d65",
+        "received_at": "2026-06-01T13:40:08.143151Z",
+        "format": "PHONE_VTT",
+        "extraction_status": "HUMAN_REQUIRED",
+        "patient": {
+          "age": null,
+          "sex": "Unknown",
+          "weight": null,
+          "race": null,
+          "confidence": 0.52
+        },
+        "suspect_drug": {
+          "name": "unspecified antihypertensive",
+          "dose": "10 mg",
+          "route": "oral",
+          "indication": "hypertension",
+          "rxnorm_code": null,
+          "confidence": 0.55
+        },
+        "ae_description": {
+          "narrative": "Patient reports feeling dizzy and tired for the past few weeks. Sometimes gets lightheaded when standing up (orthostatic symptoms). No falls or injuries. Still able to perform normal activities but feels 'off'. Outcome ongoing.",
+          "meddra_pt": null,
+          "meddra_code": null,
+          "onset_date": "2026-05-11",
+          "outcome": "not_recovered",
+          "confidence": 0.72
+        },
+        "temporal": {
+          "drug_start_date": "2026-03-15",
+          "ae_onset_date": "2026-05-11",
+          "outcome_date": null,
+          "date_estimated": true,
+          "confidence": 0.52
+        },
+        "concomitant_meds": [
+          {
+            "name": "unspecified antidiabetic",
+            "dose": null,
+            "route": null,
+            "confidence": 0.55
+          },
+          {
+            "name": "vitamins (unspecified)",
+            "dose": null,
+            "route": null,
+            "confidence": 0.62
+          }
+        ],
+        "medical_history": {
+          "narrative": "Hypertension (implied by suspect drug indication). Diabetes mellitus (implied by concomitant antidiabetic medication).",
+          "confidence": 0.65
+        },
+        "span_citations": {
+          "patient.age": {
+            "value": "in my 50s",
+            "source_span": "175-184"
+          },
+          "patient.sex": {
+            "value": "Not stated",
+            "source_span": "188-198"
+          },
+          "patient.weight": {
+            "value": "Unknown",
+            "source_span": "209-216"
+          },
+          "suspect_drug.name": {
+            "value": "Some blood pressure medicine, not sure of the name exactly",
+            "source_span": "248-305"
+          },
+          "suspect_drug.dose": {
+            "value": "maybe 10mg",
+            "source_span": "344-354"
+          },
+          "suspect_drug.route": {
+            "value": "Oral (pills)",
+            "source_span": "393-405"
+          },
+          "suspect_drug.indication": {
+            "value": "High blood pressure",
+            "source_span": "322-341"
+          },
+          "ae_description.narrative": {
+            "value": "Patient reports feeling dizzy and tired for the past few weeks",
+            "source_span": "449-510"
+          },
+          "ae_description.outcome": {
+            "value": "Ongoing",
+            "source_span": "660-667"
+          },
+          "temporal.drug_start_date": {
+            "value": "March or April 2026",
+            "source_span": "357-376"
+          },
+          "temporal.ae_onset_date": {
+            "value": "A few weeks ago",
+            "source_span": "795-810"
+          },
+          "concomitant_meds[0].name": {
+            "value": "Some diabetes medicine (patient can't remember name)",
+            "source_span": "870-921"
+          },
+          "concomitant_meds[1].name": {
+            "value": "Vitamins",
+            "source_span": "925-933"
+          }
+        },
+        "source_documents": [
+          {
+            "filename": "mock-data/test-adr2/HITL-01-low-confidence-extraction.txt",
+            "format": "TEXT",
+            "received_at": "2026-06-01T13:40:08.143151Z",
+            "sha256_hash": "0c4227b72c51ae91d67ab4a8bad81efb22463bf2c4d8b87644274d4e64726af2"
+          }
+        ],
+        "model_version_adr1": "ADR-1 v1.0",
+        "created_at": "2026-06-01T13:40:19.717780Z",
+        "updated_at": "2026-06-01T13:40:19.718073Z",
+        "created_by": "ADR-1",
+        "updated_by": "ADR-1"
+      },
+      "triage_recommendation": null,
+      "error": null
+    }
+  ],
+  "generated_at": "2026-06-01T15:40:19.718768"
+}

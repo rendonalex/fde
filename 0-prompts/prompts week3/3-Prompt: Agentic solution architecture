@@ -12,7 +12,6 @@ Read only the files referenced in this prompt. Do not read all the files in the 
 ### Primary Input
 - `specs/cognitive-load-map.md` - Cognitive Load Map with Jobs to be Done.
 - `input-docs/scenario.md`. Scenario description
-- `specs/stakeholder-alignment-memo.md`
 
 ### Guidance Document
 - `input-docs/atx/atx-assessment.md` - Use **only** section: 'Phase 3: Delegation Qualification' for step-by-step process to create the deliverable 

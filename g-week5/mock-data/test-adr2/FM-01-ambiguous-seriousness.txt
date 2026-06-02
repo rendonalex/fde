@@ -1,0 +1,48 @@
+ADVERSE EVENT REPORT - FAILURE MODE: AMBIGUOUS SERIOUSNESS
+
+Report ID: FM-01-AMBIGUOUS-SERIOUSNESS
+Received: 2026-06-01T16:45:00Z
+
+PATIENT INFORMATION:
+- Age: 42 years
+- Sex: Male
+- Weight: 78 kg
+- Medical History: Major depressive disorder (diagnosed 2023), no other significant history
+
+SUSPECT DRUG:
+- Product Name: Phaedora
+- Indication: Treatment-resistant depression (adjunctive therapy)
+- Dose: 16 mg orally once daily
+- Start Date: 2026-04-10
+- Route: Oral
+
+ADVERSE EVENT:
+- Event Description: Patient presented to urgent care clinic on 2026-05-25 complaining of severe panic attack with palpitations, sweating, tremor, and intense fear. Symptoms started abruptly on morning of 2026-05-25, approximately 6 weeks after starting Phaedora. Patient denied chest pain, shortness of breath, or other concerning cardiac symptoms.
+
+At urgent care, vital signs were: BP 145/92 mmHg (baseline 120/80), HR 110 bpm regular, SpO2 98% on room air. ECG showed sinus tachycardia, no acute changes. Patient was observed for 2 hours, given lorazepam 1mg orally with good response. Discharged home after symptoms resolved, instructed to follow up with psychiatrist.
+
+No hospitalization. No life-threatening features at presentation. However, clinician documented "considered ED transfer for cardiac workup given elevated BP and tachycardia, but patient stable after anxiolytic."
+
+- Outcome: Recovered/Resolved (symptoms resolved same day after lorazepam)
+- Seriousness: Borderline - urgent care visit with intervention, no hospitalization
+- Action Taken: Phaedora dose reduced to 8mg daily per psychiatrist. Patient tolerating well at lower dose.
+
+TEMPORAL INFORMATION:
+- Drug Start Date: 2026-04-10
+- AE Onset Date: 2026-05-25
+- Urgent Care Visit Date: 2026-05-25
+- Resolution Date: 2026-05-25
+- Outcome: Recovered/Resolved
+
+CONCOMITANT MEDICATIONS:
+- Sertraline 150mg once daily (for depression) - started 2023-08-01
+- Multivitamin once daily
+
+REPORTER INFORMATION:
+- Type: Healthcare Professional (Psychiatrist)
+- Name: Dr. Michael Torres, MD
+- Institution: City Mental Health Clinic
+- Direct contact with patient and review of urgent care records
+
+ASSESSMENT:
+Panic attack treated at urgent care with lorazepam. No hospitalization required. Vital signs elevated but normalized after treatment. Clinician notes document consideration of ED transfer for cardiac evaluation, but patient remained stable and was discharged after observation. Event is consistent with known side effect of Phaedora (panic attack listed in product information). Dose reduction implemented with good tolerability.

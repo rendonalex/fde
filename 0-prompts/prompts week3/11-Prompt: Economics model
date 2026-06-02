@@ -11,9 +11,8 @@ Read only the files referenced in this prompt. Do not read all the files in the 
 
 ### Primary Input
 - `input-docs/scenario.md` scenario description
-- `specs/stakeholder-alignment-memo.md` inofrmation on addressing the stakeholder tensions
-- `specs/06a-capability-spec-intake.md` - capability specification for the intake.
-- `specs/06b-capability-spec-triage.md` - capability specification for the triage.
+- `specs/05a-capability-spec-intake.md` - capability specification for the intake.
+- `specs/05b-capability-spec-triage.md` - capability specification for the triage.
 
 ### Guidance Documents
 - `input-docs/atx/atx-economics.md`. Contains the steps to build the Economics model document. Make sure you follow all the steps and sub-steps in the guidance document. For the "Token Consumption Per Case" section, ensure that the tokens calculation for input and output is accurate and well supported for the calculations. Including if a need for caching the codebookis needed for token savings.

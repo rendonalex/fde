@@ -1,0 +1,53 @@
+ADVERSE EVENT REPORT - EDGE CASE: SERIOUS + UNEXPECTED
+
+Report ID: EC-01-SERIOUS-UNEXPECTED
+Received: 2026-06-01T14:30:00Z
+
+PATIENT INFORMATION:
+- Age: 62 years
+- Sex: Female
+- Weight: 68 kg
+- Medical History: Rheumatoid arthritis (diagnosed 2018), hypertension
+
+SUSPECT DRUG:
+- Product Name: Tezarimab
+- Indication: Rheumatoid arthritis
+- Dose: 500 mg IV infusion every 6 months
+- Start Date: 2026-03-15 (first infusion)
+- Route: Intravenous
+
+ADVERSE EVENT:
+- Event Description: Patient presented to emergency department on 2026-05-25 with sudden onset severe right upper quadrant abdominal pain, jaundice, dark urine, and pale stools. Labs showed ALT 850 U/L (normal <40), AST 720 U/L (normal <40), total bilirubin 8.5 mg/dL (normal <1.2), alkaline phosphatase 420 U/L (normal <120). Imaging ruled out biliary obstruction. Clinical diagnosis: drug-induced liver injury (DILI) Grade 3.
+
+Patient was hospitalized for 5 days for monitoring and supportive care. Tezarimab permanently discontinued. Liver enzymes improving at discharge but not yet normalized.
+
+- Outcome: Recovering/Resolving (discharged on 2026-05-30, outpatient follow-up scheduled)
+- Seriousness: SERIOUS - required hospitalization (5 days inpatient)
+- Action Taken: Drug permanently discontinued
+
+TEMPORAL INFORMATION:
+- Drug Start Date: 2026-03-15
+- AE Onset Date: 2026-05-25
+- Hospitalization Date: 2026-05-25
+- Discharge Date: 2026-05-30
+- Outcome: Recovering/Resolving
+
+CONCOMITANT MEDICATIONS:
+- Methotrexate 15mg weekly (for RA) - started 2019-06-01
+- Folic acid 1mg daily - started 2019-06-01
+- Amlodipine 5mg daily (for hypertension) - started 2020-01-01
+
+REPORTER INFORMATION:
+- Type: Healthcare Professional (Rheumatologist)
+- Name: Dr. James Wilson, MD
+- Institution: County General Hospital
+
+ASSESSMENT:
+Drug-induced liver injury Grade 3 with hospitalization. This represents a serious and unexpected adverse event. Tezarimab RSI lists uncommon hepatic enzyme elevations (typically transient, <3x ULN), but does NOT list severe DILI requiring hospitalization as an expected event. Temporal relationship strong (10 weeks post-infusion is within expected window for immune-mediated DILI). Causality assessment: Probable (Naranjo score 7/13).
+
+EXPECTED CLASSIFICATION:
+- Seriousness: SERIOUS (hospitalization criterion met per ICH E2A)
+- Expectedness: UNEXPECTED (severe DILI Grade 3+ not in Tezarimab RSI)
+- Reportability: EXPEDITED_15_DAY (FDA 21 CFR 314.80 - serious + unexpected)
+- MSO Review: REQUIRED (novel AE term, serious outcome)
+- Signal Detection: Check if 3-cases-in-90-days pattern exists

@@ -1,0 +1,47 @@
+ADVERSE EVENT REPORT - HAPPY PATH TEST
+
+Report ID: HP-01-EXPECTED-NONSERIOUS
+Received: 2026-06-01T09:00:00Z
+
+PATIENT INFORMATION:
+- Age: 45 years
+- Sex: Male
+- Weight: 80 kg
+- Medical History: Type 2 diabetes mellitus, hypertension (controlled)
+
+SUSPECT DRUG:
+- Product Name: Solivian
+- Indication: Pulmonary arterial hypertension
+- Dose: 10 mg orally once daily
+- Start Date: 2026-04-15
+- Route: Oral
+
+ADVERSE EVENT:
+- Event Description: Patient developed headache on 2026-05-20, approximately 5 weeks after starting Solivian. Headache was moderate (5/10 pain scale), bilateral, throbbing. Associated with mild nausea. Patient took acetaminophen 500mg with complete relief within 2 hours.
+
+- Outcome: Recovered/resolved on 2026-05-20
+- Seriousness: Non-serious (did not require hospitalization, no life-threatening features)
+- Action Taken: Drug continued at same dose
+
+TEMPORAL INFORMATION:
+- Drug Start Date: 2026-04-15
+- AE Onset Date: 2026-05-20
+- AE End Date: 2026-05-20
+- Outcome: Recovered/Resolved
+
+CONCOMITANT MEDICATIONS:
+- Metformin 1000mg twice daily (for diabetes) - started 2020-03-01
+- Lisinopril 10mg once daily (for hypertension) - started 2021-06-01
+
+REPORTER INFORMATION:
+- Type: Healthcare Professional (Cardiologist)
+- Name: Dr. Sarah Chen, MD
+
+ASSESSMENT:
+Headache is a common expected adverse event with Solivian (listed in RSI, ~15% incidence in trials). Non-serious event, resolved spontaneously. Drug continued without recurrence.
+
+EXPECTED CLASSIFICATION:
+- Seriousness: Non-serious (no ICH E2A criteria met)
+- Expectedness: Expected (headache in Solivian RSI)
+- Reportability: NON_REPORTABLE
+- MSO Review: Not required (expected, non-serious)

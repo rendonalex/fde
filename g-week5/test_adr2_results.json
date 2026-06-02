@@ -1,0 +1,160 @@
+{
+  "case_id": "3babf2a1-9611-4bf9-84c9-fa03948e82d7",
+  "adr1_extraction": {
+    "log": [
+      "[ADR-1] Processing report: mock-data/test-adr2/high_confidence_report.txt",
+      "[ADR-1] Format classified: PHONE_VTT",
+      "[ADR-1] Receipt timestamp: 2026-06-01T13:12:47.333620Z",
+      "[ADR-1] Source document SHA-256: 5e6911064575062d...",
+      "[ADR-1] Calling Claude API for extraction...",
+      "[ADR-1] Extraction complete",
+      "[ADR-1] RxNorm lookup: Solivian -> RxCUI 789012",
+      "[ADR-1] MedDRA coding: visual disturbance -> Visual impairment (10047571)",
+      "[ADR-1] In-scope product: Solivian",
+      "[ADR-1] AECasePackage created: 3babf2a1-9611-4bf9-84c9-fa03948e82d7",
+      "[ADR-1] Routing: AUTO_COMPLETE -> ADR-2 for medical triage",
+      "[ADR-1] Case written to PV system: created"
+    ],
+    "routing": "ADR-2"
+  },
+  "adr2_classification": {
+    "case_id": "3babf2a1-9611-4bf9-84c9-fa03948e82d7",
+    "started_at": "2026-06-01T15:12:59.643250",
+    "model_version": "ADR2-v1.0-sonnet4.6",
+    "seriousness": {
+      "serious": false,
+      "criteria_matched": [],
+      "confidence": 0.95
+    },
+    "expectedness": {
+      "unexpected": true,
+      "rsi_match": "none",
+      "confidence": 0.0
+    },
+    "signal_detection": {
+      "signal_detected": false,
+      "case_count": 0
+    },
+    "reportability": {
+      "recommendation": "NON_REPORTABLE",
+      "jurisdictions": [],
+      "confidence": 0.95
+    },
+    "mso_flags": {
+      "deep_review_required": true,
+      "reasons": [
+        "novel_ae_term",
+        "ambiguous_seriousness"
+      ]
+    },
+    "completed_at": "2026-06-01T15:13:04.755148",
+    "recommendation": {
+      "case_id": "3babf2a1-9611-4bf9-84c9-fa03948e82d7",
+      "seriousness_classification": {
+        "serious": false,
+        "criteria_matched": [],
+        "reasoning": "The adverse event (severe headache) does not meet any ICH E2A seriousness criteria. The patient did not die, was not at immediate risk of death, did not require hospitalization, did not experience persistent disability, no congenital anomaly is involved, and no emergency medical/surgical intervention was required to prevent a serious outcome. The headache resolved within 2 days with over-the-counter symptomatic treatment (acetaminophen and NSAIDs), the drug was continued at the same dose, and the outcome was full recovery. While the pain was rated 7/10 and described as severe, severity of symptoms alone does not constitute seriousness under ICH E2A criteria.",
+        "span_citations": {},
+        "confidence": 0.95
+      },
+      "expectedness_signal": {
+        "unexpected": true,
+        "rsi_match": "none",
+        "rsi_term_matched": null,
+        "reasoning": "MedDRA lookup failed: AE term 'Patient developed severe headache on 2026-05-20, approximately 5 weeks after starting Solivian therapy. Headache was severe (7/10 pain scale), bilateral, throbbing in nature. Associated with nausea but no vomiting. No visual disturbances. Patient took acetaminophen 500mg with partial relief. Event resolved on 2026-05-22 after symptomatic treatment with NSAIDs. Drug continued at same dose.' not found in MedDRA database",
+        "span_citations": {},
+        "confidence": 0.0
+      },
+      "reportability_recommendation": {
+        "recommendation": "NON_REPORTABLE",
+        "jurisdictions": [],
+        "rule_justification": "Non-serious adverse event - no expedited reporting requirement",
+        "causality_context": null,
+        "reasoning": "Non-serious adverse event - does not meet FDA 21 CFR 314.80 expedited reporting criteria",
+        "span_citations": {},
+        "confidence": 0.95
+      },
+      "mso_flags": {
+        "deep_review_required": true,
+        "reason": [
+          "novel_ae_term",
+          "ambiguous_seriousness"
+        ]
+      },
+      "audit_trail": {
+        "timestamp": "2026-06-01T15:13:04.755092",
+        "agent_version": "ADR2-v1.0-sonnet4.6",
+        "regulatory_references": [
+          "ICH E2A: Guidelines for Clinical Safety Data Management - Definitions and Standards for Expedited Reporting",
+          "FDA 21 CFR 314.80: Postmarketing reporting of adverse drug experiences",
+          "FDA May 2026 Guidance on AI-Assisted Pharmacovigilance - Requirements 1-5"
+        ]
+      },
+      "signal_detection_flag": false,
+      "signal_pattern": null,
+      "model_version_adr2": "ADR2-v1.0-sonnet4.6",
+      "created_at": "2026-06-01T13:13:04.755139Z",
+      "created_by": "ADR-2",
+      "mso_reviewed_at": null,
+      "mso_reviewed_by": null,
+      "mso_override": false,
+      "mso_override_reason": null,
+      "mso_action": null,
+      "mso_rationale": null
+    }
+  },
+  "final_recommendation": {
+    "case_id": "3babf2a1-9611-4bf9-84c9-fa03948e82d7",
+    "seriousness_classification": {
+      "serious": false,
+      "criteria_matched": [],
+      "reasoning": "The adverse event (severe headache) does not meet any ICH E2A seriousness criteria. The patient did not die, was not at immediate risk of death, did not require hospitalization, did not experience persistent disability, no congenital anomaly is involved, and no emergency medical/surgical intervention was required to prevent a serious outcome. The headache resolved within 2 days with over-the-counter symptomatic treatment (acetaminophen and NSAIDs), the drug was continued at the same dose, and the outcome was full recovery. While the pain was rated 7/10 and described as severe, severity of symptoms alone does not constitute seriousness under ICH E2A criteria.",
+      "span_citations": {},
+      "confidence": 0.95
+    },
+    "expectedness_signal": {
+      "unexpected": true,
+      "rsi_match": "none",
+      "rsi_term_matched": null,
+      "reasoning": "MedDRA lookup failed: AE term 'Patient developed severe headache on 2026-05-20, approximately 5 weeks after starting Solivian therapy. Headache was severe (7/10 pain scale), bilateral, throbbing in nature. Associated with nausea but no vomiting. No visual disturbances. Patient took acetaminophen 500mg with partial relief. Event resolved on 2026-05-22 after symptomatic treatment with NSAIDs. Drug continued at same dose.' not found in MedDRA database",
+      "span_citations": {},
+      "confidence": 0.0
+    },
+    "reportability_recommendation": {
+      "recommendation": "NON_REPORTABLE",
+      "jurisdictions": [],
+      "rule_justification": "Non-serious adverse event - no expedited reporting requirement",
+      "causality_context": null,
+      "reasoning": "Non-serious adverse event - does not meet FDA 21 CFR 314.80 expedited reporting criteria",
+      "span_citations": {},
+      "confidence": 0.95
+    },
+    "mso_flags": {
+      "deep_review_required": true,
+      "reason": [
+        "novel_ae_term",
+        "ambiguous_seriousness"
+      ]
+    },
+    "audit_trail": {
+      "timestamp": "2026-06-01T15:13:04.755092",
+      "agent_version": "ADR2-v1.0-sonnet4.6",
+      "regulatory_references": [
+        "ICH E2A: Guidelines for Clinical Safety Data Management - Definitions and Standards for Expedited Reporting",
+        "FDA 21 CFR 314.80: Postmarketing reporting of adverse drug experiences",
+        "FDA May 2026 Guidance on AI-Assisted Pharmacovigilance - Requirements 1-5"
+      ]
+    },
+    "signal_detection_flag": false,
+    "signal_pattern": null,
+    "model_version_adr2": "ADR2-v1.0-sonnet4.6",
+    "created_at": "2026-06-01T13:13:04.755139Z",
+    "created_by": "ADR-2",
+    "mso_reviewed_at": null,
+    "mso_reviewed_by": null,
+    "mso_override": false,
+    "mso_override_reason": null,
+    "mso_action": null,
+    "mso_rationale": null
+  }
+}

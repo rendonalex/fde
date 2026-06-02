@@ -11,7 +11,7 @@ Read only the files referenced in this prompt. Do not read all the files in the 
 
 ### Primary Scenario  
 - `input-docs/scenario.md`
-- `specs/stakeholder-alignment-memo.md`
+
 That is the full scenario. The constraints are what is written there. The numbers are what is written there. The systems are what is written there. If you need more than what is there, that is an assumption — name it as one in the assumption section.
 
 ### Guidance Documents

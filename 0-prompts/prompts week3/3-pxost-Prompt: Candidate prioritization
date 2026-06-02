@@ -12,7 +12,6 @@ Read only the files referenced in this prompt. Do not read all the files in the 
 ### Primary Input
 - Previous phase outputs (`specs/cognitive-load-map.md` and `specs/03-agentic-solution-architecture.md`).
 - `input-docs/scenario.md`. Scenario description
-- `specs/stakeholder-alignment-memo.md`
 
 ### Guidance Documents
 - `input-docs/atx/atx-scoring.md` - Use for scoring guidance for the workstreams/candidate processes. Follow each step listed to score the workstreams:

@@ -14,7 +14,6 @@ Read only the files referenced in this prompt. Do not read all the files in the 
 ### Primary Input
 - Previous phase outputs (`specs/cognitive-load-map.md`, `specs/03-agentic-solution-architecture.md`, and `specs/volume-×-value-analysis.md`)
 - `input-docs/scenario.md` scenario description, for information
-- `specs/stakeholder-alignment-memo.md`, stakeholder alignment, for information
 
 ### Guidance Document
 - Use **only** `input-docs/atx/atx-agent-mapping.md` for guidance on the steps that should be followed.
